@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>03 · 微信 vs 一封信</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ede2c8; --paper:#f7efd9;
+    --ink:#2a2010; --ink-soft:#5a4a30; --ink-faint:#8a7656;
+    --wax:#8b2a1e; --gold:#b08d57; --accent:#c64a3a;
+    --line:rgba(176,141,87,0.35);
+    --wx-bg:#ededed; --wx-out:#95EC69; --wx-in:#ffffff;
+    --wx-grey:#999;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    width:1242px;height:1656px;overflow:hidden;
+    font-family:"Noto Serif SC",serif;color:var(--ink);
+    background:radial-gradient(120% 90% at 50% 0%, #f1e6cb 0%, #e6d8b5 60%, #d6c59b 100%);
+    position:relative;
+  }
+  body::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:
+      radial-gradient(rgba(80,55,20,0.06) 1px, transparent 1.4px),
+      radial-gradient(rgba(80,55,20,0.04) 1px, transparent 1.2px);
+    background-size:7px 7px,13px 13px;background-position:0 0,3px 5px;
+    mix-blend-mode:multiply;opacity:.55;
+  }
+  body::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(60% 50% at 50% 55%, transparent 0%, rgba(60,40,15,0.14) 100%);
+  }
+
+  .topbar{
+    position:absolute;top:60px;left:90px;right:90px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:"Cormorant Garamond",serif;font-style:italic;
+    color:var(--ink-faint);font-size:22px;letter-spacing:.26em;text-transform:uppercase;
+  }
+  .topbar .num{font-style:normal;color:var(--wax);letter-spacing:.1em;font-weight:500}
+
+  /* 主标题 */
+  .head{
+    position:absolute;left:0;right:0;top:148px;
+    text-align:center;
+  }
+  .head h1{
+    font-family:"Ma Shan Zheng","KaiTi",serif;
+    font-size:88px;line-height:1.18;color:var(--ink);
+    letter-spacing:.04em;font-weight:400;
+  }
+  .head h1 .em{color:var(--wax)}
+  .head h1 .row2{display:block;font-size:72px;color:var(--ink-soft);margin-top:4px}
+  .head h1 .row2 b{color:var(--wax);font-weight:inherit}
+
+  /* 两列对比容器 */
+  .compare{
+    position:absolute;left:60px;right:60px;top:430px;
+    display:grid;grid-template-columns:1fr 90px 1fr;
+    gap:0;align-items:start;
+  }
+
+  /* ===== 左：微信 ===== */
+  .wx-phone{
+    background:#0e0e10;
+    border-radius:48px;
+    padding:14px;
+    box-shadow:0 20px 50px -16px rgba(60,35,10,0.45);
+  }
+  .wx-screen{
+    background:var(--wx-bg);
+    border-radius:34px;
+    overflow:hidden;
+    min-height:920px;
+    position:relative;
+  }
+  .wx-statusbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 26px 8px;
+    font-family:-apple-system,system-ui,sans-serif;
+    font-size:18px;font-weight:600;color:#000;
+  }
+  .wx-statusbar .icons{display:flex;gap:6px;align-items:center;font-size:15px}
+  .wx-header{
+    padding:6px 18px 14px;
+    border-bottom:1px solid rgba(0,0,0,0.06);
+    background:#f4f4f4;
+    text-align:center;
+    position:relative;
+    font-family:-apple-system,system-ui,"Noto Sans SC",sans-serif;
+  }
+  .wx-header .back{position:absolute;left:18px;top:6px;color:#000;font-size:30px}
+  .wx-header .more{position:absolute;right:18px;top:6px;color:#000;font-size:24px;letter-spacing:2px}
+  .wx-header .name{font-size:22px;font-weight:600;color:#000}
+  .wx-header .meta{font-size:13px;color:var(--wx-grey);margin-top:2px;letter-spacing:.1em}
+
+  .wx-chat{padding:18px 20px 20px;display:flex;flex-direction:column;gap:14px;
+    font-family:-apple-system,system-ui,"Noto Sans SC",sans-serif}
+  .wx-time{text-align:center;color:var(--wx-grey);font-size:14px;letter-spacing:.05em;margin:6px 0 2px}
+  .wx-bubble{
+    max-width:78%;align-self:flex-end;
+    background:var(--wx-out);color:#000;
+    padding:11px 14px;border-radius:6px;
+    font-size:23px;line-height:1.35;
+    font-weight:400;
+    position:relative;
+    box-shadow:0 1px 0 rgba(0,0,0,0.04);
+    word-break:break-all;
+  }
+  .wx-bubble::after{
+    content:"";position:absolute;right:-6px;top:14px;
+    width:0;height:0;border-style:solid;
+    border-width:6px 0 6px 8px;border-color:transparent transparent transparent var(--wx-out);
+  }
+  .wx-bubble.in{
+    align-self:flex-start;background:var(--wx-in);
+  }
+  .wx-bubble.in::after{
+    right:auto;left:-6px;
+    border-width:6px 8px 6px 0;border-color:transparent var(--wx-in) transparent transparent;
+  }
+  .wx-bubble.retracted{
+    background:transparent;color:var(--wx-grey);
+    font-size:18px;align-self:center;
+    box-shadow:none;font-style:italic;letter-spacing:.05em;
+  }
+  .wx-bubble.retracted::after{display:none}
+  .wx-read{
+    align-self:flex-end;font-size:13px;color:var(--wx-grey);
+    letter-spacing:.05em;margin-top:-8px;
+  }
+  .wx-typing{
+    align-self:flex-end;background:var(--wx-out);
+    padding:14px 16px;border-radius:6px;display:inline-flex;gap:5px;
+    position:relative;
+  }
+  .wx-typing::after{
+    content:"";position:absolute;right:-6px;top:14px;
+    width:0;height:0;border-style:solid;
+    border-width:6px 0 6px 8px;border-color:transparent transparent transparent var(--wx-out);
+  }
+  .wx-typing i{
+    width:8px;height:8px;border-radius:50%;background:#666;
+    display:inline-block;
+  }
+
+  /* ===== 中：分隔 ===== */
+  .divider{
+    height:100%;min-height:920px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:24px;
+  }
+  .divider .line{
+    width:1px;flex:1;background:linear-gradient(180deg,transparent 0,var(--gold) 30%,var(--gold) 70%,transparent 100%);
+  }
+  .divider .arrow{
+    width:64px;height:64px;border-radius:50%;
+    background:var(--paper);border:1.5px solid var(--wax);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--wax);font-size:32px;line-height:1;
+    box-shadow:0 6px 18px -8px rgba(139,42,30,0.4);
+    font-family:"Cormorant Garamond",serif;
+    font-style:italic;font-weight:500;
+  }
+
+  /* ===== 右：信 ===== */
+  .letter-wrap{
+    display:flex;align-items:center;justify-content:center;
+    min-height:920px;
+    position:relative;
+  }
+  .letter{
+    background:var(--paper);
+    background-image:repeating-linear-gradient(0deg,transparent 0,transparent 38px,rgba(176,141,87,0.07) 38px,rgba(176,141,87,0.07) 39px);
+    border:1px solid rgba(90,74,48,0.25);
+    box-shadow:0 28px 50px -20px rgba(60,35,10,0.35);
+    padding:54px 44px 70px;
+    width:100%;
+    position:relative;
+    transform:rotate(-1.5deg);
+    border-radius:2px;
+  }
+  .letter::before{
+    content:"";position:absolute;top:0;left:0;width:60px;height:60px;
+    background:linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.04) 50%);
+  }
+  .lt-eyebrow{
+    font-family:"Cormorant Garamond",serif;font-style:italic;
+    color:var(--ink-faint);font-size:18px;letter-spacing:.32em;
+    text-transform:uppercase;margin-bottom:14px;
+  }
+  .lt-title{
+    font-family:"Ma Shan Zheng","KaiTi",serif;
+    font-size:60px;color:var(--ink);
+    letter-spacing:.12em;line-height:1;margin-bottom:30px;
+    border-bottom:1px solid var(--line);padding-bottom:18px;
+  }
+  .lt-body{
+    font-family:"Noto Serif SC",serif;
+    color:var(--ink);font-size:22px;line-height:2;
+    margin-bottom:24px;
+  }
+  .lt-body p{margin-bottom:14px}
+  .lt-body .quote{
+    color:var(--ink-soft);font-style:normal;
+    border-left:2px solid var(--gold);padding-left:14px;
+    margin:18px 0;font-size:21px;
+  }
+  .lt-foot{
+    text-align:right;
+    font-family:"Ma Shan Zheng","KaiTi",serif;
+    color:var(--ink);font-size:22px;
+    letter-spacing:.08em;margin-top:14px;
+  }
+  .lt-foot .date{
+    display:block;margin-top:6px;
+    font-family:"Cormorant Garamond",serif;font-style:italic;
+    color:var(--ink-faint);font-size:16px;letter-spacing:.16em;
+  }
+
+  /* 火漆封蜡 */
+  .wax-seal{
+    position:absolute;right:-22px;top:-22px;
+    width:108px;height:108px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #c64a3a, var(--wax) 60%, #5a1a12 100%);
+    box-shadow:
+      inset -4px -4px 12px rgba(0,0,0,0.3),
+      inset 4px 4px 10px rgba(255,255,255,0.18),
+      0 10px 22px rgba(0,0,0,0.3);
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Ma Shan Zheng","KaiTi",serif;
+    color:#f4e4c8;font-size:46px;letter-spacing:.04em;
+    transform:rotate(-8deg);
+    z-index:3;
+  }
+
+  /* 标签 */
+  .col-label{
+    position:absolute;
+    font-family:"Cormorant Garamond",serif;font-style:italic;
+    color:var(--ink-faint);font-size:18px;letter-spacing:.32em;
+    text-transform:uppercase;
+    text-align:center;
+  }
+  .col-label.left{left:60px;width:calc((100% - 210px)/2);top:392px}
+  .col-label.right{right:60px;width:calc((100% - 210px)/2);top:392px}
+  .col-label b{display:block;font-style:normal;color:var(--ink);
+    font-family:"Noto Serif SC",serif;font-weight:600;
+    font-size:24px;letter-spacing:.16em;margin-top:4px}
+
+  /* 底部小字 */
+  .bottom-cap{
+    position:absolute;left:0;right:0;bottom:130px;text-align:center;
+    font-family:"Noto Serif SC",serif;font-weight:500;
+    color:var(--ink-soft);font-size:24px;letter-spacing:.12em;
+  }
+  .bottom-cap::before,.bottom-cap::after{
+    content:"——";color:var(--gold);margin:0 16px;font-weight:400;letter-spacing:0;
+  }
+
+  .corner{
+    position:absolute;right:90px;bottom:60px;
+    font-family:"Cormorant Garamond",serif;font-style:italic;
+    color:var(--ink-faint);font-size:18px;letter-spacing:.3em;
+    text-transform:uppercase;text-align:right;
+  }
+  .pageno{
+    position:absolute;left:90px;bottom:60px;
+    font-family:"Cormorant Garamond",serif;font-style:italic;
+    color:var(--ink-faint);font-size:22px;letter-spacing:.28em;
+  }
+  .pageno b{color:var(--wax);font-weight:500;font-style:normal}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <span>第三步 · WHY A LETTER</span>
+    <span class="num">03 / 09</span>
+  </div>
+
+  <div class="head">
+    <h1>
+      文字她已经<span class="em">见太多</span>了
+      <span class="row2">所以我换了一种<b>重量</b></span>
+    </h1>
+  </div>
+
+  <div class="col-label left">— before —<b>微信对话框</b></div>
+  <div class="col-label right">— after —<b>一封信</b></div>
+
+  <div class="compare">
+
+    <!-- 左：微信 -->
+    <div class="wx-phone">
+      <div class="wx-screen">
+        <div class="wx-statusbar">
+          <span>9:41</span>
+          <span class="icons"><span>📶</span><span>🔋</span></span>
+        </div>
+        <div class="wx-header">
+          <span class="back">‹</span>
+          <span class="more">⋯</span>
+          <div class="name">她</div>
+          <div class="meta">微信号  ·  对方已读</div>
+        </div>
+        <div class="wx-chat">
+          <div class="wx-time">昨晚 23:14</div>
+          <div class="wx-bubble">在吗</div>
+          <div class="wx-bubble">在吗在吗</div>
+          <div class="wx-bubble">对不起</div>
+          <div class="wx-bubble">真的对不起。我知道我又错了。</div>
+          <div class="wx-bubble">…再给我一次机会好不好</div>
+          <div class="wx-bubble retracted">— 你撤回了一条消息 —</div>
+          <div class="wx-time">今天 02:36</div>
+          <div class="wx-bubble">在吗</div>
+          <div class="wx-bubble">对不起</div>
+          <div class="wx-read">对方已读</div>
+          <div class="wx-typing"><i></i><i></i><i></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中：分隔 -->
+    <div class="divider">
+      <div class="line"></div>
+      <div class="arrow">→</div>
+      <div class="line"></div>
+    </div>
+
+    <!-- 右：信 -->
+    <div class="letter-wrap">
+      <div class="letter">
+        <div class="wax-seal">开</div>
+        <div class="lt-eyebrow">— A letter, written once —</div>
+        <div class="lt-title">致 · 你</div>
+        <div class="lt-body">
+          <p>5 月 18 号的晚上，</p>
+          <p>我不想再发"在吗"。</p>
+          <p class="quote">我知道这段时间是我让你失望了。<br>不是一次，是很多次⋯⋯</p>
+          <p>这封信你慢慢读。<br>读完了再决定要不要回。</p>
+        </div>
+        <div class="lt-foot">
+          —— 一个想跟你说话的人
+          <span class="date">5 · 20 · 2026</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-cap">不是发条微信能装下的事</div>
+
+  <div class="pageno">No. <b>03</b> · WHY</div>
+  <div class="corner">THE MUSEUM OF US<br>A 520 Project</div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141519;--bg2:#1a1d24;--panel:#1f232b;--panel2:#272c36;
+  --fg:#edece6;--fg-soft:#a6adb8;--fg-faint:#666d7a;--ghost:#333945;
+  --accent:#e06c75;--accent2:#f2989e;--accent-deep:#a8474f;
+  --green:#7fd6a0;--green-dim:#3f6b53;
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.045);
+  --mono:'Fira Code',ui-monospace,monospace;--sans:'Noto Sans SC',system-ui,sans-serif;--serif:'Noto Serif SC',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0e0f12}
+body{width:1242px;height:1656px;overflow:hidden;position:relative;color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased;
+  background:radial-gradient(120% 70% at 50% -8%,#20242e 0%,#16181d 46%,#111216 100%);}
+body::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 4px),radial-gradient(rgba(255,255,255,.028) 1px,transparent 1.4px);
+  background-size:100% 4px,26px 26px;opacity:.6;}
+body::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(58% 30% at 50% 0%,rgba(224,108,117,.10),transparent 70%),radial-gradient(85% 65% at 50% 62%,transparent 38%,rgba(0,0,0,.5) 100%);}
+.wrap{position:absolute;inset:0;z-index:1;padding:98px 96px 104px;display:flex;flex-direction:column}
+.topbar{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:24px;color:var(--fg-faint);letter-spacing:.05em}
+.brand{display:flex;align-items:center;gap:15px;color:var(--fg-soft)}
+.brand .boat{width:34px;height:34px;color:var(--accent)}
+.brand b{font-weight:600;letter-spacing:.02em;color:var(--fg)}
+.brand .tag{font-size:17px;color:var(--accent);border:1px solid var(--accent-deep);border-radius:6px;padding:3px 10px;letter-spacing:.2em}
+.idx{font-variant-numeric:tabular-nums;letter-spacing:.16em}
+.idx b{color:var(--accent);font-weight:600}
+.kicker{font-family:var(--mono);font-size:26px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:18px}
+.kicker::before{content:"";width:44px;height:2px;background:var(--accent)}
+.h-cn{font-family:var(--serif);font-weight:900;color:var(--fg);font-size:104px;line-height:1.16;letter-spacing:.01em}
+.h-cn .em{color:var(--accent)}
+.h-cn .ghost{color:var(--fg-faint);font-weight:700}
+.lead{font-family:var(--sans);font-weight:400;color:var(--fg-soft);font-size:38px;line-height:1.7}
+.lead .em{color:var(--fg);font-weight:500}
+.lead .ac{color:var(--accent);font-weight:500}
+.mono{font-family:var(--mono)}
+.num{font-family:var(--mono);color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
+.rule{height:1px;background:var(--line);width:100%}
+.term{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 44px 90px -46px rgba(0,0,0,.75)}
+.term .bar{display:flex;align-items:center;gap:13px;padding:22px 30px;border-bottom:1px solid var(--line2);background:var(--panel2);font-family:var(--mono);font-size:22px;color:var(--fg-faint)}
+.term .dot{width:14px;height:14px;border-radius:50%}
+.term .path{margin-left:14px;letter-spacing:.04em}
+.term .body{padding:36px 42px}
+.diff{font-family:var(--mono);font-size:34px;line-height:1.95}
+.diff .row{display:block;white-space:nowrap}
+.diff .del{color:var(--fg-faint)}
+.diff .del .t{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.22)}
+.diff .add{color:var(--fg)}
+.diff .add .zh{color:var(--green)}
+.diff .mk{color:var(--accent-deep);font-weight:600}
+.diff .mk.plus{color:var(--green-dim)}
+.footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:var(--mono);font-size:23px;color:var(--fg-faint);letter-spacing:.03em}
+.footer .repo{color:var(--fg-soft)}
+.footer .repo b{color:var(--accent);font-weight:500}
+.pills{display:flex;flex-wrap:wrap;gap:14px}
+.pill{font-family:var(--mono);font-size:24px;color:var(--fg-soft);border:1px solid var(--line);border-radius:999px;padding:9px 22px}
+.pill .d{color:var(--accent)}
+</style>
+<style>
+/* card-specific */
+.kicker{margin-top:30px}
+.h-cn{margin-top:54px;font-size:120px;line-height:1.14}
+.h-cn .line2{color:var(--fg-soft);font-weight:700;font-size:108px}
+.sub{margin-top:48px;display:flex;align-items:baseline;gap:22px;font-family:var(--mono);font-size:27px;color:var(--fg-soft);letter-spacing:.02em}
+.sub .arrow{color:var(--accent);font-weight:600}
+.sub .em{color:var(--green)}
+.lead{margin-top:62px}
+.lead p{margin-bottom:30px}
+.lead .small{font-size:34px;color:var(--fg-faint)}
+.bip{margin-top:64px;display:inline-flex;align-items:center;gap:20px;font-family:var(--mono);font-size:30px;color:var(--accent2);letter-spacing:.08em}
+.bip::before{content:"";width:13px;height:13px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px rgba(224,108,117,.14)}
+.creed{margin-top:auto;margin-bottom:70px;padding-left:34px;border-left:2px solid var(--accent-deep)}
+.creed .l{display:block;font-family:var(--sans);font-weight:500;color:var(--fg);font-size:42px;line-height:1.62;letter-spacing:.01em}
+.creed .l.soft{color:var(--fg-soft);font-weight:400;font-size:39px}
+.creed .l .g{color:var(--green)}
+.sig{margin-top:48px;font-family:var(--mono);font-size:24px;color:var(--fg-faint);letter-spacing:.06em}
+.sig .b{color:var(--fg-soft)}
+.spacer{flex:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <svg class="boat" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4L16 22L6 22Z" fill="currentColor"/><path d="M16 8L16 22L24 22Z" fill="currentColor" opacity=".55"/><path d="M4 24Q10 20 16 24Q22 28 28 24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+      <b>Odysseus</b><span class="tag">ZH</span>
+    </div>
+    <div class="idx">No.<b>07</b> · 08</div>
+  </div>
+
+  <div class="kicker">06 · 我是谁</div>
+
+  <h1 class="h-cn">高三休学<br><span class="line2">在公开做点东西</span></h1>
+
+  <div class="sub">
+    <span class="arrow">//</span>
+    <span>第一次给全球开源项目做东西，<span class="em">再开源回去</span></span>
+  </div>
+
+  <div class="lead">
+    <p>我在自学 <span class="em">vibe coding</span> 和平面设计。</p>
+    <p class="small">build in public —— 做得不一定完美，</p>
+  </div>
+
+  <div class="bip">build&nbsp;in&nbsp;public</div>
+
+  <div class="creed">
+    <span class="l">每一处都想做对，</span>
+    <span class="l soft">不<span class="g">糊弄</span>。</span>
+  </div>
+
+  <div class="sig"><span class="b">~/</span>chichu · <span class="b">git</span> commit -m "for everyone"</div>
+
+  <div class="footer">
+    <div class="repo">github.com/xing0325/<b>odysseus-zh-CN</b></div>
+    <div>★ open source · MIT</div>
+  </div>
+
+</div>
+</body>
+</html>

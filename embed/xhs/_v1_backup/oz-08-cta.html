@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141519;--bg2:#1a1d24;--panel:#1f232b;--panel2:#272c36;
+  --fg:#edece6;--fg-soft:#a6adb8;--fg-faint:#666d7a;--ghost:#333945;
+  --accent:#e06c75;--accent2:#f2989e;--accent-deep:#a8474f;
+  --green:#7fd6a0;--green-dim:#3f6b53;
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.045);
+  --mono:'Fira Code',ui-monospace,monospace;--sans:'Noto Sans SC',system-ui,sans-serif;--serif:'Noto Serif SC',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0e0f12}
+body{width:1242px;height:1656px;overflow:hidden;position:relative;color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased;
+  background:radial-gradient(120% 70% at 50% -8%,#20242e 0%,#16181d 46%,#111216 100%);}
+body::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 4px),radial-gradient(rgba(255,255,255,.028) 1px,transparent 1.4px);
+  background-size:100% 4px,26px 26px;opacity:.6;}
+body::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(58% 30% at 50% 0%,rgba(224,108,117,.10),transparent 70%),radial-gradient(85% 65% at 50% 62%,transparent 38%,rgba(0,0,0,.5) 100%);}
+.wrap{position:absolute;inset:0;z-index:1;padding:98px 96px 104px;display:flex;flex-direction:column}
+.topbar{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:24px;color:var(--fg-faint);letter-spacing:.05em}
+.brand{display:flex;align-items:center;gap:15px;color:var(--fg-soft)}
+.brand .boat{width:34px;height:34px;color:var(--accent)}
+.brand b{font-weight:600;letter-spacing:.02em;color:var(--fg)}
+.brand .tag{font-size:17px;color:var(--accent);border:1px solid var(--accent-deep);border-radius:6px;padding:3px 10px;letter-spacing:.2em}
+.idx{font-variant-numeric:tabular-nums;letter-spacing:.16em}
+.idx b{color:var(--accent);font-weight:600}
+.kicker{font-family:var(--mono);font-size:26px;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:18px}
+.kicker::before{content:"";width:44px;height:2px;background:var(--accent)}
+.h-cn{font-family:var(--serif);font-weight:900;color:var(--fg);font-size:104px;line-height:1.16;letter-spacing:.01em}
+.h-cn .em{color:var(--accent)}
+.h-cn .ghost{color:var(--fg-faint);font-weight:700}
+.lead{font-family:var(--sans);font-weight:400;color:var(--fg-soft);font-size:38px;line-height:1.7}
+.lead .em{color:var(--fg);font-weight:500}
+.lead .ac{color:var(--accent);font-weight:500}
+.mono{font-family:var(--mono)}
+.num{font-family:var(--mono);color:var(--accent);font-weight:600;font-variant-numeric:tabular-nums}
+.rule{height:1px;background:var(--line);width:100%}
+.term{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 44px 90px -46px rgba(0,0,0,.75)}
+.term .bar{display:flex;align-items:center;gap:13px;padding:22px 30px;border-bottom:1px solid var(--line2);background:var(--panel2);font-family:var(--mono);font-size:22px;color:var(--fg-faint)}
+.term .dot{width:14px;height:14px;border-radius:50%}
+.term .path{margin-left:14px;letter-spacing:.04em}
+.term .body{padding:36px 42px}
+.diff{font-family:var(--mono);font-size:34px;line-height:1.95}
+.diff .row{display:block;white-space:nowrap}
+.diff .del{color:var(--fg-faint)}
+.diff .del .t{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.22)}
+.diff .add{color:var(--fg)}
+.diff .add .zh{color:var(--green)}
+.diff .mk{color:var(--accent-deep);font-weight:600}
+.diff .mk.plus{color:var(--green-dim)}
+.footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:var(--mono);font-size:23px;color:var(--fg-faint);letter-spacing:.03em}
+.footer .repo{color:var(--fg-soft)}
+.footer .repo b{color:var(--accent);font-weight:500}
+.pills{display:flex;flex-wrap:wrap;gap:14px}
+.pill{font-family:var(--mono);font-size:24px;color:var(--fg-soft);border:1px solid var(--line);border-radius:999px;padding:9px 22px}
+.pill .d{color:var(--accent)}
+</style>
+<style>
+/* card-specific: oz-08-cta */
+.head{margin-top:104px}
+.kick-row{display:flex;align-items:baseline;justify-content:space-between}
+.kick-num{font-family:var(--mono);font-size:120px;font-weight:600;color:var(--ghost);line-height:.8;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.h-cn.cta{margin-top:46px;font-size:112px;line-height:1.18}
+.body-q{margin-top:60px;display:flex;flex-direction:column;gap:8px}
+.body-q .qline{font-family:var(--sans);font-weight:400;font-size:40px;line-height:1.62;color:var(--fg-soft)}
+.body-q .qline .em{color:var(--fg);font-weight:500}
+.body-q .qline .ac{color:var(--green)}
+.handle{margin-top:78px;display:flex;flex-direction:column;gap:26px}
+.handle .label{font-family:var(--mono);font-size:24px;letter-spacing:.26em;text-transform:uppercase;color:var(--fg-faint);display:flex;align-items:center;gap:16px}
+.handle .label::before{content:"";width:34px;height:2px;background:var(--accent-deep)}
+.repo-big{font-family:var(--mono);font-weight:600;font-size:62px;letter-spacing:-.01em;color:var(--fg);line-height:1.1}
+.repo-big .host{color:var(--fg-faint);font-weight:400}
+.repo-big .sl{color:var(--accent)}
+.repo-big .nm{color:var(--accent)}
+.pills.cta{margin-top:62px;gap:16px}
+.pills.cta .pill{font-size:25px;padding:13px 26px;display:flex;align-items:center;gap:12px}
+.pills.cta .pill .star{color:var(--accent);font-weight:600}
+.pills.cta .pill .gd{color:var(--green)}
+.spacer{flex:1 1 auto;min-height:40px}
+.cta-rule{margin-top:70px;height:1px;width:100%;background:linear-gradient(90deg,var(--accent-deep),rgba(255,255,255,.06) 38%,transparent)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="topbar">
+      <div class="brand">
+        <svg class="boat" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4L16 22L6 22Z" fill="currentColor"/><path d="M16 8L16 22L24 22Z" fill="currentColor" opacity=".55"/><path d="M4 24Q10 20 16 24Q22 28 28 24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+        <b>Odysseus</b>
+        <span class="tag">ZH</span>
+      </div>
+      <div class="idx">No.08 · <b>08</b></div>
+    </div>
+
+    <div class="head">
+      <div class="kick-row">
+        <div class="kicker">07 · 落点</div>
+        <div class="kick-num">07</div>
+      </div>
+
+      <h1 class="h-cn cta">链接在评论区<br><span class="em">顺手点个 star</span></h1>
+
+      <div class="body-q">
+        <div class="qline">用过 <span class="em">Odysseus</span> 吗</div>
+        <div class="qline">是不是也卡在过那一屏英文</div>
+        <div class="qline">漏译的词欢迎来提，<span class="ac">我补</span></div>
+      </div>
+    </div>
+
+    <div class="cta-rule"></div>
+
+    <div class="handle">
+      <div class="label">repo</div>
+      <div class="repo-big"><span class="host">github.com/</span><span class="nm">xing0325</span><span class="sl">/</span><span class="nm">odysseus-zh-CN</span></div>
+    </div>
+
+    <div class="pills cta">
+      <span class="pill"><span class="star">★</span> 喜欢就点个 star</span>
+      <span class="pill"><span class="d">·</span> 漏译了评论区戳我</span>
+      <span class="pill"><span class="gd">+</span> build in public，一起</span>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="footer">
+      <div class="repo">github.com/xing0325/<b>odysseus-zh-CN</b></div>
+      <div class="oss">★ open source · MIT</div>
+    </div>
+
+  </div>
+</body>
+</html>
