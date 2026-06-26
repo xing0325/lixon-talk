@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>chichu · 闪电演讲 — 从欣赏到创作</title>
+<style>
+/* ============ FONTS ============ */
+@font-face{font-family:'Brier';src:url('assets/fonts/Brier-Bold.woff2') format('woff2');font-weight:700;font-display:swap;}
+@font-face{font-family:'Mona Sans';src:url('assets/fonts/MonaSans.woff2') format('woff2');font-weight:200 900;font-stretch:75% 125%;font-display:swap;}
+
+/* ============ TOKENS ============ */
+:root{
+  --paper:#efefe5; --cream:#f5f5ee; --ink:#23271d; --ink-2:#2c3124; --ink-soft:#5c6150;
+  --lime:#d2ff00; --lime-deep:#aec23a; --orange:#ff6b00; --orange-soft:#ff8a3d;
+  --black:#15150f; --line:rgba(40,44,32,.16);
+  --maxw:1360px; --ease:cubic-bezier(.19,1,.22,1); --ease2:cubic-bezier(.16,1,.3,1);
+  --fdisp:'Brier','Mona Sans','PingFang SC','Microsoft YaHei',sans-serif;
+  --fbody:'Mona Sans','PingFang SC','Microsoft YaHei','Source Han Sans CN',sans-serif;
+  --fmono:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace;
+  --fkai:'STKaiti','KaiTi','PingFang SC',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  font-family:var(--fbody); background:var(--paper); color:var(--ink);
+  overflow:hidden; -webkit-font-smoothing:antialiased; letter-spacing:.01em;
+}
+::selection{background:var(--lime);color:var(--ink);}
+
+/* ============ DECK / SLIDES ============ */
+.deck{position:fixed;inset:0;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;display:grid;align-content:center;
+  padding:clamp(40px,5vw,90px) clamp(40px,7vw,140px);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .55s var(--ease),transform .7s var(--ease);
+  transform:scale(.985);
+}
+.slide.active{opacity:1;visibility:visible;pointer-events:auto;transform:none;}
+.slide.past{transform:scale(.985) translateX(-3%);}
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;}
+.slide.dark{background:var(--ink);color:var(--cream);}
+.slide.dark ::selection{background:var(--lime);color:var(--ink);}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(46px);}
+.slide.active .reveal{animation:rise .9s var(--ease) both;animation-delay:calc(var(--d,0)*.085s);}
+@keyframes rise{from{opacity:0;transform:translateY(46px);}to{opacity:1;transform:none;}}
+.revealX{opacity:0;transform:translateX(-50px);}
+.slide.active .revealX{animation:riseX 1s var(--ease) both;animation-delay:calc(var(--d,0)*.085s);}
+@keyframes riseX{to{opacity:1;transform:none;}}
+.clip{display:inline-block;overflow:hidden;vertical-align:bottom;}
+.clip>span{display:inline-block;transform:translateY(105%);}
+.slide.active .clip>span{animation:clipUp 1s var(--ease) both;animation-delay:calc(var(--d,0)*.08s);}
+@keyframes clipUp{to{transform:none;}}
+
+/* ============ TYPE ============ */
+.eyebrow{
+  font-family:var(--fmono);font-size:clamp(11px,.85vw,14px);letter-spacing:.32em;
+  text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:14px;margin-bottom:26px;
+}
+.eyebrow::before{content:"";width:34px;height:2px;background:var(--orange);display:inline-block;}
+.slide.dark .eyebrow{color:#b9bcae;}
+h1.mega{font-family:var(--fdisp);font-weight:700;line-height:.9;letter-spacing:-.02em;
+  font-size:clamp(54px,9vw,150px);}
+h2.big{font-family:var(--fdisp);font-weight:700;line-height:.94;letter-spacing:-.015em;
+  font-size:clamp(40px,6vw,92px);}
+h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px);line-height:1;letter-spacing:-.01em;}
+.lime{color:var(--lime);text-shadow:0 0 0 var(--ink);}
+.slide:not(.dark) .lime{color:#3a4400;background:var(--lime);padding:0 .12em;border-radius:.06em;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.orange{color:var(--orange);}
+.u-line{position:relative;white-space:nowrap;}
+.u-line::after{content:"";position:absolute;left:0;bottom:.06em;height:.5em;width:100%;background:var(--lime);z-index:-1;opacity:.55;}
+.lead{font-size:clamp(16px,1.45vw,22px);line-height:1.6;color:var(--ink-soft);max-width:54ch;}
+.slide.dark .lead{color:#c3c6b8;}
+.kai{font-family:var(--fkai);}
+.mono{font-family:var(--fmono);}
+
+/* ============ CHROME (nav/progress) ============ */
+.topbar{position:fixed;top:0;left:0;right:0;height:5px;background:rgba(40,44,32,.1);z-index:60;}
+.topbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--lime));transition:width .55s var(--ease);}
+.brandtag{position:fixed;top:22px;left:clamp(28px,4vw,56px);z-index:60;font-family:var(--fmono);
+  font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);display:flex;gap:10px;align-items:center;}
+.brandtag b{color:var(--lime);font-weight:700;}
+.counter{position:fixed;bottom:24px;right:clamp(28px,4vw,56px);z-index:60;font-family:var(--fdisp);
+  font-size:15px;letter-spacing:.04em;color:var(--ink-soft);}
+.counter b{font-size:30px;color:var(--ink);}
+.hint{position:fixed;bottom:26px;left:clamp(28px,4vw,56px);z-index:60;font-family:var(--fmono);font-size:11px;
+  letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;display:flex;gap:8px;align-items:center;}
+.hint kbd{border:1px solid var(--line);border-radius:4px;padding:2px 7px;font-family:inherit;font-size:10px;}
+.rail{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:9px;}
+.rail b{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-soft);cursor:pointer;transition:.3s var(--ease);opacity:.5;}
+.rail b.on{background:var(--orange);border-color:var(--orange);opacity:1;transform:scale(1.25);}
+.rail b:hover{opacity:1;}
+.deck.darkchrome .brandtag,.deck.darkchrome .counter,.deck.darkchrome .hint{color:#c9ccbe;}
+.deck.darkchrome .counter b{color:var(--cream);}
+.deck.darkchrome .rail b{border-color:#9a9d8f;}
+
+/* grain + speedlines */
+.grain{position:fixed;inset:0;z-index:55;pointer-events:none;opacity:.05;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.speed{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+.speed i{position:absolute;height:2px;background:linear-gradient(90deg,transparent,var(--orange));opacity:.0;}
+.slide.active .speed i{animation:zoom 1.1s var(--ease) both;}
+.speed i:nth-child(1){top:18%;width:38%;left:0;animation-delay:.2s!important;}
+.speed i:nth-child(2){top:64%;width:26%;left:0;animation-delay:.34s!important;}
+.speed i:nth-child(3){top:82%;width:46%;left:0;animation-delay:.28s!important;}
+@keyframes zoom{0%{opacity:0;transform:translateX(-60px);}40%{opacity:.7;}100%{opacity:.18;transform:none;}}
+
+/* ============ COMPONENTS ============ */
+.tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--fmono);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;padding:7px 14px;border:1.5px solid var(--ink);border-radius:100px;}
+.slide.dark .tag{border-color:#5b6150;}
+.chip{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border-radius:100px;background:#fff;
+  border:1.5px solid var(--line);font-size:15px;font-weight:600;box-shadow:0 2px 0 rgba(40,44,32,.06);}
+.slide.dark .chip{background:#2f3427;border-color:#444a39;color:var(--cream);}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:var(--orange);}
+.btnrow{display:flex;flex-wrap:wrap;gap:12px;}
+.card{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:28px;position:relative;overflow:hidden;
+  box-shadow:0 18px 40px -28px rgba(40,44,32,.4);}
+.slide.dark .card{background:#2b3023;border-color:#3f4534;}
+.idx{font-family:var(--fdisp);color:var(--lime-deep);font-size:14px;letter-spacing:.1em;}
+.arrow-big{font-family:var(--fdisp);color:var(--orange);font-weight:700;}
+
+/* identity list */
+.idlist{display:flex;flex-direction:column;border-top:1.5px solid var(--line);}
+.idlist .row{display:flex;align-items:baseline;gap:24px;padding:clamp(10px,1.5vw,20px) 6px;border-bottom:1.5px solid var(--line);
+  transition:.4s var(--ease);position:relative;}
+.idlist .row n{font-family:var(--fmono);font-size:13px;color:var(--ink-soft);width:34px;flex:none;}
+.idlist .row h{font-family:var(--fdisp);font-weight:700;font-size:clamp(28px,3.6vw,60px);line-height:1;letter-spacing:-.01em;}
+.idlist .row em{font-style:normal;color:var(--ink-soft);font-size:clamp(13px,1vw,16px);margin-left:auto;text-align:right;max-width:34%;}
+.idlist .row:hover{padding-left:22px;}
+.idlist .row:hover h{color:var(--orange);}
+.idlist .row::before{content:"";position:absolute;left:-30px;top:50%;width:18px;height:18px;border-radius:50%;
+  background:var(--lime);transform:translateY(-50%) scale(0);transition:.4s var(--ease);}
+.idlist .row:hover::before{transform:translateY(-50%) scale(1);left:-2px;}
+
+/* stats */
+.statgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;}
+.stat{background:rgba(255,255,255,.04);border:1.5px solid rgba(210,255,0,.18);border-radius:16px;padding:24px 24px 20px;
+  display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;}
+.stat .num{font-family:var(--fdisp);font-weight:700;line-height:.92;letter-spacing:-.02em;
+  font-size:clamp(40px,5.2vw,78px);color:var(--cream);}
+.stat .num small{font-size:.42em;color:var(--lime);margin-left:.15em;letter-spacing:0;}
+.stat .lab{font-size:14px;color:#b9bcae;line-height:1.4;}
+.stat .lab b{color:var(--lime);font-weight:700;}
+.stat::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,rgba(210,255,0,.16),transparent 70%);}
+.stat.accent{background:linear-gradient(160deg,rgba(255,107,0,.16),rgba(255,107,0,.02));border-color:rgba(255,107,0,.4);}
+.stat.accent .num{color:var(--orange-soft);}
+.stat.accent .lab b{color:var(--orange-soft);}
+.bars{display:flex;flex-direction:column;gap:10px;}
+.bars .b{display:grid;grid-template-columns:90px 1fr auto;gap:14px;align-items:center;font-size:14px;color:#c3c6b8;}
+.bars .b i{height:14px;background:linear-gradient(90deg,var(--lime-deep),var(--lime));border-radius:3px;width:0;
+  transition:width 1.1s var(--ease);}
+.bars .b u{font-family:var(--fdisp);font-style:normal;color:var(--cream);}
+
+/* posters / gallery */
+.posters{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:end;}
+.poster figure{margin:0;position:relative;border-radius:12px;overflow:hidden;border:1.5px solid var(--line);
+  box-shadow:0 30px 60px -36px rgba(40,44,32,.6);background:#171712;}
+.poster img{width:100%;height:clamp(320px,52vh,600px);object-fit:contain;display:block;transition:.6s var(--ease);}
+.poster:hover img{transform:scale(1.025);}
+.poster .meta{display:flex;gap:12px;align-items:baseline;margin-top:16px;}
+.poster .meta .n{font-family:var(--fdisp);font-size:34px;color:var(--lime-deep);line-height:1;}
+.poster .meta h{font-family:var(--fdisp);font-size:20px;font-weight:700;}
+.poster .meta p{font-size:13px;color:var(--ink-soft);margin-top:3px;}
+.strip{display:flex;gap:12px;overflow:hidden;}
+.strip img{height:88px;width:88px;object-fit:cover;border-radius:10px;border:1.5px solid var(--line);flex:none;}
+
+/* tools grid */
+.tools{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;}
+.tools .t{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 10px;border-radius:16px;
+  background:#fff;border:1.5px solid var(--line);transition:.4s var(--ease);}
+.tools .t:hover{transform:translateY(-6px);box-shadow:0 16px 30px -20px rgba(40,44,32,.5);border-color:var(--orange);}
+.tools .t img{width:46px;height:46px;object-fit:contain;border-radius:10px;}
+.tools .t span{font-size:12.5px;font-weight:600;color:var(--ink);text-align:center;}
+.tools .t.txt{justify-content:center;}
+.tools .t.txt b{font-family:var(--fdisp);font-size:22px;}
+
+/* media frames */
+.shot{border-radius:12px;overflow:hidden;border:1.5px solid var(--line);background:#000;box-shadow:0 24px 50px -34px rgba(0,0,0,.7);}
+.shot img{width:100%;height:100%;object-fit:cover;display:block;}
+.slide.dark .shot{border-color:#3f4534;}
+
+/* animation stages */
+.stage{position:relative;border-radius:16px;overflow:hidden;border:1.5px solid var(--line);background:#11130d;
+  box-shadow:0 30px 60px -34px rgba(0,0,0,.6);}
+.slide.dark .stage{border-color:#3f4534;}
+.stagecap{position:absolute;left:14px;top:12px;font-family:var(--fmono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(255,255,255,.7);z-index:5;display:flex;align-items:center;gap:8px;}
+.stagecap b{width:7px;height:7px;border-radius:50%;background:#3ad06a;box-shadow:0 0 10px #3ad06a;animation:blink 1.4s infinite;}
+@keyframes blink{50%{opacity:.3;}}
+
+/* chess board */
+#chessBoard{display:grid;grid-template-columns:repeat(9,1fr);grid-template-rows:repeat(9,1fr);width:100%;aspect-ratio:1;}
+#chessBoard .sq{position:relative;display:flex;align-items:center;justify-content:center;}
+#chessBoard .pc{position:absolute;display:flex;align-items:center;justify-content:center;
+  transition:left .55s var(--ease),top .55s var(--ease),opacity .35s ease,transform .3s ease;will-change:left,top;z-index:3;}
+#chessBoard .pc img{width:86%;height:86%;object-fit:contain;filter:drop-shadow(0 2px 2px rgba(0,0,0,.45));}
+#chessBoard .pc .koma{width:80%;height:86%;display:flex;align-items:flex-end;justify-content:center;
+  background:linear-gradient(160deg,#f6e0ad 0%,#ecc77f 55%,#dcab5c 100%);
+  clip-path:polygon(50% 0%,86% 20%,92% 100%,8% 100%,14% 20%);
+  box-shadow:0 2px 3px rgba(0,0,0,.4),inset 0 2px 4px rgba(255,255,255,.4);
+  font-family:'Noto Serif JP','Yu Mincho','Songti SC','STSong',serif;font-weight:700;color:#2a1606;
+  font-size:clamp(11px,2.1vw,26px);line-height:1;padding-bottom:16%;text-shadow:0 1px 0 rgba(255,255,255,.35);}
+#chessBoard .pc.big .koma{font-size:clamp(13px,2.4vw,30px);}
+
+/* typing demo */
+#typeScreen{padding:clamp(24px,3vw,48px);min-height:100%;display:flex;flex-direction:column;justify-content:center;gap:22px;background:radial-gradient(120% 120% at 50% 0,#0c1b12,#05070b);}
+#typeText{font-family:var(--fkai);font-size:clamp(26px,3.4vw,52px);line-height:1.5;letter-spacing:.04em;}
+#typeText .c{color:#1f6a3f;transition:.15s;}
+#typeText .c.done{color:#cfeede;}
+#typeText .c.cur{color:#031;background:#00ff66;border-radius:4px;padding:0 .04em;box-shadow:0 0 26px #00ff66;}
+.combo{display:flex;align-items:baseline;gap:14px;}
+.combo .x{font-family:'Impact',var(--fdisp);font-size:clamp(40px,6vw,92px);line-height:.8;color:#ffd24d;
+  text-shadow:0 0 24px rgba(255,210,77,.5);transition:transform .1s;}
+.combo .lbl{font-family:var(--fmono);font-size:13px;letter-spacing:.2em;color:#7fe6a8;text-transform:uppercase;}
+.tparticle{position:absolute;width:8px;height:8px;border-radius:50%;background:#00ff66;pointer-events:none;}
+.tgrade{position:absolute;right:6%;top:50%;transform:translateY(-50%);font-family:'Impact',var(--fdisp);
+  font-size:clamp(70px,12vw,180px);color:rgba(255,255,255,.06);}
+
+/* concept cards */
+.concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.concepts .card h{font-family:var(--fdisp);font-size:clamp(22px,2.2vw,34px);font-weight:700;display:block;margin:14px 0 10px;}
+.concepts .card p{font-size:15px;color:var(--ink-soft);line-height:1.55;}
+.slide.dark .concepts .card p{color:#bfc2b4;}
+.concepts .card .ic{font-family:var(--fdisp);font-size:30px;color:var(--orange);}
+
+/* method list */
+.methods{display:grid;grid-template-columns:1fr 1fr;gap:16px 40px;}
+.methods .m{display:flex;gap:18px;padding:16px 0;border-bottom:1.5px solid var(--line);}
+.methods .m .n{font-family:var(--fdisp);font-size:30px;color:var(--lime-deep);line-height:1;flex:none;width:48px;}
+.methods .m h{font-family:var(--fdisp);font-size:22px;font-weight:700;}
+.methods .m p{font-size:14px;color:var(--ink-soft);margin-top:4px;line-height:1.5;}
+
+/* two-col helper */
+.cols{display:grid;gap:clamp(30px,5vw,80px);align-items:center;}
+.cols.c2{grid-template-columns:1.05fr 1fr;}
+.cols.c25{grid-template-columns:1fr 1.25fr;}
+.cols.c5{grid-template-columns:1fr 1fr;}
+
+/* marquee */
+.marq{position:absolute;left:0;right:0;bottom:7vh;overflow:hidden;white-space:nowrap;border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);padding:14px 0;}
+.marq .run{display:inline-block;animation:marq 22s linear infinite;font-family:var(--fdisp);font-size:clamp(20px,2.4vw,38px);font-weight:700;}
+.marq .run span{margin:0 26px;}
+.marq .run .dotmark{color:var(--orange);}
+@keyframes marq{to{transform:translateX(-50%);}}
+
+/* timeline */
+.tl{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:30px;}
+.tl .e{padding:0 16px;border-left:2px solid var(--line);position:relative;}
+.tl .e::before{content:"";position:absolute;left:-7px;top:0;width:12px;height:12px;border-radius:50%;background:var(--orange);}
+.tl .e .mo{font-family:var(--fmono);font-size:12px;letter-spacing:.1em;color:var(--ink-soft);}
+.tl .e h{font-family:var(--fdisp);font-size:21px;font-weight:700;margin:8px 0 6px;line-height:1.05;}
+.tl .e p{font-size:13px;color:var(--ink-soft);line-height:1.5;}
+
+/* misc utility */
+.flx{display:flex;} .wrapf{flex-wrap:wrap;} .gap{gap:16px;} .ac{align-items:center;} .mt{margin-top:28px;} .mt2{margin-top:44px;}
+.imgrow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.imgrow3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.frame{border-radius:12px;overflow:hidden;border:1.5px solid var(--line);box-shadow:0 18px 40px -30px rgba(0,0,0,.5);}
+.frame img{width:100%;height:clamp(150px,20vh,230px);object-fit:cover;display:block;transition:.5s var(--ease);}
+.frame:hover img{transform:scale(1.05);}
+.cap{font-size:12.5px;color:var(--ink-soft);margin-top:8px;}
+.slide.dark .cap{color:#aeb1a3;}
+/* operation-entropy lists */
+.elist{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:10px;}
+.elist li{position:relative;padding-left:24px;font-size:15.5px;line-height:1.45;color:var(--ink-soft);}
+.elist li::before{content:"";position:absolute;left:2px;top:.5em;width:9px;height:9px;border-radius:2px;}
+.elist.hi li::before{background:#e0742f;}
+.elist.lo li::before{background:var(--lime-deep);}
+
+/* embedded personal site */
+.embedwrap{position:relative;width:100%;height:clamp(420px,62vh,720px);border-radius:16px;overflow:hidden;
+  border:1.5px solid var(--line);box-shadow:0 30px 70px -40px rgba(40,44,32,.6);background:#efefe5;}
+.embedwrap iframe{width:100%;height:100%;border:0;display:block;background:#efefe5;}
+.embedwrap:fullscreen{height:100vh;width:100vw;border-radius:0;border:0;}
+.embedwrap:fullscreen iframe{height:100vh;}
+.fsbtn{position:absolute;top:14px;right:14px;z-index:6;font-family:var(--fmono);font-size:13px;letter-spacing:.06em;
+  font-weight:600;padding:9px 16px;border-radius:100px;border:1.5px solid var(--ink);background:rgba(244,244,237,.82);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:var(--ink);cursor:pointer;transition:.25s var(--ease);}
+.fsbtn:hover{background:var(--lime);border-color:var(--lime);transform:translateY(-1px);}
+
+/* calling app demo */
+#callingApp{height:100%;display:flex;flex-direction:column;gap:11px;padding:clamp(15px,2vw,24px);
+  background:radial-gradient(120% 90% at 50% 0,#161d27,#0F1419);color:#E8EAED;overflow:hidden;}
+.cl-head{font-family:'Poppins',var(--fdisp);font-weight:700;font-size:18px;display:flex;align-items:baseline;gap:10px;flex:none;}
+.cl-head span{font-size:10.5px;font-weight:400;color:#9CA3AF;letter-spacing:.12em;text-transform:uppercase;}
+.cl-paper{background:#1A1F26;border:1.5px solid #2D3139;border-radius:10px;padding:13px 15px;min-height:74px;flex:none;
+  font-size:14.5px;line-height:1.6;color:#E8EAED;transition:border-color .3s,box-shadow .3s;}
+.cl-paper.active{border-color:#7C3AED;box-shadow:0 0 0 3px rgba(124,58,237,.16);}
+.cl-caret{display:inline-block;width:2px;height:1.05em;background:#7C3AED;vertical-align:text-bottom;margin-left:1px;animation:clBlink 1s steps(1) infinite;}
+@keyframes clBlink{50%{opacity:0;}}
+.cl-status{font-size:11.5px;color:#a98af0;font-family:var(--fmono);display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .3s;height:15px;flex:none;}
+.cl-status.on{opacity:1;}
+.cl-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;flex:1;min-height:0;}
+.cl-group{background:#1A1F26;border:1px solid #2D3139;border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:7px;min-height:0;}
+.cl-group h{font-size:12px;font-weight:700;color:#E8EAED;display:flex;align-items:center;gap:6px;margin:0;}
+.cl-items{display:flex;flex-direction:column;gap:6px;overflow:hidden;}
+.cl-chip{font-size:11.5px;line-height:1.35;padding:6px 8px;border-radius:7px;background:#0F141A;border:1px solid #2D3139;
+  color:#cdd2da;opacity:0;transform:translateY(8px);transition:.45s var(--ease);}
+.cl-chip.show{opacity:1;transform:none;}
+.cl-group[data-k="cal"] .cl-chip{border-left:3px solid #7C3AED;}
+.cl-group[data-k="todo"] .cl-chip{border-left:3px solid #10B981;}
+.cl-group[data-k="learn"] .cl-chip{border-left:3px solid #F59E0B;}
+.cl-chip b{color:#fff;font-weight:600;}
+
+/* identity hover rows */
+.idlist .row.core{cursor:pointer;}
+.idlist .row.core em{color:var(--lime-deep);font-weight:600;}
+.idlist .row.core::after{content:"";position:absolute;right:4px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:9px solid var(--lime-deep);border-top:7px solid transparent;border-bottom:7px solid transparent;opacity:.55;transition:.3s var(--ease);}
+.idlist .row.core:hover::after{opacity:1;right:-2px;border-left-color:var(--orange);}
+
+/* AI-gen photo wall (masonry) */
+.wall{columns:5;column-gap:12px;}
+.wall img{width:100%;margin:0 0 12px;border-radius:10px;display:block;break-inside:avoid;border:1.5px solid var(--line);box-shadow:0 12px 24px -18px rgba(40,44,32,.5);transition:.4s var(--ease);}
+.wall img:hover{transform:scale(1.02);}
+@media(max-width:1200px){.wall{columns:4;}}
+@media(max-width:760px){.wall{columns:2;}}
+
+/* identity fullscreen overlay + carousel */
+#idOverlay{position:fixed;inset:0;z-index:120;background:rgba(18,19,14,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:none;flex-direction:column;padding:clamp(22px,3.2vw,52px);opacity:0;transition:opacity .35s var(--ease);}
+#idOverlay.on{display:flex;opacity:1;}
+.ov-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex:none;}
+.ov-kicker{font-family:var(--fmono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--lime);display:block;margin-bottom:6px;}
+.ov-title{font-family:var(--fdisp);font-weight:700;font-size:clamp(30px,3.6vw,60px);line-height:.95;color:var(--cream);}
+.ov-close{font-family:var(--fmono);font-size:13px;letter-spacing:.06em;color:var(--cream);background:transparent;border:1.5px solid #5b6150;border-radius:100px;padding:9px 16px;cursor:pointer;transition:.25s var(--ease);flex:none;}
+.ov-close:hover{background:var(--orange);border-color:var(--orange);color:#fff;}
+.ov-frame{flex:1;min-height:0;margin:clamp(14px,2vh,24px) 0;position:relative;border-radius:18px;overflow:hidden;background:#0e0f0b;border:1.5px solid #34382c;}
+.ov-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:none;}
+.ov-cap{color:#c3c6b8;font-size:14px;}
+.ov-dots{display:flex;gap:8px;}
+.ov-dots b{width:30px;height:4px;border-radius:2px;background:#5b6150;cursor:pointer;transition:.3s var(--ease);}
+.ov-dots b.on{background:var(--lime);}
+.ov-pane{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .55s var(--ease);pointer-events:none;}
+.ov-pane.on{opacity:1;pointer-events:auto;}
+.ov-pane>img.full{max-width:100%;max-height:100%;object-fit:contain;display:block;}
+.ov-pane iframe{width:100%;height:100%;border:0;background:#fff;}
+.pane-title{position:absolute;left:24px;bottom:20px;font-family:var(--fdisp);font-weight:700;font-size:clamp(20px,2.4vw,38px);color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.85);z-index:4;pointer-events:none;}
+.pane-title small{display:block;font-family:var(--fmono);font-size:12px;font-weight:400;letter-spacing:.14em;color:var(--lime);margin-bottom:5px;}
+.ov-host{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:clamp(14px,2vw,28px);}
+.ov-host .stage{height:100%!important;max-width:min(640px,100%)!important;width:auto;aspect-ratio:1!important;margin:0!important;}
+.ov-host .stage#stageCalling,.ov-host .stage#stageSubway,.ov-host .stage#stageType{aspect-ratio:auto!important;width:min(820px,100%);max-width:min(820px,100%)!important;}
+/* rotating ring */
+.ringstage{display:flex;align-items:center;justify-content:center;height:100%;width:100%;background:radial-gradient(60% 60% at 50% 42%,#1c1e26,#0a0b0d);}
+.ringspin{width:min(52vh,460px);height:min(52vh,460px);perspective:1300px;}
+.ringspin img{width:100%;height:100%;object-fit:contain;transform-style:preserve-3d;animation:ringTurn 5.5s ease-in-out infinite;filter:drop-shadow(0 26px 44px rgba(0,0,0,.6));}
+@keyframes ringTurn{0%{transform:rotateX(9deg) rotateY(-54deg);}50%{transform:rotateX(11deg) rotateY(54deg);}100%{transform:rotateX(9deg) rotateY(-54deg);}}
+/* overlay scatter photo wall */
+.ov-scatter{position:relative;width:100%;height:100%;overflow:hidden;background:#15150f;}
+.ov-scatter .pw{position:absolute;border-radius:10px;overflow:hidden;border:1.5px solid #3a3e30;box-shadow:0 18px 36px -22px rgba(0,0,0,.85);}
+.ov-scatter .pw img{width:100%;height:100%;object-fit:cover;display:block;}
+.ov-scatter .pw cap{position:absolute;left:8px;bottom:6px;right:8px;font-family:var(--fdisp);font-weight:700;font-size:14px;color:#fff;text-shadow:0 1px 6px #000;}
+/* haoqi preview */
+#haoqiApp{height:100%;display:flex;flex-direction:column;background:#0e1014;color:#e8eaed;overflow:hidden;}
+.hq-top{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #23272f;flex:none;}
+.hq-logo{font-family:var(--fdisp);font-weight:700;font-size:15px;color:#fff;}.hq-logo b{color:var(--lime);}
+.hq-tabs{display:flex;gap:4px;margin-left:auto;}
+.hq-tabs .tb{font-size:12px;padding:5px 11px;border-radius:7px;color:#9aa0ab;transition:.3s;}
+.hq-tabs .tb.on{background:var(--lime);color:#23271d;font-weight:700;}
+.hq-body{flex:1;min-height:0;position:relative;}
+.hq-view{position:absolute;inset:0;padding:14px;opacity:0;transition:opacity .5s var(--ease);overflow:hidden;}
+.hq-view.on{opacity:1;}
+.hq-cal{display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:1fr;gap:6px;height:100%;}
+.hq-cal .d{border:1px solid #23272f;border-radius:7px;padding:5px;font-size:11px;color:#5b6270;display:flex;flex-direction:column;gap:3px;overflow:hidden;}
+.hq-cal .d .ev{font-size:10px;border-radius:4px;padding:2px 5px;color:#fff;opacity:0;transform:translateY(4px);transition:.45s var(--ease);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hq-cal .d .ev.show{opacity:1;transform:none;}
+.hq-list{display:flex;flex-direction:column;gap:9px;}
+.hq-list .it{display:flex;align-items:center;gap:10px;background:#151922;border:1px solid #23272f;border-left-width:3px;border-radius:8px;padding:10px 12px;opacity:0;transform:translateX(-8px);transition:.45s var(--ease);}
+.hq-list .it.show{opacity:1;transform:none;}
+.hq-list .it .t{font-weight:600;color:#e8eaed;font-size:13px;}
+.hq-list .it .m{margin-left:auto;font-size:11px;color:#6b7280;font-family:var(--fmono);}
+
+@media (max-width:900px){.cols.c2,.cols.c25,.cols.c5{grid-template-columns:1fr;}.posters,.concepts,.imgrow3{grid-template-columns:1fr;}.tools{grid-template-columns:repeat(3,1fr);}.methods{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="topbar"><i id="prog"></i></div>
+<div class="brandtag"><b>◢</b> chichu · 闪电演讲</div>
+<div class="hint"><kbd>←</kbd><kbd>→</kbd> / <kbd>空格</kbd> 翻页 · <kbd>F</kbd> 全屏</div>
+<div class="counter"><b id="cNow">01</b> / <span id="cAll">17</span></div>
+<div class="rail" id="rail"></div>
+<div class="grain"></div>
+
+<div class="deck" id="deck">
+
+<!-- 00 COVER -->
+<section class="slide active" data-bg="paper">
+  <div class="speed"><i></i><i></i><i></i></div>
+  <div class="wrap">
+    <div class="eyebrow reveal" style="--d:0">Lightning Talk · 2026 · 好奇学习社区</div>
+    <h1 class="mega"><span class="clip" style="--d:1"><span>数字病人</span></span><br>
+      <span class="clip" style="--d:2"><span>LIXON<span style="color:var(--orange)">.</span></span></span></h1>
+    <p class="lead reveal mt" style="--d:5">从「欣赏与向往」到「模仿、逼近与创作」——<br>一个好奇学习者 / vibe coder / 设计师 / 自媒体博主，<br>如何把<b style="color:var(--ink)">自己</b>训练成一个挺好用的 agent。</p>
+  </div>
+  <div class="marq" style="bottom:6vh">
+    <div class="run" id="coverRun"></div>
+  </div>
+</section>
+
+<!-- 01 我是谁 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="cols c2">
+      <div>
+        <div class="eyebrow reveal" style="--d:0">Who am I · 悬停高亮身份看作品</div>
+        <h2 class="big reveal" style="--d:1">我是谁？</h2>
+        <p class="lead mt reveal" style="--d:2">同一个人，四个身份。<br>把鼠标移到<b style="color:var(--ink)">高亮的三个</b>上，<br>会铺开那个身份下、自动轮播的作品。</p>
+      </div>
+      <div class="idlist">
+        <div class="row reveal" style="--d:2"><n>01</n><h>好奇学习者</h><em>好奇学习社区 · 把自己当项目做</em></div>
+        <div class="row core reveal" style="--d:3" data-id="vibe"><n>02</n><h>Vibe Coder</h><em>悬停 · 看项目循环动画 ⟶</em></div>
+        <div class="row core reveal" style="--d:4" data-id="design"><n>03</n><h>设计师</h><em>悬停 · 海报 / UIUX / 建模 ⟶</em></div>
+        <div class="row core reveal" style="--d:5" data-id="media"><n>04</n><h>自媒体博主</h><em>悬停 · 数字病人 Lixon ⟶</em></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 数字 -->
+<section class="slide dark" data-bg="dark">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="--d:0">By the numbers · 把好奇心量化</div>
+    <h2 class="big reveal" style="--d:1;margin-bottom:10px">一些<span style="color:var(--lime)">数字</span></h2>
+    <div class="statgrid mt reveal" style="--d:2">
+      <div class="stat" style="grid-column:span 3"><div class="num" data-count="41">0</div><div class="lab"><b>GitHub 仓库</b> · 仅用 2 个月<br>35 公开 / 6 私有</div></div>
+      <div class="stat" style="grid-column:span 3"><div class="num" data-count="228">0</div><div class="lab"><b>Claude session</b> · 已去重<br>896 文件剔掉 668 个子 agent</div></div>
+      <div class="stat" style="grid-column:span 3"><div class="num" data-count="6100">0</div><small>万 token</small><div class="lab"><b>真正生成的 token</b>（输入+输出）<br>另有 59 亿次缓存重读不计入</div></div>
+      <div class="stat accent" style="grid-column:span 3"><div class="num" data-count="668">0</div><small>子 agent</small><div class="lab"><b>我派出去的 AI 小队</b><br>而我自己，也是其中一个 agent</div></div>
+
+      <div class="stat" style="grid-column:span 3"><div class="num" data-count="215">0</div><div class="lab"><b>Obsidian 笔记</b> · 323 天<br>73.7 万字 · 全部 AI 可读</div></div>
+      <div class="stat" style="grid-column:span 3"><div class="num" data-count="5.2" data-dec="1">0</div><small>h / 天</small><div class="lab"><b>日均在线敲键</b><br>52 个活跃日累计 270 小时</div></div>
+      <div class="stat accent" style="grid-column:span 3"><div class="num" data-count="22.4" data-dec="1">0</div><small>h</small><div class="lab"><b>通宵王 · 6/19</b><br>4208 条消息横跨一整天</div></div>
+      <div class="stat" style="grid-column:span 3">
+        <div class="lab" style="margin-bottom:8px;color:var(--lime)"><b>GitHub 语言分布</b></div>
+        <div class="bars" id="langBars">
+          <div class="b"><span>HTML</span><i data-w="100"></i><u>19</u></div>
+          <div class="b"><span>TypeScript</span><i data-w="42"></i><u>8</u></div>
+          <div class="b"><span>Python</span><i data-w="21"></i><u>4</u></div>
+          <div class="b"><span>JavaScript</span><i data-w="21"></i><u>4</u></div>
+        </div>
+      </div>
+    </div>
+    <p class="lead mt reveal" style="--d:3;color:#9da093">最狠的一天 <b style="color:var(--orange-soft)">6/19</b>：4208 条消息，从午夜到午夜几乎全程在线。&nbsp; 这些数字不是炫耀，是「<b style="color:var(--lime)">把自己当 agent 训练</b>」留下的日志。</p>
+  </div>
+</section>
+
+<!-- 04 平面设计 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="flx ac" style="justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div>
+        <div class="eyebrow reveal" style="--d:0">Graphic Design · 母题 A 实证</div>
+        <h2 class="big reveal" style="--d:1">平面设计：<span class="u-line">肉眼可见的进化</span></h2>
+      </div>
+      <div class="tag reveal" style="--d:1">小白 ⟶ 精良</div>
+    </div>
+    <div class="posters mt2">
+      <div class="poster reveal" style="--d:2"><figure><img src="assets/img/poster_rough.jpg" alt="2025秋冬成果展海报"></figure>
+        <div class="meta"><span class="n">01</span><div><h>去年 · 成果展</h><p>还得我手动排版，略粗糙</p></div></div></div>
+      <div class="poster reveal" style="--d:3"><figure><img src="assets/img/poster_improv.png" alt="即兴喜剧海报"></figure>
+        <div class="meta"><span class="n">02</span><div><h>即兴喜剧海报</h><p>用 HTML 写，结构非常清晰</p></div></div></div>
+      <div class="poster reveal" style="--d:4"><figure><img src="assets/img/poster_final.jpg" alt="2026春夏成果展终版海报"></figure>
+        <div class="meta"><span class="n">03</span><div><h>本次 · 终版</h><p>熟练驾驭生图模型 + 个人风格</p></div></div></div>
+    </div>
+    <div class="flx ac gap mt reveal" style="--d:5;justify-content:space-between;flex-wrap:wrap">
+      <div class="cap" style="font-size:14px">玩转 AI 生图的其他案例 ⟶</div>
+      <div class="strip" id="aigenStrip">
+        <img src="assets/img/aigen1.png" alt=""><img src="assets/img/aigen2.png" alt=""><img src="assets/img/aigen3.png" alt="">
+        <img src="assets/img/aigen4.png" alt=""><img src="assets/img/aigen5.png" alt=""><img src="assets/img/aigen6.png" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04b AI 生图照片墙 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap" style="max-width:1500px">
+    <div class="flx ac" style="justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div><div class="eyebrow reveal" style="--d:0">AI Image Craft · 我玩转生图模型</div>
+      <h2 class="big reveal" style="--d:1">一屏 <span class="u-line">AI 生图</span> 照片墙</h2></div>
+      <div class="tag reveal" style="--d:1">熟练驾驭 + 融入自己的风格元素</div>
+    </div>
+    <div class="wall mt2 reveal" style="--d:2" id="aigenWall">
+      <img src="assets/aigen/g01.jpg" alt=""><img src="assets/aigen/g05.jpg" alt=""><img src="assets/aigen/g03.jpg" alt=""><img src="assets/aigen/g08.jpg" alt=""><img src="assets/aigen/g02.jpg" alt=""><img src="assets/aigen/g11.jpg" alt=""><img src="assets/aigen/g06.jpg" alt=""><img src="assets/aigen/g14.jpg" alt=""><img src="assets/aigen/g04.jpg" alt=""><img src="assets/aigen/g09.jpg" alt=""><img src="assets/aigen/g12.jpg" alt=""><img src="assets/aigen/g07.jpg" alt=""><img src="assets/aigen/g13.jpg" alt=""><img src="assets/aigen/g10.jpg" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- 07 coding 起步 -->
+<section class="slide" data-bg="paper" data-anim="start">
+  <div class="wrap">
+    <div class="flx ac" style="justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div><div class="eyebrow reveal" style="--d:0">Coding · 一开始</div>
+      <h2 class="big reveal" style="--d:1">起步：<span class="kai" style="color:var(--ink-soft)">从小白的第一批作品</span></h2></div>
+      <div class="tag reveal" style="--d:1">母题 A · 变化</div>
+    </div>
+    <div class="cols c5 mt2">
+      <div class="reveal" style="--d:2">
+        <div class="stage" id="stageChess" style="aspect-ratio:1;max-width:440px;margin:0 auto">
+          <div class="stagecap"><b></b>国象 × 将棋 · 自动对弈</div>
+          <div id="chessBoard"></div>
+        </div>
+        <div class="cap mt">🎮 国际象棋 <b style="color:var(--orange)">对战</b> 将棋 · 9×9 融合棋盘 + 楚河汉界 · 我第一个「完整」项目</div>
+      </div>
+      <div class="reveal" style="--d:3">
+        <div class="stage" id="stageCalling" style="height:clamp(300px,54vh,500px);background:#0F1419;border-color:#222a33">
+          <div class="stagecap" style="color:#9CA3AF"><b style="background:#7C3AED;box-shadow:0 0 10px #7C3AED"></b>calling · 草稿纸 → AI 提取</div>
+          <div id="callingApp"></div>
+        </div>
+        <div class="cap mt">🛠 calling 自然语言便签 + <b style="color:var(--ink)">小红书图文工作台</b> · AI 把草稿纸拆成日程/安排/待学 · GUI 消融的起点</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 coding 现在 -->
+<section class="slide dark" data-bg="dark" data-anim="now">
+  <div class="wrap">
+    <div class="flx ac" style="justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div><div class="eyebrow reveal" style="--d:0">Coding · 现在</div>
+      <h2 class="big reveal" style="--d:1">现在：<span style="color:var(--lime)">强反馈 · 精良 · 倒反天罡</span></h2></div>
+      <div class="tag reveal" style="--d:1">同一个人，半年后</div>
+    </div>
+    <div class="cols c5 mt2">
+      <div class="reveal" style="--d:2">
+        <div class="stage" id="stageType" style="height:clamp(260px,40vh,420px)">
+          <div class="stagecap"><b></b>打字爽 · 自动连击</div>
+          <div id="typeScreen">
+            <div id="typeText"></div>
+            <div class="combo"><span class="x" id="comboX">0</span><span class="lbl">combo</span></div>
+            <div class="tgrade" id="tgrade">S</div>
+          </div>
+        </div>
+        <div class="cap mt">打字爽 · Monkeytype 风 + osu! 级强反馈：连击 / 粒子 / 屏抖 / 评级</div>
+      </div>
+      <div class="reveal" style="--d:3">
+        <div class="stage" id="stageSubway" style="height:clamp(260px,40vh,420px)">
+          <div class="stagecap"><b></b>地铁跑酷《没有目的地》· 切轨</div>
+          <canvas id="subwayCanvas"></canvas>
+        </div>
+        <div class="cap mt">「地铁」跑酷 · 倒反天罡：<b style="color:var(--orange-soft)">你即地铁，碾过人群</b>，电车难题倒着玩</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 好奇 online（核心产品 · 循环动画） -->
+<section class="slide" data-bg="paper" data-anim="haoqi">
+  <div class="wrap">
+    <div class="flx ac" style="justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div><div class="eyebrow reveal" style="--d:0">Flagship · 投资人最看重的一句话</div>
+      <h2 class="big reveal" style="--d:1">好奇 <span class="u-line">online</span></h2></div>
+      <div class="tag reveal" style="--d:1">好奇学习社区的线上世界</div>
+    </div>
+    <div class="cols c25 mt2">
+      <div class="reveal" style="--d:2">
+        <div class="stage" style="height:clamp(320px,56vh,540px);background:#0e1014;border-color:#23272f">
+          <div class="stagecap"><b></b>好奇 online · 核心功能预览</div>
+          <div id="haoqiApp"></div>
+        </div>
+      </div>
+      <div class="reveal" style="--d:3">
+        <p class="lead">把一整个<b style="color:var(--ink)">好奇学习社区</b>，搬进同一个数字空间——<br>日程、活动、笔记、协作，全部线上可视化。</p>
+        <ul class="elist lo mt"><li>滴答清单式 <b>五种视图</b>：日 / 周 / 月 / 清单 / 时间轴</li><li>重复事件 · 活动报名 · 社区动态流</li><li>Supabase 实时同步 · 纯前端静态部署</li></ul>
+        <div class="cap mt" style="font-size:15px">一句话：<b style="color:var(--ink)">好奇心的线上世界。</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09b 个人网站 · 实时嵌入 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap" style="max-width:1520px">
+    <div class="flx ac" style="justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:clamp(12px,2vh,22px)">
+      <div><div class="eyebrow reveal" style="--d:0">My Website · 诺里斯风格的个人站</div>
+      <h2 class="big reveal" style="--d:1">我的<span class="u-line">个人网站</span></h2></div>
+      <div class="tag reveal" style="--d:1">作品集 + 名片 · 本页实时嵌入</div>
+    </div>
+    <div class="embedwrap reveal" id="embedWrap" style="--d:2">
+      <iframe id="landoFrame" data-src="embed/lando/index.html" title="chichu personal site"></iframe>
+      <button class="fsbtn" id="fsBtn">⛶ 全屏</button>
+    </div>
+    <div class="cap mt reveal" style="--d:3">点右上角 <b style="color:var(--ink)">⛶ 全屏</b> 完全进入网站，再点一次退出回到讲稿 · 复刻 landonorris.com 的动效与排版，长成自己的作品集与名片。</div>
+  </div>
+</section>
+
+<!-- 09c 师说 + 备选项目 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="--d:0">More · 师说，与备选作品</div>
+    <h2 class="big reveal" style="--d:1">师说<span style="color:var(--ink-soft)"> · 与更多</span></h2>
+    <div class="cols c25 mt2">
+      <div class="card reveal" style="--d:2">
+        <div class="idx">主打 · 三端配对平台</div>
+        <h3 class="mid" style="margin:10px 0 8px">师说</h3>
+        <p class="lead" style="font-size:15.5px">高三毕业生 · 补课学生 · 家长的<b style="color:var(--ink)">三端配对平台</b>。<br>找老「师」、来「说」，把需求接上供给；所有学习资料与进度，<b style="color:var(--ink)">全程线上可视化</b>。</p>
+      </div>
+      <div class="concepts" style="grid-template-columns:1fr 1fr;align-content:start">
+        <div class="card reveal" style="--d:3"><span class="ic">∞</span><h>葛立恒数 · 大数塔</h><p>把宇宙都装不下的大数，做成可攀爬的塔。</p></div>
+        <div class="card reveal" style="--d:4"><span class="ic">♡</span><h>母亲节项目</h><p>给妈妈的一份小小的交互礼物。</p></div>
+        <div class="card reveal" style="--d:5" style="grid-column:span 2"><span class="ic">▣</span><h>小红书图文工作台</h><p>项目 → 小红书图文：HTML 配图，一键排版导出。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10a 工具 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="cols c25">
+      <div>
+        <div class="eyebrow reveal" style="--d:0">My Tools · 把自己当 agent 训练</div>
+        <h2 class="big reveal" style="--d:1">工具，会带来<br><span class="u-line">幸福感</span>。</h2>
+        <p class="lead mt reveal" style="--d:2"><b style="color:var(--ink)">Agent = LLM + Tools + Loop。</b><br>我自己就是那个 LLM，软件是我的 tools，遇事怎么办是我的 loop。<br>这个 agent，我训练得挺好的。</p>
+        <p class="lead mt reveal" style="--d:3">发现好工具时的「<b style="color:var(--ink)">哇，它居然能做到这个！</b>」，是我很向往的幸福感。<br>我对工具有洁癖：绝不用 Word 记笔记，绝不让工具堵住灵感。<br>再往前一步，是 <b style="color:var(--orange)">GUI 的消融</b> —— calling · 好奇online · 师说。</p>
+        <div class="btnrow mt reveal" style="--d:4">
+          <span class="chip"><i class="dot"></i>superpowers</span>
+          <span class="chip"><i class="dot"></i>opencli</span>
+          <span class="chip"><i class="dot"></i>graphify <em style="font-style:normal;color:var(--ink-soft);font-size:12px">YC S26</em></span>
+          <span class="chip"><i class="dot"></i>odysseus</span>
+          <span class="chip"><i class="dot"></i>CAI</span>
+        </div>
+      </div>
+      <div class="reveal" style="--d:3">
+        <div class="tools" id="toolGrid">
+          <div class="t"><img src="assets/tools/claude.png" alt=""><span>Claude Code</span></div>
+          <div class="t txt"><b>codex</b><span>Codex</span></div>
+          <div class="t"><img src="assets/tools/obsidian.png" alt=""><span>Obsidian</span></div>
+          <div class="t"><img src="assets/tools/hermes.png" alt=""><span>Hermes</span></div>
+          <div class="t"><img src="assets/tools/didida.png" alt=""><span>滴答清单</span></div>
+          <div class="t"><img src="assets/tools/flomo.png" alt=""><span>flomo</span></div>
+          <div class="t"><img src="assets/tools/odysseus.png" alt=""><span>odysseus</span></div>
+          <div class="t"><img src="assets/tools/cai.png" alt=""><span>CAI</span></div>
+          <div class="t"><img src="assets/tools/blender.png" alt=""><span>Blender</span></div>
+          <div class="t"><img src="assets/tools/m5burner.png" alt=""><span>M5Burner</span></div>
+          <div class="t"><img src="assets/tools/manus.png" alt=""><span>Manus</span></div>
+          <div class="t txt"><b>claudian</b><span>自写插件</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10b 操作熵（重点讲解 + 定义） -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="--d:0">Operation Entropy · 贯穿我所有工具的关键词</div>
+    <h2 class="big reveal" style="--d:1">操作<span class="u-line">熵</span></h2>
+    <p class="lead mt reveal" style="--d:2">这里的「熵」，就是<b style="color:var(--ink)">熵增定律</b>那个熵——衡量<b style="color:var(--ink)">混乱程度</b>。<br>而「操作熵」，就是「<b style="color:var(--ink)">操作</b>」这个层面的混乱程度。一个改动要点很多按钮、翻很多页面、找很多文件时，我就会手忙脚乱，思路也跟着乱掉——操作的「熵值」太高了。</p>
+    <div class="cols c5 mt2">
+      <div class="card reveal" style="--d:3;border-color:#e3b9a3;background:linear-gradient(165deg,#fbeee6,#fff)">
+        <div class="idx" style="color:#c2410c">高熵 · 我想逃离的</div>
+        <h3 class="mid" style="margin:8px 0 4px">😵‍💫 一团乱麻</h3>
+        <ul class="elist hi">
+          <li>Adobe 全家桶满屏几百个按钮</li>
+          <li>剪辑软件里一堆看不懂的术语</li>
+          <li>陡峭到劝退的学习曲线</li>
+          <li>只是回了条消息，一长串操作链就断了，还得重新理思路</li>
+        </ul>
+      </div>
+      <div class="card reveal" style="--d:4;border-color:var(--lime-deep);background:linear-gradient(165deg,#f3ffce,#fff)">
+        <div class="idx" style="color:#5a7a00">低熵 · 我在追的</div>
+        <h3 class="mid" style="margin:8px 0 4px">🎯 一步到位</h3>
+        <ul class="elist lo">
+          <li>每个页面上的按钮，尽可能少</li>
+          <li>每一条操作流程，尽可能短</li>
+          <li>每一步交互，都符合直觉</li>
+          <li>从灵感到落地，阻力尽可能小</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead mt reveal" style="--d:5">工业级的精细操作该拆就拆，但对具体的使用者，<b style="color:var(--ink)">大多数操作都能封装成更简单的样子</b>。我希望我做的东西，学习曲线缓一点、操作熵小一点。</p>
+  </div>
+</section>
+
+<!-- 10c 设计偶像（Dieter Rams + Braun） -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="cols c25">
+      <div>
+        <div class="eyebrow reveal" style="--d:0">Why minimal · 我的审美来处</div>
+        <h2 class="big reveal" style="--d:1">少，<br>却更<span class="orange">好</span>。</h2>
+        <p class="lead mt reveal" style="--d:2">好奇课上讲到<b style="color:var(--ink)">包豪斯</b>，讲到 <b style="color:var(--ink)">Dieter Rams</b> 与他为 Braun 做的产品、乔布斯与苹果。<br>从此我痴迷于极简与直觉，一直在追<b style="color:var(--ink)">真正丝滑</b>的体验。</p>
+        <div class="btnrow mt reveal" style="--d:3"><span class="tag">极简</span><span class="tag">直觉</span><span class="tag">丝滑</span></div>
+        <p class="reveal mt" style="--d:4;font-family:var(--fdisp);font-size:clamp(20px,2vw,30px);color:var(--ink)">“Less, but better.”<br><span style="font-family:var(--fmono);font-size:13px;color:var(--ink-soft)">—— Dieter Rams</span></p>
+      </div>
+      <div class="reveal" style="--d:3">
+        <div class="frame"><img src="assets/ref/rams.jpg" alt="Dieter Rams" style="width:100%;height:clamp(220px,32vh,360px);object-fit:cover;display:block"></div>
+        <div class="cap" style="margin-bottom:14px">Dieter Rams · 工业设计的良心</div>
+        <div class="imgrow3">
+          <div><div class="frame"><img src="assets/ref/braun_et66.jpg" alt="Braun ET66"></div><div class="cap">Braun ET66 计算器</div></div>
+          <div><div class="frame"><img src="assets/ref/braun_sk4.jpg" alt="Braun SK4"></div><div class="cap">Braun SK4「白雪公主之棺」</div></div>
+          <div><div class="frame"><img src="assets/ref/jobs.jpg" alt="Steve Jobs"></div><div class="cap">Jobs · Apple 的传承</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10d 两个母题 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="--d:0">Two through-lines · 贯穿全场的两条线</div>
+    <div class="reveal" style="--d:1;margin-bottom:6vh">
+      <div class="flx ac gap" style="gap:24px;flex-wrap:wrap">
+        <span class="idx" style="font-size:20px">母题 A</span>
+        <h2 class="big">变化 · <span class="kai" style="color:var(--ink-soft)">小白 / 粗糙</span> <span class="arrow-big">⟶</span> <span class="u-line">熟练 / 精良</span></h2>
+      </div>
+      <p class="lead mt">每一样东西都能看见进化的轨迹：海报、游戏、工具、硬件。</p>
+    </div>
+    <div class="reveal" style="--d:3">
+      <div class="flx ac gap" style="gap:24px;flex-wrap:wrap">
+        <span class="idx" style="font-size:20px">母题 B</span>
+        <h2 class="big">双向 · <span class="u-line">欣赏 · 向往</span> <span class="arrow-big">⇌</span> 模仿 · 逼近 · <span style="color:var(--orange)">创作</span></h2>
+      </div>
+      <p class="lead mt">发现好的交互 → 亲身体验 → 心生向往 → 模仿逼近 → 长成自己的东西。这是一个会上瘾的循环。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 硬件 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="cols c2">
+      <div>
+        <div class="eyebrow reveal" style="--d:0">Hardware · 具身 · 手感 · EDC</div>
+        <h2 class="big reveal" style="--d:1">看得见<br>摸得着的<br><span class="orange">造物</span></h2>
+        <p class="lead mt reveal" style="--d:2">硬件给我一种「<b style="color:var(--ink)">我的造物</b>」的成就感。<br>我会把每一件都做成 EDC——<br>哪怕没有软件，你也会爱上它的设计与手感。</p>
+        <div class="btnrow mt reveal" style="--d:3">
+          <span class="chip"><i class="dot"></i>Cardputer ADV</span>
+          <span class="chip"><i class="dot"></i>浮空鼠标</span>
+          <span class="chip"><i class="dot"></i>Insta360 GO 3S</span>
+        </div>
+      </div>
+      <div class="reveal" style="--d:3">
+        <div class="concepts" style="grid-template-columns:1fr">
+          <div class="card"><span class="ic">✎</span><h class="mid" style="margin:10px 0 8px">Vibe Coding 远控笔</h><p style="color:var(--ink-soft);font-size:15px">躺床上也能 vibe coding 的 EDC：嵌入笔身的半棘轮滚轮翻页，IMU 让笔尖指哪鼠标到哪，按住即语音输入，轻声细语也能捕捉。</p></div>
+          <div class="flx gap" style="gap:16px">
+            <div class="card" style="flex:1"><h class="mid" style="font-size:22px">自制录音卡</h><p style="color:var(--ink-soft);font-size:14px;margin-top:6px">市售太贵，给自己定制一张。</p></div>
+            <div class="card" style="flex:1"><h class="mid" style="font-size:22px">极简手机</h><p style="color:var(--ink-soft);font-size:14px;margin-top:6px">只有地图 / 微信 / 播客的精致小手机。</p></div>
+          </div>
+          <div class="imgrow3">
+            <div class="frame"><img src="assets/img/hw_cardputer.jpg" alt="cardputer"></div>
+            <div class="frame"><img src="assets/img/hw_cardputer_zelda.jpg" alt="cardputer zelda"></div>
+            <div class="frame"><img src="assets/ref/insta360.png" alt="insta360" style="object-fit:contain;background:#fff"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 工作方法 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="--d:0">How I work · 把方法也封装成工具</div>
+    <h2 class="big reveal" style="--d:1">我的<span class="u-line">工作方法</span></h2>
+    <div class="methods mt2">
+      <div class="m reveal" style="--d:2"><div class="n">01</div><div><h>项目即素材</h><p>无论成功失败，都能变成小红书图文。</p></div></div>
+      <div class="m reveal" style="--d:3"><div class="n">02</div><div><h>笔记全 AI 可读</h><p>所有笔记都让 AI 能直接读、直接用。</p></div></div>
+      <div class="m reveal" style="--d:4"><div class="n">03</div><div><h>画 UI，不写文字</h><p>需求用 Excalidraw 画出来，而不是用文字描述。</p></div></div>
+      <div class="m reveal" style="--d:5"><div class="n">04</div><div><h>自己写 skill</h><p><span class="mono">/sessionss</span> 一行指令搞定，工具长在手上。</p></div></div>
+      <div class="m reveal" style="--d:6"><div class="n">05</div><div><h>给命令行写 GUI</h><p>给 CAI 这种 CLI 套上图形界面，操作熵骤降。</p></div></div>
+      <div class="m reveal" style="--d:7"><div class="n">06</div><div><h>封装工作流</h><p>项目 → 小红书：HTML 配图 + 小红书 CLI 自动发，一键复用。</p></div></div>
+    </div>
+    <div class="strip mt2 reveal" style="--d:6">
+      <img src="assets/img/ui_excalidraw1.jpg" alt="" style="width:140px;height:88px"><img src="assets/img/ui_excalidraw2.jpg" alt="" style="width:140px;height:88px">
+      <img src="assets/img/claudian.jpg" alt="" style="width:140px;height:88px"><img src="assets/img/hack_cai_gui.png" alt="" style="width:140px;height:88px;object-fit:cover">
+    </div>
+  </div>
+</section>
+
+
+<!-- 13 机会与关系 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="--d:0">Relationships · 机会从关系里长出来</div>
+    <h2 class="big reveal" style="--d:1">抓住每一次<span class="u-line">被看见</span>的机会</h2>
+    <div class="cols c5 mt2">
+      <div class="card reveal" style="--d:2">
+        <div class="flx gap ac" style="gap:18px">
+          <div class="frame" style="width:120px;flex:none"><img src="assets/img/photo_wangzi.jpg" alt="王子伯洋" style="height:120px"></div>
+          <div><div class="idx">AIAI 社区 · 来上课</div><h3 class="mid" style="margin-top:6px">王子伯洋</h3><p style="color:var(--ink-soft);font-size:14px;margin-top:4px">mimiclaw 作者</p></div>
+        </div>
+        <p class="lead mt" style="font-size:15px">我抓紧机会给他看「国象 × 将棋」，聊我对 AI 的看法，小红书与微信持续同步。<br>→ 他推荐我去 <b style="color:var(--ink)">bibabo</b>（教人 AI coding 的「多邻国」· 奇绩 F25）实习，<br>我开始学习<b style="color:var(--ink)">在 vibe coding 组织里用 GitHub 协作</b>。</p>
+      </div>
+      <div class="card reveal" style="--d:3">
+        <div class="flx gap ac" style="gap:18px">
+          <div class="frame" style="width:120px;flex:none"><img src="assets/img/photo_hezi.jpg" alt="赫子" style="height:120px"></div>
+          <div><div class="idx">30w 粉 · 职业规划博主</div><h3 class="mid" style="margin-top:6px">赫子</h3><p style="color:var(--ink-soft);font-size:14px;margin-top:4px">和奥斯卡一起去参观</p></div>
+        </div>
+        <p class="lead mt" style="font-size:15px">聊了我的经历、展示了我的项目，他对我和奥斯卡都很感兴趣 →<br>邀请我们暑假去他那儿<b style="color:var(--ink)">学习</b>，<br>近距离看看真实的行业是怎么运转的。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 自媒体 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap">
+    <div class="cols c2">
+      <div>
+        <div class="eyebrow reveal" style="--d:0">Build in Public · 让更多人看见你</div>
+        <h2 class="big reveal" style="--d:1">你得先<br>被<span class="orange">看见</span>。</h2>
+        <p class="lead mt reveal" style="--d:2">奥斯卡做「<b style="color:var(--ink)">vibe coding 换饭吃</b>」的短视频，立马拿到流量——商单、私信、合作纷至沓来。连去 FCC 的实习，也是因为他的流量。</p>
+        <p class="lead mt reveal" style="--d:3"><b style="color:var(--ink)">只有让更多人看到你，你才能获得机会。</b><br>所以我把每个项目、每件银饰、每次反馈，都 build in public。<br><span class="cap">—— 数字病人 Lixon</span></p>
+      </div>
+      <div class="reveal" style="--d:3">
+        <div class="imgrow3" style="grid-template-columns:1fr 1fr">
+          <div class="frame"><img src="assets/img/jewelry1.jpg" alt="银饰"></div>
+          <div class="frame"><img src="assets/img/jewelry2.png" alt="银饰"></div>
+          <div class="frame"><img src="assets/img/card_xhs.jpg" alt="小红书名片" style="object-fit:contain;background:#fff"></div>
+          <div class="frame"><img src="assets/img/hackathon.png" alt="黑客松"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 暑假计划 -->
+<section class="slide dark" data-bg="dark">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="--d:0">This Summer · 18 岁的夏天</div>
+    <h2 class="big reveal" style="--d:1">这个<span style="color:var(--lime)">暑假</span>，<br>我要去这些地方</h2>
+    <div class="tl mt2">
+      <div class="e reveal" style="--d:2"><div class="mo">REMOTE</div><h>奇绩 F25</h><p>线上协作，做一个 coding 多邻国。</p></div>
+      <div class="e reveal" style="--d:3"><div class="mo">INTERN</div><h>FCC 实习</h><p>拍「18 岁在 IFS 上班」的 vlog。</p></div>
+      <div class="e reveal" style="--d:4"><div class="mo">HACKATHON</div><h>AdventureX</h><p>国内最大的青年黑客松。</p></div>
+      <div class="e reveal" style="--d:5"><div class="mo">CONTEST</div><h>Trae 创作大赛</h><p>把作品端上桌。</p></div>
+      <div class="e reveal" style="--d:6"><div class="mo">SUMMIT</div><h>破壳峰会</h><p>看看同龄人都在干什么。</p></div>
+      <div class="e reveal" style="--d:7"><div class="mo">FIELD</div><h>AI 补课工具</h><p>实地带零基础高中生做项目。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 结尾 -->
+<section class="slide" data-bg="paper">
+  <div class="speed"><i></i><i></i><i></i></div>
+  <div class="wrap" style="text-align:center">
+    <div class="eyebrow reveal" style="--d:0;justify-content:center">The Loop · 回到母题</div>
+    <h1 class="mega reveal" style="--d:1">欣赏 <span class="orange">→</span> 模仿<br><span class="u-line">→ 创作</span></h1>
+    <p class="lead mt reveal" style="--d:3;margin-left:auto;margin-right:auto;text-align:center">把自己这个 agent 训练好，持续 build in public，让好奇心一直转下去。<br><b style="color:var(--ink)">来找我玩 —— 数字病人 Lixon / chichu</b></p>
+    <div class="flx ac reveal" style="--d:4;justify-content:center;gap:clamp(30px,5vw,72px);align-items:flex-end;margin-top:clamp(20px,3vh,40px)">
+      <figure style="margin:0;text-align:center">
+        <img src="assets/img/card_xhs.jpg" alt="小红书名片" style="height:clamp(230px,42vh,400px);width:auto;border-radius:16px;box-shadow:0 30px 60px -30px rgba(40,44,32,.55);border:1.5px solid var(--line)">
+        <figcaption class="mono" style="margin-top:14px;font-size:14px;letter-spacing:.1em;color:var(--ink-soft)">小红书 · 数字病人 Lixon</figcaption>
+      </figure>
+      <figure style="margin:0;text-align:center">
+        <img src="assets/img/card_wx.jpg" alt="微信名片" style="height:clamp(230px,42vh,400px);width:auto;border-radius:16px;box-shadow:0 30px 60px -30px rgba(40,44,32,.55);border:1.5px solid var(--line)">
+        <figcaption class="mono" style="margin-top:14px;font-size:14px;letter-spacing:.1em;color:var(--ink-soft)">微信 · 加我聊聊</figcaption>
+      </figure>
+    </div>
+    <h2 class="big reveal" style="--d:5;margin-top:clamp(20px,3vh,38px)">谢谢观看 ◢</h2>
+  </div>
+</section>
+
+</div><!-- /deck -->
+
+<!-- identity hover overlay (full-screen, auto-carousel) -->
+<div id="idOverlay" aria-hidden="true">
+  <div class="ov-head">
+    <div><span class="ov-kicker" id="ovKicker"></span><span class="ov-title" id="ovTitle"></span></div>
+    <button class="ov-close" id="ovClose">✕ 关闭</button>
+  </div>
+  <div class="ov-frame" id="ovFrame"></div>
+  <div class="ov-foot"><span class="ov-cap" id="ovCap"></span><div class="ov-dots" id="ovDots"></div></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const deck=$('#deck'), slides=$$('.slide'), rail=$('#rail'), prog=$('#prog'),
+      cNow=$('#cNow'), cAll=$('#cAll');
+let cur=0, OV=null, overlayOpen=false;
+cAll.textContent=String(slides.length).padStart(2,'0');
+
+/* rail dots */
+slides.forEach((s,i)=>{const b=document.createElement('b');b.addEventListener('click',()=>go(i));rail.appendChild(b);});
+const dots=[...rail.children];
+
+/* ---- auto-fit: never clip content on any projector ---- */
+function fit(s){
+  const w=s.querySelector('.wrap'); if(!w)return;
+  w.style.transform=''; w.style.transformOrigin='center center';
+  const cs=getComputedStyle(s);
+  const availH=s.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+  const availW=s.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+  const ch=w.scrollHeight, cw=w.scrollWidth;
+  const sc=Math.min(1, availH/ch, availW/cw);
+  if(sc<0.999) w.style.transform='scale('+sc.toFixed(4)+')';
+}
+let rT; addEventListener('resize',()=>{clearTimeout(rT);rT=setTimeout(()=>fit(slides[cur]),120);});
+
+/* ---- navigation ---- */
+function go(i){
+  i=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.toggle('past',k<i);});
+  dots.forEach((d,k)=>d.classList.toggle('on',k===i));
+  prog.style.width=(i/(slides.length-1)*100)+'%';
+  cNow.textContent=String(i+1).padStart(2,'0');
+  const dark=slides[i].dataset.bg==='dark';
+  deck.classList.toggle('darkchrome',dark);
+  document.body.style.background=dark?'#23271d':'#efefe5';
+  fit(slides[i]);
+  // anim lifecycle
+  if(OV) OV.close();
+  ANIM.chess.stop(); ANIM.calling.stop(); ANIM.type.stop(); ANIM.subway.stop(); ANIM.haoqi.stop();
+  const a=slides[i].dataset.anim;
+  if(a==='start'){ ANIM.chess.start(); ANIM.calling.start(); }
+  if(a==='now'){ ANIM.type.start(); ANIM.subway.start(); }
+  if(a==='haoqi') ANIM.haoqi.start();
+  slides[i].querySelectorAll('iframe[data-src]').forEach(fr=>{ if(!fr.getAttribute('src')) fr.src=fr.dataset.src; });
+  if(i===2) runStats();
+  cur=i;
+}
+
+addEventListener('keydown',e=>{
+  if(overlayOpen){ if(e.key==='Escape'){OV&&OV.close();} else if(e.key==='ArrowRight'){e.preventDefault();OV&&OV.next();} else if(e.key==='ArrowLeft'){e.preventDefault();OV&&OV.prev();} return; }
+  if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1);}
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(cur-1);}
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+  else if(e.key==='f'||e.key==='F'){if(!document.fullscreenElement)document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();else document.exitFullscreen&&document.exitFullscreen();}
+});
+let wlock=false;
+addEventListener('wheel',e=>{ if(wlock||Math.abs(e.deltaY)<20)return; wlock=true; setTimeout(()=>wlock=false,720); go(cur+(e.deltaY>0?1:-1)); },{passive:true});
+let tsx=0,tsy=0;
+addEventListener('touchstart',e=>{tsx=e.touches[0].clientX;tsy=e.touches[0].clientY;},{passive:true});
+addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tsx,dy=e.changedTouches[0].clientY-tsy;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50)go(cur+(dx<0?1:-1));},{passive:true});
+
+/* ---- cover marquee ---- */
+(function(){
+  const words=['好奇学习者','VIBE CODER','设计师','数字病人 LIXON','黑客','讲者','BUILD IN PUBLIC','操作熵'];
+  const html=words.map(w=>`<span>${w}<span class="dotmark">◆</span></span>`).join('');
+  const r=$('#coverRun'); if(r) r.innerHTML=html+html;
+})();
+
+/* ---- stats counters ---- */
+let statsRun=0;
+function runStats(){
+  const id=++statsRun;
+  slides[2].querySelectorAll('[data-count]').forEach(el=>{
+    const tgt=parseFloat(el.dataset.count),dec=+(el.dataset.dec||0),dur=1500,t0=performance.now();
+    (function tick(t){ if(id!==statsRun)return; let p=Math.min(1,(t-t0)/dur); p=1-Math.pow(1-p,3);
+      const v=tgt*p; el.textContent=dec?v.toFixed(dec):Math.round(v).toLocaleString('en-US');
+      if(p<1)requestAnimationFrame(tick); })(performance.now());
+  });
+  slides[2].querySelectorAll('#langBars i').forEach(i=>{ i.style.width='0'; requestAnimationFrame(()=>requestAnimationFrame(()=>{ i.style.width=i.dataset.w+'%'; })); });
+}
+
+/* ================= CHESS × SHOGI ================= */
+const ANIM={};
+ANIM.chess=(function(){
+  const board=$('#chessBoard'); let built=false, timer=null, running=false, pieces={}, step=0;
+  const N=9, U=100/9, SVG={K:'wK',Q:'wQ',R:'wR',B:'wB',N:'wN',P:'wP'};
+  // [id, kind, glyph, big, col, row] — 将棋方(top, 木纹) / 国象方(bottom, 黑白格)
+  const init=[
+    ['sk','shogi','王',1,4,0],['sf','shogi','飛',1,7,1],['sa','shogi','角',1,1,1],
+    ['sg1','shogi','金',0,3,0],['sg2','shogi','金',0,5,0],['ss1','shogi','銀',0,2,0],['ss2','shogi','銀',0,6,0],
+    ['sj1','shogi','桂',0,1,0],['sj2','shogi','桂',0,7,0],['sl1','shogi','香',0,0,0],['sl2','shogi','香',0,8,0],
+    ['sp1','shogi','歩',0,4,2],['sp2','shogi','歩',0,3,2],['sp3','shogi','歩',0,5,2],
+    ['cK','chess','K',0,4,8],['cQ','chess','Q',0,3,8],['cR1','chess','R',0,0,8],['cR2','chess','R',0,8,8],
+    ['cB1','chess','B',0,2,8],['cB2','chess','B',0,6,8],['cN1','chess','N',0,1,7],['cN2','chess','N',0,7,7],
+    ['cP1','chess','P',0,3,6],['cP2','chess','P',0,5,6],['cP3','chess','P',0,4,5]
+  ];
+  // 兵渡楚河互吃 → 飛 snipe 马 → 皇后复仇
+  const moves=[
+    {id:'cP3',to:[4,4]},
+    {id:'sp1',to:[4,3]},
+    {id:'cP3',to:[4,3],cap:'sp1'},
+    {id:'sf',to:[7,7],cap:'cN2'},
+    {id:'cQ',to:[7,4]},
+    {id:'cQ',to:[7,7],cap:'sf'}
+  ];
+  function build(){
+    board.innerHTML=''; board.style.position='relative';
+    for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+      const sq=document.createElement('div'); sq.className='sq'; const light=(r+c)%2===0;
+      if(r<4) sq.style.background=light?'#e6c489':'#d2a85f';      // 将棋侧·暖木
+      else if(r===4) sq.style.background='#bfe3ee';               // 楚河·汉界
+      else sq.style.background=light?'#f0d9b5':'#b58863';         // 国象侧·黑白格
+      board.appendChild(sq);
+    }
+    const riv=document.createElement('div');
+    riv.style.cssText='position:absolute;left:0;top:'+(4*U)+'%;width:100%;height:'+U+'%;display:flex;align-items:center;justify-content:space-around;font-family:var(--fkai);font-size:clamp(11px,1.5vw,22px);color:rgba(40,92,112,.62);pointer-events:none;letter-spacing:.4em;z-index:1;';
+    riv.innerHTML='<span>楚&nbsp;河</span><span>漢&nbsp;界</span>';
+    board.appendChild(riv);
+    pieces={};
+    init.forEach(([id,kind,glyph,big,c,r])=>{
+      const el=document.createElement('div'); el.className='pc'+(big?' big':'');
+      if(kind==='chess') el.innerHTML='<img src="assets/chess/'+SVG[glyph]+'.svg" alt="'+glyph+'" draggable="false">';
+      else el.innerHTML='<b class="koma">'+glyph+'</b>';
+      el.style.cssText+='width:'+U+'%;height:'+U+'%;left:'+(c*U)+'%;top:'+(r*U)+'%;';
+      board.appendChild(el); pieces[id]={el,c,r,hc:c,hr:r};
+    });
+    built=true;
+  }
+  function place(p,c,r){p.el.style.left=(c*U)+'%';p.el.style.top=(r*U)+'%';p.c=c;p.r=r;}
+  function reset(){ Object.values(pieces).forEach(p=>{p.el.style.opacity='1';p.el.style.transform='';place(p,p.hc,p.hr);}); step=0; }
+  function next(){
+    if(!running)return;
+    if(step>=moves.length){ timer=setTimeout(()=>{reset(); timer=setTimeout(next,700);},1600); return; }
+    const m=moves[step++]; const p=pieces[m.id]; if(!p){timer=setTimeout(next,200);return;}
+    if(m.cap&&pieces[m.cap]){ const cp=pieces[m.cap]; cp.el.style.transform='scale(1.2)'; setTimeout(()=>{cp.el.style.opacity='0';cp.el.style.transform='scale(.5)';},200); }
+    place(p,m.to[0],m.to[1]);
+    p.el.style.transform='scale(1.1)'; setTimeout(()=>{p.el.style.transform='';},320);
+    timer=setTimeout(next,1050);
+  }
+  return {
+    start(){ if(!built)build(); if(running)return; running=true; reset(); timer=setTimeout(next,600); },
+    stop(){ running=false; if(timer){clearTimeout(timer);timer=null;} }
+  };
+})();
+
+/* ================= CALLING (草稿纸 → AI 提取) ================= */
+ANIM.calling=(function(){
+  const root=$('#callingApp'); let built=false, running=false, timers=[];
+  const NOTE='明天下午三点跟奥斯卡去赫子公司聊实习，记得带上 cardputer；这周得学完 three.js 的 shader 和 supabase 的 RLS；周五 adventureX 报名截止要交作品；晚上抽空买点银料做戒指。';
+  const GROUPS=[
+    {k:'cal',icon:'📅',name:'日程',items:['<b>明天 15:00</b> · 赫子公司聊实习','<b>周五</b> · adventureX 报名截止']},
+    {k:'todo',icon:'✅',name:'安排',items:['带上 cardputer','买银料 · 做戒指']},
+    {k:'learn',icon:'📚',name:'待学习',items:['three.js · shader','supabase · RLS']}
+  ];
+  const T=(fn,ms)=>{const id=setTimeout(fn,ms);timers.push(id);return id;};
+  function clearT(){timers.forEach(clearTimeout);timers=[];}
+  function build(){
+    root.innerHTML='<div class="cl-head">calling <span>意识流 · AI 待办</span></div>'
+      +'<div class="cl-paper" id="clPaper"><span id="clTyped"></span><span class="cl-caret" id="clCaret"></span></div>'
+      +'<div class="cl-status" id="clStatus">✨ AI 正在提取你的日程 / 安排 / 待学…</div>'
+      +'<div class="cl-cols">'+GROUPS.map(g=>'<div class="cl-group" data-k="'+g.k+'"><h>'+g.icon+' '+g.name+'</h><div class="cl-items">'+g.items.map(it=>'<div class="cl-chip">'+it+'</div>').join('')+'</div></div>').join('')+'</div>';
+    built=true;
+  }
+  function run(){
+    if(!running)return;
+    const paper=root.querySelector('#clPaper'),typed=root.querySelector('#clTyped'),caret=root.querySelector('#clCaret'),status=root.querySelector('#clStatus');
+    const chips=[...root.querySelectorAll('.cl-chip')];
+    chips.forEach(c=>c.classList.remove('show')); status.classList.remove('on'); typed.textContent=''; paper.classList.add('active'); caret.style.display='inline-block';
+    let i=0;
+    function type(){ if(!running)return; if(i<=NOTE.length){ typed.textContent=NOTE.slice(0,i); i++; T(type,40+Math.random()*45); } else { caret.style.display='none'; T(extract,520); } }
+    function extract(){ if(!running)return; status.classList.add('on');
+      chips.forEach((c,k)=>T(()=>c.classList.add('show'),440+k*330));
+      T(()=>{ paper.classList.remove('active'); status.classList.remove('on'); T(run,800); }, 440+chips.length*330+2800); }
+    T(type,420);
+  }
+  return {
+    start(){ if(!built)build(); if(running)return; running=true; run(); },
+    stop(){ running=false; clearT(); }
+  };
+})();
+
+/* ================= TYPING (打字爽) ================= */
+ANIM.type=(function(){
+  const screen=$('#typeScreen'), textEl=$('#typeText'), comboEl=$('#comboX'), gradeEl=$('#tgrade');
+  const lines=['我把自己这个 agent，训练得挺好的。','操作熵越低，从灵感到落地的阻力就越小。','工具，是会给人带来幸福感的。'];
+  let running=false, timer=null, li=0, ci=0, combo=0, spans=[];
+  function load(){
+    const s=lines[li]; textEl.innerHTML='';
+    spans=[...s].map(ch=>{const e=document.createElement('span');e.className='c';e.textContent=ch===' '?' ':ch;textEl.appendChild(e);return e;});
+    ci=0; mark();
+  }
+  function mark(){ spans.forEach((e,k)=>{e.classList.toggle('done',k<ci);e.classList.toggle('cur',k===ci);}); }
+  function burst(el){
+    const r=el.getBoundingClientRect(), pr=screen.getBoundingClientRect();
+    for(let i=0;i<6;i++){ const p=document.createElement('div'); p.className='tparticle';
+      const x=r.left-pr.left+r.width/2, y=r.top-pr.top+r.height/2;
+      p.style.left=x+'px'; p.style.top=y+'px';
+      const ang=Math.random()*6.28, d=20+Math.random()*40;
+      p.style.background=Math.random()<.5?'#00ff66':'#ffd24d';
+      screen.appendChild(p);
+      const dx=Math.cos(ang)*d, dy=Math.sin(ang)*d-20;
+      p.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${dx}px,${dy}px)`,opacity:0}],{duration:600,easing:'cubic-bezier(.2,.8,.2,1)'}).onfinish=()=>p.remove();
+    }
+    screen.animate([{transform:'translate(0,0)'},{transform:'translate(-3px,2px)'},{transform:'translate(2px,-1px)'},{transform:'none'}],{duration:90});
+  }
+  function tick(){
+    if(!running)return;
+    if(ci>=spans.length){
+      const grades=['S','S','A']; gradeEl.textContent=grades[li%3];
+      gradeEl.animate([{opacity:0,transform:'translateY(-50%) scale(1.6)'},{opacity:.18,transform:'translateY(-50%) scale(1)'}],{duration:500,fill:'forwards'});
+      timer=setTimeout(()=>{ combo=0; comboEl.textContent='0'; li=(li+1)%lines.length; load(); timer=setTimeout(tick,500); },1400);
+      return;
+    }
+    const el=spans[ci]; el.classList.remove('cur'); el.classList.add('done');
+    combo++; comboEl.textContent=combo;
+    const sc=1+Math.min(combo,30)*0.012; comboEl.style.transform=`scale(${sc})`; comboEl.style.color=combo>15?'#ff8a3d':'#ffd24d';
+    burst(el);
+    ci++; mark();
+    timer=setTimeout(tick,135+Math.random()*60);
+  }
+  return {
+    start(){ if(running)return; running=true; combo=0; comboEl.textContent='0'; li=0; load(); timer=setTimeout(tick,500); },
+    stop(){ running=false; if(timer){clearTimeout(timer);timer=null;} }
+  };
+})();
+
+/* ================= SUBWAY (地铁跑酷) ================= */
+ANIM.subway=(function(){
+  // 复刻原站:冷蓝隧道 + 俯视追尾镜头 + 地面暖橙光斑 + 灯柱暗柱 + 渐晕 + 距离/碾过/冷面旁白
+  const cv=$('#subwayCanvas'); let ctx,W=0,H=0,raf=null,running=false;
+  let victims=[],train={lane:1,x:0,tx:0},kills=0,dist=0,pops=[],frame=0,switchAt=70,sub={text:'',t:-999};
+  let pools=[],posts=[],pillars=[];
+  const COATS=['#5b6470','#6b5d52','#4f5a52','#6a5563','#566070','#615a4e'];
+  const KILL_LINES=[[1,'第一个。系统未记录姓名。'],[8,'它不会停，也不会等你。'],[20,'前方依然没有目的地。'],[40,'数字不再有意义。'],[70,'你早就停不下来了。']];
+  function size(){ const r=cv.parentElement.getBoundingClientRect(); const dpr=Math.min(2,window.devicePixelRatio||1);
+    W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+'px';cv.style.height=H+'px';
+    ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0); }
+  const HOR=()=>H*0.30;
+  const scale=z=>0.045+0.955*z;
+  const projY=z=>{const h=HOR();return h+(H*1.04-h)*Math.pow(z,1.55);};
+  const laneX=(lane,z)=>W/2+(lane-1)*(W*0.17)*scale(z);
+  const edgeX=(side,z,e)=>W/2+side*(W*e)*scale(z);
+  const TRAINZ=0.80;
+  function seed(){ pools=[];posts=[];pillars=[];
+    for(let i=0;i<7;i++)pools.push({z:i/7,side:i%2?1:-1});
+    for(let i=0;i<7;i++)posts.push({z:i/7+0.05,side:i%2?1:-1});
+    for(let i=0;i<9;i++)pillars.push({z:i/9+0.02,side:i%2?1:-1}); }
+  function spawn(){ victims.push({lane:(Math.random()*3)|0,z:0.015,coat:COATS[(Math.random()*COATS.length)|0]}); }
+  function reset(){ victims=[];kills=0;dist=0;pops=[];frame=0;switchAt=60;train={lane:1,x:laneX(1,1),tx:laneX(1,1)};sub={text:'',t:-999};seed(); }
+  function say(t){ sub={text:t,t:frame}; }
+  function chooseLane(){ let best=-1,bz=-1; victims.forEach(v=>{if(v.z>bz&&v.z<TRAINZ-0.05){bz=v.z;best=v.lane;}});
+    train.lane=best>=0?best:(Math.random()*3)|0; train.tx=laneX(train.lane,1); }
+  function drawPool(p){ const y=projY(p.z),s=scale(p.z),x=edgeX(p.side,p.z,0.30),rx=W*0.17*s;
+    const g=ctx.createRadialGradient(x,y,0,x,y,rx); g.addColorStop(0,'rgba(255,150,60,'+(0.30*p.z)+')'); g.addColorStop(1,'rgba(255,150,60,0)');
+    ctx.fillStyle=g; ctx.save();ctx.translate(x,y);ctx.scale(1,0.34);ctx.beginPath();ctx.arc(0,0,rx,0,6.2832);ctx.fill();ctx.restore(); }
+  function drawPillar(p){ if(p.z<0.03)return; const z=p.z,s=scale(z),x=edgeX(p.side,z,0.60),baseY=projY(z),topY=baseY-H*0.72*s,w=W*0.05*s;
+    ctx.fillStyle='#0e131b'; ctx.fillRect(x-w/2,topY,w,baseY-topY); }
+  function drawPost(p){ if(p.z<0.04)return; const z=p.z,s=scale(z),x=edgeX(p.side,z,0.41),baseY=projY(z),topY=baseY-H*0.40*s;
+    ctx.strokeStyle='#1a1f28';ctx.lineWidth=Math.max(1,5*s);ctx.beginPath();ctx.moveTo(x,baseY);ctx.lineTo(x,topY);ctx.stroke();
+    const hx=x-p.side*W*0.045*s; ctx.fillStyle='rgba(255,208,137,'+(0.45+0.45*z)+')';ctx.fillRect(hx-7*s,topY,14*s,5*s); }
+  function drawLanes(){ ctx.strokeStyle='rgba(120,140,175,.13)';ctx.lineWidth=1.4;
+    for(const l of [-0.5,0.5,1.5,2.5]){ctx.beginPath();ctx.moveTo(laneX(l,0.02),projY(0.02));ctx.lineTo(laneX(l,1),projY(1));ctx.stroke();}
+    ctx.strokeStyle='rgba(118,128,143,.20)';ctx.lineWidth=1.1;
+    for(let ln=0;ln<3;ln++)for(const dx of[-0.12,0.12]){ctx.beginPath();ctx.moveTo(laneX(ln+dx,0.02),projY(0.02));ctx.lineTo(laneX(ln+dx,1),projY(1));ctx.stroke();} }
+  function drawFigure(x,y,s,coat){ ctx.save();ctx.translate(x,y);const w=30*s,h=46*s;
+    ctx.fillStyle='#2f343c';ctx.fillRect(-w*0.26,-h*0.30,w*0.20,h*0.32);ctx.fillRect(w*0.06,-h*0.30,w*0.20,h*0.32);
+    ctx.fillStyle=coat;ctx.fillRect(-w*0.50,-h*0.80,w*0.12,h*0.50);ctx.fillRect(w*0.38,-h*0.80,w*0.12,h*0.50);
+    ctx.fillRect(-w*0.40,-h*0.84,w*0.80,h*0.56);
+    ctx.fillStyle='#c1a386';const hd=w*0.42;ctx.fillRect(-hd/2,-h*1.04,hd,hd);
+    ctx.strokeStyle='rgba(10,12,16,.8)';ctx.lineWidth=Math.max(1,1.3*s);ctx.strokeRect(-w*0.40,-h*0.84,w*0.80,h*0.56);
+    ctx.restore(); }
+  function drawTrain(){ const z=TRAINZ,y=projY(z),x=train.x,s=scale(z),w=W*0.20*s,h=H*0.42*s,tilt=(train.tx-train.x)*0.0013;
+    ctx.fillStyle='rgba(0,0,0,.42)';ctx.save();ctx.translate(x,y+5);ctx.scale(1,0.2);ctx.beginPath();ctx.arc(0,0,w*0.62,0,6.2832);ctx.fill();ctx.restore();
+    ctx.save();ctx.translate(x,y);ctx.rotate(tilt);
+    ctx.fillStyle='#5a626e';ctx.beginPath();ctx.moveTo(-w/2,-h);ctx.lineTo(w/2,-h);ctx.lineTo(w*0.40,-h*1.20);ctx.lineTo(-w*0.40,-h*1.20);ctx.closePath();ctx.fill();
+    const g=ctx.createLinearGradient(0,-h,0,0);g.addColorStop(0,'#4b535f');g.addColorStop(1,'#333a44');ctx.fillStyle=g;ctx.fillRect(-w/2,-h,w,h);
+    ctx.fillStyle='#c98a3a';ctx.fillRect(-w/2,-h*0.46,w,h*0.055);
+    ctx.fillStyle='#0b0e13';ctx.fillRect(-w*0.33,-h*0.86,w*0.66,h*0.26);
+    ctx.fillStyle='#e23a30';ctx.shadowColor='#ff3b30';ctx.shadowBlur=16;
+    ctx.fillRect(-w*0.40,-h*0.26,w*0.15,h*0.10);ctx.fillRect(w*0.25,-h*0.26,w*0.15,h*0.10);ctx.shadowBlur=0;
+    ctx.strokeStyle='#080a0e';ctx.lineWidth=2;ctx.strokeRect(-w/2,-h,w,h);
+    ctx.restore(); }
+  function frameDraw(){
+    if(!running)return; frame++; dist+=1;
+    ctx.fillStyle='#0a0d14'; ctx.fillRect(0,0,W,H);
+    const fg=ctx.createLinearGradient(0,HOR(),0,H); fg.addColorStop(0,'#0c1019'); fg.addColorStop(1,'#191f29'); ctx.fillStyle=fg;
+    ctx.beginPath();ctx.moveTo(edgeX(-1,0,0.55),projY(0));ctx.lineTo(edgeX(1,0,0.55),projY(0));ctx.lineTo(edgeX(1,1,0.55),projY(1));ctx.lineTo(edgeX(-1,1,0.55),projY(1));ctx.closePath();ctx.fill();
+    const spd=0.011;
+    for(const arr of [pools,posts,pillars]) for(const o of arr){ o.z+=spd; if(o.z>1.08)o.z-=1.08; }
+    pillars.slice().sort((a,b)=>a.z-b.z).forEach(drawPillar);
+    ctx.globalCompositeOperation='lighter'; pools.slice().sort((a,b)=>a.z-b.z).forEach(drawPool); ctx.globalCompositeOperation='source-over';
+    drawLanes();
+    posts.slice().sort((a,b)=>a.z-b.z).forEach(drawPost);
+    if(frame>=switchAt){ chooseLane(); switchAt=frame+45+((Math.random()*55)|0); }
+    train.x+=(train.tx-train.x)*0.16;
+    if(frame%24===0) spawn();
+    victims.forEach(v=>v.z+=0.0072+v.z*0.0055);
+    victims.sort((a,b)=>a.z-b.z);
+    victims.forEach(v=>{ const y=projY(v.z),x=laneX(v.lane,v.z),s=scale(v.z);
+      if(v.z>TRAINZ-0.04 && v.z<TRAINZ+0.06 && v.lane===train.lane && !v.dead){
+        v.dead=true;kills++; pops.push({x,y:y-26*s,life:1,val:'+1',coin:true});
+        for(let i=0;i<9;i++)pops.push({x,y:y-10,life:1,vx:(Math.random()-0.5)*5,vy:-Math.random()*5-1.5,sz:2+Math.random()*3,coat:v.coat});
+        const L=KILL_LINES.find(z=>z[0]===kills); if(L)say(L[1]);
+      }
+      if(!v.dead) drawFigure(x,y,s,v.coat); });
+    victims=victims.filter(v=>v.z<1.06 && !v.dead);
+    drawTrain();
+    pops.forEach(p=>{ if(p.coin){ p.y-=1.0;p.life-=0.016; ctx.globalAlpha=Math.max(0,p.life); ctx.fillStyle='#ffd24d'; ctx.font='700 18px Brier,sans-serif'; ctx.textAlign='center'; ctx.fillText(p.val,p.x,p.y); ctx.textAlign='left'; ctx.globalAlpha=1; }
+      else { p.x+=p.vx;p.y+=p.vy;p.vy+=0.26;p.life-=0.03; ctx.globalAlpha=Math.max(0,p.life); ctx.fillStyle=p.coat; ctx.fillRect(p.x,p.y,p.sz,p.sz); ctx.globalAlpha=1; } });
+    pops=pops.filter(p=>p.life>0);
+    const vg=ctx.createRadialGradient(W/2,H*0.46,Math.min(W,H)*0.18,W/2,H*0.46,Math.max(W,H)*0.62);
+    vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,0.74)'); ctx.fillStyle=vg; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#cdd0d6';ctx.font='13px ui-monospace,monospace';ctx.textAlign='left';ctx.fillText('距离 '+(dist|0)+' m',16,26);
+    ctx.fillStyle='#8b9098';ctx.textAlign='right';ctx.fillText('碾过 '+kills,W-16,26);ctx.textAlign='left';
+    if(sub.text){ const age=frame-sub.t, a=age<18?age/18:(age>210?Math.max(0,1-(age-210)/40):1);
+      if(a>0){ ctx.globalAlpha=a;ctx.fillStyle='#b9bdc6';ctx.font='italic 15px Georgia,"Songti SC",serif';ctx.textAlign='center';ctx.fillText(sub.text,W/2,H-20);ctx.textAlign='left';ctx.globalAlpha=1; } }
+    raf=requestAnimationFrame(frameDraw);
+  }
+  return {
+    start(){ if(running)return; size(); reset(); running=true; raf=requestAnimationFrame(frameDraw); window.addEventListener('resize',size); },
+    stop(){ running=false; if(raf){cancelAnimationFrame(raf);raf=null;} window.removeEventListener('resize',size); }
+  };
+})();
+
+/* embedded personal site · 右上角全屏切换 */
+(function(){ const b=$('#fsBtn'), w=$('#embedWrap'); if(!b||!w)return;
+  b.addEventListener('click',()=>{ if(!document.fullscreenElement){ w.requestFullscreen&&w.requestFullscreen(); } else { document.exitFullscreen&&document.exitFullscreen(); } });
+  document.addEventListener('fullscreenchange',()=>{ const fs=document.fullscreenElement===w; b.textContent=fs?'⤢ 退出全屏':'⛶ 全屏'; });
+})();
+
+/* ================= 好奇 ONLINE 预览 ================= */
+ANIM.haoqi=(function(){
+  const root=$('#haoqiApp'); let built=false,running=false,timers=[],ti=0;
+  const TABS=['日','周','月','清单','时间轴'], VIEW=['list','list','cal','list','timeline'];
+  const EV=[['Three.js 工作坊','#7C3AED'],['共读《设计中的设计》','#10B981'],['黑客松筹备','#F59E0B'],['好奇分享会','#3b82f6'],['银饰开摊','#ec4899'],['复盘 · 周记','#06b6d4']];
+  const T=(f,m)=>{const id=setTimeout(f,m);timers.push(id);return id;}, clearT=()=>{timers.forEach(clearTimeout);timers=[];};
+  function build(){ root.innerHTML='<div class="hq-top"><span class="hq-logo">好奇 <b>online</b></span><div class="hq-tabs">'+TABS.map((t,i)=>'<span class="tb'+(i===0?' on':'')+'">'+t+'</span>').join('')+'</div></div><div class="hq-body" id="hqBody"></div>'; built=true; }
+  function anim(sel,base,step){ [...root.querySelectorAll(sel)].forEach((e,k)=>T(()=>e.classList.add('show'),base+k*step)); }
+  function cal(b){ let h='<div class="hq-view cal on"><div class="hq-cal">'; for(let d=0;d<21;d++){ const day=d+8; const e=(d%4===0||d%6===5)?EV[d%EV.length]:null; h+='<div class="d">'+day+(e?'<div class="ev" style="background:'+e[1]+'">'+e[0]+'</div>':'')+'</div>'; } h+='</div></div>'; b.innerHTML=h; anim('.ev',200,150); }
+  function list(b){ let h='<div class="hq-view list on">'; EV.forEach(e=>h+='<div class="it" style="border-left-color:'+e[1]+'"><span class="t">'+e[0]+'</span><span class="m">本周</span></div>'); h+='</div>'; b.innerHTML=h; anim('.it',150,140); }
+  function timeline(b){ let h='<div class="hq-view list on">'; ['09:00 晨间共读','13:00 Three.js 工作坊','16:00 项目协作','20:00 好奇分享会','22:30 复盘周记'].forEach((s,k)=>{const c=EV[k%EV.length][1];h+='<div class="it" style="border-left-color:'+c+'"><span class="m" style="margin-left:0;min-width:50px;color:'+c+'">'+s.slice(0,5)+'</span><span class="t">'+s.slice(6)+'</span></div>';}); h+='</div>'; b.innerHTML=h; anim('.it',150,140); }
+  function cycle(){ if(!running)return; const b=root.querySelector('#hqBody'), tabs=root.querySelectorAll('.hq-tabs .tb'); tabs.forEach((t,k)=>t.classList.toggle('on',k===ti)); const v=VIEW[ti]; (v==='cal'?cal:v==='timeline'?timeline:list)(b); ti=(ti+1)%TABS.length; T(cycle,2600); }
+  return { start(){ if(!built)build(); if(running)return; running=true; ti=0; cycle(); }, stop(){ running=false; clearT(); } };
+})();
+
+/* ================= IDENTITY OVERLAY (悬停全屏轮播) ================= */
+OV=(function(){
+  const ov=$('#idOverlay'),frame=$('#ovFrame'),kicker=$('#ovKicker'),title=$('#ovTitle'),cap=$('#ovCap'),dots=$('#ovDots');
+  let open=false, idx=0, advT=null, curId=null, borrowed=null;
+  const META={vibe:{k:'Vibe Coder · 作品',t:'我写的项目'},design:{k:'设计师 · 作品',t:'平面 · UIUX · 建模'},media:{k:'自媒体 · 数字病人 Lixon',t:'照片墙 · 工作台'}};
+  const STAGE=[
+    {sel:'#stageChess',anim:'chess',cap:'国象 × 将棋 · 9×9 融合棋盘自动对弈'},
+    {sel:'#stageCalling',anim:'calling',cap:'calling · 草稿纸 → AI 提取日程 / 安排 / 待学'},
+    {sel:'#stageType',anim:'type',cap:'打字爽 · 强反馈中文打字，连击 / 粒子 / 评级'},
+    {sel:'#stageSubway',anim:'subway',cap:'地铁跑酷《没有目的地》· 切轨碾人'}
+  ];
+  const DESIGN=[
+    {img:'assets/img/poster_final.jpg',title:'平面 · 本次期末展终版海报',cap:'熟练驾驭生图 + 个人风格'},
+    {img:'assets/img/poster_improv.png',title:'平面 · 即兴喜剧海报',cap:'HTML 编写 · 结构清晰'},
+    {img:'assets/img/ui_excalidraw1.jpg',title:'UI/UX · 画板上画的界面',cap:'画 UI，而不是写文字描述'},
+    {img:'assets/img/ui_modeling.png',title:'UI/UX · 建模示意图',cap:'代码建模的草图'},
+    {ring:true,title:'首饰 · 银戒指建模',cap:'代码建模 → 3D 打印 → 失蜡直铸 · 转动预览'}
+  ];
+  const MEDIA=[
+    {scatter:[['assets/img/jewelry1.jpg','AI 银饰'],['assets/img/hackathon.png','我办的黑客松'],['assets/img/card_xhs.jpg','小红书名片'],['assets/img/hw_cardputer.jpg','Cardputer'],['assets/img/photo_wangzi.jpg','与王子伯洋'],['assets/img/jewelry2.png','银戒指']],title:'照片墙 · build in public'},
+    {iframe:'embed/xhs/index.html',title:'小红书图文预览工作台',cap:'项目 → 小红书图文，一键排版导出'}
+  ];
+  const framesFor=id=>id==='vibe'?STAGE:id==='design'?DESIGN:MEDIA;
+  function restoreBorrow(){ if(borrowed){ ANIM[borrowed.anim]&&ANIM[borrowed.anim].stop(); const el=borrowed.el; if(el._hp) el._hp.insertBefore(el,el._hn); borrowed=null; } }
+  function titleHTML(t){ return '<div class="pane-title"><small>'+((META[curId]||{}).k||'')+'</small>'+t+'</div>'; }
+  function buildScatter(items){ const wrap=document.createElement('div'); wrap.className='ov-scatter';
+    const L=[[3,7,30,44],[35,3,27,37],[64,9,33,40],[5,55,28,40],[36,44,28,52],[67,53,30,42]];
+    items.forEach((it,k)=>{ const p=L[k%L.length], d=document.createElement('div'); d.className='pw';
+      d.style.cssText='left:'+p[0]+'%;top:'+p[1]+'%;width:'+p[2]+'%;height:'+p[3]+'%;';
+      d.innerHTML='<img src="'+it[0]+'" alt=""><cap>'+it[1]+'</cap>'; wrap.appendChild(d); });
+    return wrap; }
+  function showFrame(i){ const frames=framesFor(curId); idx=(i+frames.length)%frames.length;
+    [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===idx));
+    restoreBorrow(); frame.innerHTML='';
+    const f=frames[idx], pane=document.createElement('div'); pane.className='ov-pane on';
+    if(f.anim){ const host=document.createElement('div'); host.className='ov-host'; pane.appendChild(host);
+      const el=$(f.sel); el._hp=el.parentNode; el._hn=el.nextSibling; host.appendChild(el); borrowed={anim:f.anim,el};
+      ANIM[f.anim].start(); pane.insertAdjacentHTML('beforeend',titleHTML('Vibe Coder · '+f.cap.split(' · ')[0])); cap.textContent=f.cap; }
+    else if(f.ring){ pane.innerHTML='<div class="ringstage"><div class="ringspin"><img src="assets/img/ring_spin.png" alt="银戒指"></div></div>'+titleHTML(f.title); cap.textContent=f.cap; }
+    else if(f.iframe){ const ifr=document.createElement('iframe'); ifr.src=f.iframe; ifr.title=f.title; pane.appendChild(ifr); pane.insertAdjacentHTML('beforeend',titleHTML(f.title)); cap.textContent=f.cap||''; }
+    else if(f.scatter){ pane.appendChild(buildScatter(f.scatter)); pane.insertAdjacentHTML('beforeend',titleHTML(f.title)); cap.textContent='图文错落 · 标题突出'; }
+    else if(f.img){ pane.innerHTML='<img class="full" src="'+f.img+'" alt="">'+titleHTML(f.title); cap.textContent=f.cap||''; }
+    frame.appendChild(pane); }
+  function schedule(){ clearTimeout(advT); advT=setTimeout(()=>{ if(open){ showFrame(idx+1); schedule(); } },4000); }
+  function start(id){ curId=id; idx=0; const frames=framesFor(id), m=META[id]||{};
+    kicker.textContent=m.k||''; title.textContent=m.t||'';
+    dots.innerHTML=frames.map((_,k)=>'<b'+(k===0?' class="on"':'')+'></b>').join('');
+    [...dots.children].forEach((b,k)=>b.addEventListener('click',()=>{showFrame(k);schedule();}));
+    ov.classList.add('on'); ov.setAttribute('aria-hidden','false'); open=true; overlayOpen=true;
+    showFrame(0); schedule(); }
+  function close(){ if(!open)return; clearTimeout(advT); restoreBorrow(); frame.innerHTML=''; ov.classList.remove('on'); ov.setAttribute('aria-hidden','true'); open=false; overlayOpen=false; curId=null; }
+  $$('.idlist .row.core').forEach(row=>{ row.addEventListener('mouseenter',()=>start(row.dataset.id)); row.addEventListener('click',()=>start(row.dataset.id)); });
+  $('#ovClose').addEventListener('click',close);
+  ov.addEventListener('click',e=>{ if(e.target===ov||e.target===frame) close(); });
+  return { start, close, next:()=>{showFrame(idx+1);schedule();}, prev:()=>{showFrame(idx-1);schedule();}, isOpen:()=>open };
+})();
+
+/* init */
+go(0);
+})();
+</script>
+</body>
+</html>
