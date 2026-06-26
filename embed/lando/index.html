@@ -46,7 +46,7 @@
      drains color, and the signature draws across. ------- */
   .s-hero{
     position:relative;
-    height:420svh;   /* a long ride, like the reference — the exit earns its drama */
+    height:248svh;   /* tightened from 420svh — kills the empty tail between hero exit and §00 (用户: 合并 1↔2 空隙) */
     z-index:2;
     /* let vertical swipes scroll the page on touch; the canvas below
        never receives the touch so its touch-action:none can't trap us */
@@ -70,15 +70,18 @@
   .hb-topo path{ fill:none; stroke:#d2ff00; stroke-width:1.1; opacity:.10; }
   .hb-marquee{
     position:absolute; top:50%; left:0; width:100%;
-    transform:translateY(-50%); white-space:nowrap;
+    transform:translateY(-50%);
+    display:flex; flex-direction:column; gap:.04em; align-items:flex-start;
+    will-change:transform;
   }
   .hb-row{
-    display:inline-block; will-change:transform;
+    display:inline-flex; white-space:nowrap; will-change:transform;
     font-family:'Mona Sans Variable','Microsoft YaHei',Arial,sans-serif;
-    font-size:clamp(90px,17vh,200px); line-height:1; letter-spacing:.01em;
+    font-size:clamp(74px,15vh,178px); line-height:.92; letter-spacing:.004em;
     text-transform:uppercase;
-    color:rgba(210,214,196,.20);   /* soft grey words, clearly readable on the dark stage */
   }
+  .hb-row-1{ color:#d2ff00; }                       /* bright lime — the reference's stage is loud, not a dim grey */
+  .hb-row-2{ color:#f4f4ed; }                       /* bright cream/white */
   .hero-sig{
     position:absolute; left:50%; top:50%; z-index:3;
     /* sized to blanket the shrunken card (card ends at ~45vw wide) */
@@ -89,7 +92,10 @@
     pointer-events:none;
     filter:drop-shadow(0 6px 30px rgba(0,0,0,.35));
   }
-  .hero-sig path{ stroke-width:6.6; }   /* a bolder, marker-pen autograph */
+  /* ID beats the later `.sig path{stroke-width:3.4}` — equal specificity + source
+     order silently kept the hero autograph at 3.4 (the old 6.6 here never won),
+     which is why it read thin. fat marker now, like the reference's Rive scrawl. */
+  #heroSig path{ stroke-width:12; }
   .ui{
     position:absolute; inset:0;
     pointer-events:none;
@@ -435,47 +441,107 @@
     [data-rise]{ opacity:1; transform:none; transition:none; }
   }
 
-  /* --- status strip + marquee band --- */
+  /* --- §00 · AI TOKEN GRAND PRIX 直播大屏（上海赛道；原站配色 + 车手品牌色） --- */
   .sec-pulse{ padding:0; }
-  .pulse-strip{
-    display:grid; grid-template-columns:repeat(4,1fr);
-    border-bottom:1px solid rgba(244,244,237,.14);
+  .rc-dash{
+    --rc-bg:#0c0e08; --rc-pane:#111308; --rc-pane2:#0a0c06;
+    --rc-hair:rgba(210,255,0,.14); --rc-hair2:rgba(180,184,165,.11);
+    --rc-mut:#b4b8a5; --rc-mut2:rgba(180,184,165,.5);
+    --rc-red:#ff4d4d; --rc-yel:#ffcc33; --rc-grn:#7cff9b; --rc-blu:#8fd6ff;
+    --rc-mono:ui-monospace,"Cascadia Code","JetBrains Mono",Consolas,"Microsoft YaHei",monospace;
+    position:relative; width:100%; min-height:100svh; display:flex; flex-direction:column;
+    background:radial-gradient(125% 90% at 50% 6%, #14180c, var(--rc-bg) 62%);
+    color:var(--paper); font-family:var(--rc-mono); overflow:hidden;
+    border-top:1px solid var(--rc-hair); border-bottom:1px solid var(--rc-hair);
   }
-  .pulse-cell{
-    padding:clamp(18px,2.6vw,34px) clamp(14px,2vw,28px);
-    border-right:1px solid rgba(244,244,237,.14);
-    min-width:0;
-  }
-  .pulse-cell:last-child{ border-right:none; }
-  .pulse-k{
-    font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
-    font-style:normal; color:var(--dark-soft); margin-bottom:10px;
-  }
-  .pulse-v{
-    font-family:'Mona Sans Variable',Arial,sans-serif;
-    font-size:clamp(20px,2.4vw,34px); letter-spacing:.02em;
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-  .pulse-v small{ font-family:'Brier','Mona Sans Variable',serif; font-style:normal; font-size:.5em; color:var(--dark-soft); }
-  .marquee{
-    padding:clamp(26px,4vw,52px) 0;
-    user-select:none;
-  }
-  .mq-row{
-    display:flex; white-space:nowrap; will-change:transform;
-    font-family:'Mona Sans Variable','Microsoft YaHei',Arial,sans-serif;
-    font-size:clamp(44px,8vw,120px); text-transform:uppercase;
-    line-height:1.04;
-  }
-  .mq-row + .mq-row{ margin-top:10px; }
-  .mq-chunk{ display:flex; flex-shrink:0; padding-right:.6em; }
-  .mq-chunk .o{ -webkit-text-stroke:1.6px #f4f4ed; color:transparent; }
-  .mq-chunk .lime{ color:var(--accent); }
-  .mq-chunk span{ padding-right:.6em; }
-  .hermes-note{
-    padding:16px clamp(14px,2vw,28px) 22px;
-    font-size:11.5px; font-style:normal; color:var(--dark-soft);
-    border-top:1px solid rgba(244,244,237,.14);
+  .rc-dash::after{ content:""; position:absolute; inset:0; pointer-events:none; z-index:6;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.014) 0 1px,transparent 1px 3px); }
+  .rc-dash *{ box-sizing:border-box; }
+  .rc-k{ font:600 9px/1 var(--rc-mono); letter-spacing:.16em; text-transform:uppercase; color:var(--rc-mut2); }
+  .rc-lime{ color:var(--accent); } .rc-or{ color:var(--orange); } .rc-mut{ color:var(--rc-mut); }
+  /* top status bar */
+  .rc-hd{ display:flex; align-items:center; gap:clamp(10px,1.5vw,22px); padding:13px clamp(16px,2.4vw,32px);
+    border-bottom:1px solid var(--rc-hair); background:rgba(8,10,5,.55); flex-wrap:wrap; z-index:3; }
+  .rc-brand{ display:flex; align-items:center; gap:11px; font:600 clamp(12px,1.1vw,15px)/1 var(--rc-mono); letter-spacing:.12em; }
+  .rc-brand b{ color:var(--paper); font-weight:600; } .rc-brand small{ color:var(--rc-mut2); font-weight:600; }
+  .rc-v{ width:26px; height:26px; border:1.5px solid var(--accent); border-radius:6px; display:grid; place-items:center; color:var(--accent); font-weight:700; transform:skewX(-8deg); }
+  .rc-on{ display:flex; align-items:center; gap:7px; color:var(--accent); font:600 11px/1 var(--rc-mono); letter-spacing:.14em; }
+  .rc-dot{ width:8px; height:8px; border-radius:50%; background:var(--accent); box-shadow:0 0 9px 1px rgba(210,255,0,.6); animation:rcBlip 1.5s infinite; flex:none; }
+  @keyframes rcBlip{ 0%,100%{opacity:1} 50%{opacity:.25} }
+  .rc-hsp{ flex:1; }
+  .rc-hi{ display:flex; flex-direction:column; gap:4px; } .rc-hi .v{ font:600 13px/1 var(--rc-mono); letter-spacing:.04em; }
+  .rc-lang{ display:flex; border:1px solid var(--rc-hair); border-radius:6px; overflow:hidden; }
+  .rc-lang button{ font:600 10px/1 var(--rc-mono); letter-spacing:.05em; color:var(--rc-mut); background:none; border:0; padding:7px 10px; cursor:pointer; font-family:var(--rc-mono); }
+  .rc-lang button+button{ border-left:1px solid var(--rc-hair2); }
+  .rc-lang button.on{ background:var(--accent); color:#0d0f0a; }
+  /* body 3-col */
+  .rc-body{ flex:1; display:grid; grid-template-columns:clamp(228px,20vw,290px) 1fr clamp(238px,21vw,300px); min-height:0; }
+  .rc-side{ display:flex; flex-direction:column; min-height:0; }
+  .rc-side.l{ border-right:1px solid var(--rc-hair2); } .rc-side.r{ border-left:1px solid var(--rc-hair2); }
+  .rc-ph{ display:flex; align-items:center; justify-content:space-between; padding:13px 15px 9px; }
+  .rc-ph .t{ font:600 11px/1 var(--rc-mono); letter-spacing:.13em; text-transform:uppercase; color:var(--paper); }
+  .rc-ph .s{ font:600 9px/1 var(--rc-mono); letter-spacing:.1em; color:var(--rc-mut2); text-transform:uppercase; }
+  /* standings */
+  .rc-lbr{ display:grid; grid-template-columns:20px 1fr 54px 36px; align-items:center; gap:7px; padding:0 15px; height:clamp(34px,5.2vh,48px); border-top:1px solid rgba(255,255,255,.04); cursor:pointer; transition:background .2s; }
+  .rc-lbr:hover,.rc-lbr.hot{ background:rgba(255,255,255,.04); }
+  .rc-lbr .p{ font:600 13px/1 var(--rc-mono); color:var(--rc-mut); }
+  .rc-lbr.lead .p{ color:var(--accent); }
+  .rc-nm{ display:flex; align-items:center; gap:9px; font:600 12.5px/1 var(--rc-mono); min-width:0; }
+  .rc-nm i{ width:8px; height:8px; border-radius:50%; flex:none; box-shadow:0 0 8px 0 currentColor; }
+  .rc-tk{ font:600 12px/1 var(--rc-mono); text-align:right; } .rc-sh{ font:600 10px/1 var(--rc-mono); text-align:right; color:var(--rc-mut); }
+  .rc-pit{ font-size:8px; letter-spacing:.06em; color:var(--orange); border:1px solid rgba(255,107,0,.45); border-radius:3px; padding:2px 4px; }
+  /* center stage — floating shanghai circuit */
+  .rc-stage{ position:relative; display:flex; align-items:center; justify-content:center; min-height:clamp(380px,54vh,640px); padding:38px 16px 22px; perspective:1600px;
+    background:radial-gradient(58% 58% at 50% 46%, rgba(210,255,0,.028), transparent 70%), radial-gradient(rgba(180,184,165,.05) 1px, transparent 1px); background-size:auto, 26px 26px; }
+  .rc-stage .gp{ position:absolute; top:16px; left:0; right:0; text-align:center; font:500 clamp(13px,1.5vw,19px)/1 var(--rc-mono); letter-spacing:.28em; color:var(--paper); pointer-events:none; z-index:2; }
+  .rc-stage .gp i{ font-style:normal; color:var(--rc-mut2); font-size:.62em; letter-spacing:.16em; display:block; margin-top:7px; }
+  .rc-stagei{ width:100%; max-width:760px; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.19,1,.22,1); cursor:grab; touch-action:none; }
+  .rc-stagei.drag{ transition:none; cursor:grabbing; }
+  .rc-stagei svg{ width:100%; height:auto; display:block; overflow:visible; filter:drop-shadow(0 28px 44px rgba(0,0,0,.6)); }
+  #rcTrack{ stroke:#f2ffc6; stroke-width:4; stroke-linejoin:round; stroke-linecap:round; filter:drop-shadow(0 0 3px rgba(210,255,0,.4)); }        /* lit top surface */
+  .rc-trackedge{ stroke:var(--accent); stroke-width:6.5; stroke-linejoin:round; stroke-linecap:round; fill:none; opacity:.5; }                   /* glowing rim */
+  .rc-trackside{ stroke:#1b2010; stroke-width:7; stroke-linejoin:round; stroke-linecap:round; fill:none; }                                        /* extruded side wall (JS stacks copies) */
+  .rc-trackshadow{ stroke:#000; stroke-width:16; stroke-linejoin:round; stroke-linecap:round; fill:none; opacity:.42; filter:blur(8px); }         /* ground shadow → floating */
+  .rc-trackbase{ stroke:rgba(210,255,0,.05); stroke-width:26; stroke-linejoin:round; stroke-linecap:round; fill:none; }                           /* faint halo */
+  .rc-flowline{ stroke:#ffffff; stroke-width:1.4; fill:none; stroke-dasharray:2 18; opacity:.5; animation:rcFlow 1s linear infinite; }
+  .rc-sf{ stroke:var(--paper); stroke-width:2.5; opacity:.7; } .rc-sflab{ font:600 8px/1 var(--rc-mono); letter-spacing:.1em; fill:var(--rc-mut2); }
+  .rc-sector{ fill:rgba(210,255,0,.35); } .rc-baybox{ fill:none; stroke:rgba(255,77,77,.4); stroke-width:1.5; stroke-dasharray:3 3; }
+  .rc-pitslot{ stroke:rgba(255,107,0,.4); stroke-width:9; stroke-linecap:round; opacity:.55; }
+  @keyframes rcFlow{ to{ stroke-dashoffset:-20; } }
+  .rc-agent text.hl{ font:600 9px/1 var(--rc-mono); opacity:0; transition:opacity .2s; }
+  .rc-agent:hover text.hl{ opacity:1; }
+  .rc-pitlane{ stroke:rgba(180,184,165,.3); stroke-width:2; stroke-dasharray:5 5; fill:none; }
+  .rc-pitlabel{ font:600 8px/1 var(--rc-mono); letter-spacing:.1em; fill:var(--rc-mut2); }
+  /* alert feed */
+  .rc-alerts{ display:flex; flex-direction:column; gap:8px; padding:4px 14px 14px; }
+  .rc-al{ display:flex; align-items:center; gap:10px; padding:11px 12px; border-radius:7px; border:1px solid; cursor:pointer; transition:transform .2s; }
+  .rc-al:hover{ transform:translateX(-2px); }
+  .rc-al .fg{ font-size:13px; line-height:1; flex:none; } .rc-al .tx{ flex:1; font:600 12px/1.35 var(--rc-mono); color:var(--paper); min-width:0; }
+  .rc-al.red{ background:rgba(255,77,77,.08); border-color:rgba(255,77,77,.4); } .rc-al.red .fg{ color:var(--rc-red); }
+  .rc-al.yellow{ background:rgba(255,204,51,.07); border-color:rgba(255,204,51,.34); } .rc-al.yellow .fg{ color:var(--rc-yel); }
+  .rc-al.green{ background:rgba(124,255,155,.06); border-color:rgba(124,255,155,.3); } .rc-al.green .fg{ color:var(--rc-grn); }
+  .rc-al.blue{ background:rgba(143,214,255,.06); border-color:rgba(143,214,255,.3); } .rc-al.blue .fg{ color:var(--rc-blu); }
+  /* bottom telemetry + log */
+  .rc-tele{ display:grid; grid-template-columns:1.5fr 1fr 1fr 1.25fr .85fr .85fr 1.7fr; gap:8px; padding:12px clamp(16px,2.4vw,32px); border-top:1px solid var(--rc-hair); background:rgba(8,10,5,.4); }
+  .rc-te{ display:flex; flex-direction:column; gap:9px; cursor:pointer; background:var(--rc-pane); border:1px solid var(--rc-hair2); border-radius:6px; padding:11px 13px; transition:border-color .2s; }
+  .rc-te:hover{ border-color:var(--rc-hair); }
+  .rc-te .k{ font:600 8.5px/1 var(--rc-mono); letter-spacing:.13em; text-transform:uppercase; color:var(--rc-mut2); }
+  .rc-te .v{ font:600 14px/1.15 var(--rc-mono); letter-spacing:.02em; }
+  .rc-te.pri{ background:linear-gradient(180deg,rgba(210,255,0,.06),var(--rc-pane)); border-color:rgba(210,255,0,.22); }
+  .rc-te.pri .v{ font-size:20px; }
+  .rc-te.sec .v{ font-size:13px; color:var(--rc-mut); }
+  .rc-log{ border-top:1px solid var(--rc-hair2); background:var(--rc-pane2); padding:10px clamp(16px,2.4vw,32px) 14px; }
+  .rc-log .rc-ph{ padding:0 0 7px; }
+  .rc-loglist{ display:flex; flex-direction:column; gap:6px; font:600 10.5px/1.4 var(--rc-mono); }
+  .rc-loglist>div{ color:var(--rc-mut); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .rc-loglist time{ color:var(--rc-mut2); margin-right:8px; }
+  #siteNav{ transition:opacity .45s var(--ease), transform .45s var(--ease); }
+  body.rc-immersive #siteNav{ opacity:0; transform:translateY(-16px); pointer-events:none; }
+  @media (max-width:980px){
+    .rc-body{ grid-template-columns:1fr; }
+    .rc-side{ border:none; border-top:1px solid var(--rc-hair2); }
+    .rc-tele{ grid-template-columns:repeat(3,1fr); }
+    .rc-dash{ min-height:auto; }
   }
 
   /* --- about --- */
@@ -503,38 +569,68 @@
   }
   .fact-card .v{ font-size:14.5px; line-height:1.75; }
 
-  /* --- project graph (dark) --- */
-  .graph-stage{
-    position:relative;
-    border:1px solid rgba(244,244,237,.16);
-    border-radius:6px;
-    height:clamp(420px,58vh,640px);
-    overflow:hidden;
+  /* --- knowledge graph · full-screen pinned, scroll-grown --- */
+  .s-graph{ position:relative; height:360svh; background:var(--paper); overflow:visible; padding:0; }
+  .graph-pin{
+    position:sticky; top:0; height:100svh; overflow:hidden; color:#eef0e6;
     background:
-      radial-gradient(ellipse at 30% 20%, rgba(210,255,0,.05), transparent 50%),
+      radial-gradient(120% 80% at 50% -10%, rgba(210,255,0,.05), transparent 55%),
+      radial-gradient(90% 90% at 50% 120%, rgba(167,139,250,.05), transparent 60%),
       var(--dark);
   }
-  #graphCanvas{ position:absolute; inset:0; width:100%; height:100%; cursor:crosshair; }
-  .graph-info{
-    position:absolute; right:14px; bottom:14px; z-index:2;
-    width:min(290px, 70vw);
-    border:1px solid rgba(244,244,237,.2);
-    background:rgba(26,29,20,.88);
-    backdrop-filter:blur(6px);
-    padding:14px 16px; border-radius:4px;
-    pointer-events:none;
-    opacity:0; transform:translateY(8px);
-    transition:opacity .45s var(--ease), transform .45s var(--ease);
+  .graph-pin:fullscreen{ width:100vw; height:100vh; }
+  #graphCanvas{ position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none; }
+
+  /* intro headline — fades as the graph starts to grow */
+  .graph-intro{
+    position:absolute; left:0; right:0; top:33%; text-align:center; z-index:3;
+    pointer-events:none; padding:0 6vw; will-change:opacity,transform;
   }
-  .graph-info.show{ opacity:1; transform:none; }
-  .graph-info .t{ font-family:'Mona Sans Variable',Arial,sans-serif; font-size:18px; letter-spacing:.03em; margin-bottom:6px; }
-  .graph-info .d{ font-size:12.5px; line-height:1.7; color:var(--dark-soft); }
-  .graph-info .s{ display:inline-block; margin-top:8px; font-size:10.5px; font-style:normal; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); }
-  .graph-legend{
-    display:flex; gap:18px; margin-top:14px;
-    font-size:11px; font-style:normal; color:var(--ink-soft); flex-wrap:wrap;
-  }
-  .graph-legend i{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:-1px; }
+  .graph-intro .eyebrow{ color:var(--dark-soft); }
+  .graph-intro h2{ color:#f4f4ed; margin:.18em 0 .5em; }
+  .graph-intro-sub{ font-size:13px; color:var(--dark-soft); letter-spacing:.03em; }
+
+  .graph-hud,.graph-tools,.graph-actions,.graph-legend,.graph-info,.graph-hint{ position:absolute; z-index:4; transition:opacity .4s var(--ease); }
+  .graph-hud{ top:clamp(14px,2.4vh,26px); left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:9px; }
+  .graph-views{ display:flex; gap:3px; padding:4px; border-radius:999px; background:rgba(20,23,16,.6); border:1px solid rgba(244,244,237,.14); backdrop-filter:blur(8px); }
+  .graph-views button{ font:600 12px/1 'Mona Sans Variable',Arial,sans-serif; letter-spacing:.02em; color:var(--dark-soft); background:none; border:0; cursor:pointer; padding:7px 14px; border-radius:999px; transition:.25s var(--ease); }
+  .graph-views button:hover{ color:#f4f4ed; }
+  .graph-views button.on{ color:var(--ink); background:var(--accent); }
+  .graph-count{ font-size:11px; letter-spacing:.03em; color:var(--dark-soft); }
+  .graph-count b{ color:var(--accent); font-weight:700; }
+
+  .graph-tools{ left:clamp(14px,2.4vw,28px); bottom:clamp(14px,2.6vh,28px); display:flex; flex-direction:column; gap:10px; width:min(244px,68vw); }
+  .graph-search{ width:100%; font:500 13px 'Mona Sans Variable',Arial,sans-serif; color:#f4f4ed; background:rgba(20,23,16,.6); border:1px solid rgba(244,244,237,.16); border-radius:8px; padding:9px 12px; backdrop-filter:blur(8px); outline:none; }
+  .graph-search::placeholder{ color:var(--dark-soft); }
+  .graph-search:focus{ border-color:var(--accent); }
+  .graph-layers{ display:flex; flex-wrap:wrap; gap:6px; }
+  .graph-layers button{ font:600 11px 'Mona Sans Variable',Arial,sans-serif; letter-spacing:.02em; cursor:pointer; color:#dfe3d6; background:rgba(20,23,16,.5); border:1px solid rgba(244,244,237,.14); border-radius:999px; padding:5px 11px; transition:.2s var(--ease); display:flex; align-items:center; gap:6px; }
+  .graph-layers button i{ width:8px; height:8px; border-radius:2px; background:currentColor; }
+  .graph-layers button.on{ color:#0e1108; background:#cdd3c2; border-color:transparent; }
+  .graph-layers button:not(.on){ opacity:.5; }
+
+  .graph-actions{ top:clamp(14px,2.4vh,26px); left:clamp(14px,2.4vw,28px); display:flex; gap:7px; }
+  .graph-actions button{ font:600 11.5px 'Mona Sans Variable',Arial,sans-serif; cursor:pointer; letter-spacing:.02em; color:#f4f4ed; background:rgba(20,23,16,.55); border:1px solid rgba(244,244,237,.16); border-radius:8px; padding:7px 11px; backdrop-filter:blur(8px); transition:.2s var(--ease); }
+  .graph-actions button:hover{ border-color:var(--accent); }
+  .graph-actions button.on{ background:var(--accent); color:var(--ink); border-color:transparent; }
+
+  .graph-info{ right:clamp(14px,2.4vw,28px); bottom:clamp(14px,2.6vh,28px); width:min(310px,74vw); border:1px solid rgba(244,244,237,.2); background:rgba(20,23,16,.9); backdrop-filter:blur(8px); padding:15px 17px; border-radius:10px; opacity:0; transform:translateY(8px); pointer-events:none; }
+  .gi-close{ position:absolute; top:8px; right:9px; width:20px; height:20px; padding:0; line-height:18px; text-align:center; font-size:11px; color:var(--dark-soft); background:rgba(244,244,237,.08); border:0; border-radius:5px; cursor:pointer; }
+  .gi-close:hover{ color:#f4f4ed; background:rgba(244,244,237,.18); }
+  .graph-info.show{ opacity:1; transform:none; pointer-events:auto; }
+  .graph-info .gi-tag{ font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--accent); }
+  .graph-info .gi-t{ font-family:'Mona Sans Variable',Arial,sans-serif; font-size:18px; letter-spacing:.02em; margin:5px 0 6px; color:#f6f6ef; word-break:break-word; }
+  .graph-info .gi-d{ font-size:12.5px; line-height:1.72; color:var(--dark-soft); }
+  .graph-info .gi-link{ display:inline-block; margin-top:11px; font-size:11px; font-weight:700; color:var(--ink); background:var(--accent); padding:6px 11px; border-radius:6px; text-decoration:none; }
+
+  .graph-legend{ left:50%; transform:translateX(-50%); bottom:clamp(14px,2.6vh,28px); display:flex; gap:15px; font-size:11px; color:var(--dark-soft); flex-wrap:wrap; justify-content:center; max-width:46vw; }
+  .graph-legend span{ display:flex; align-items:center; gap:6px; }
+  .graph-legend i{ width:9px; height:9px; border-radius:50%; }
+  .graph-hint{ left:50%; transform:translateX(-50%); bottom:calc(clamp(14px,2.6vh,28px) + 26px); font-size:11px; color:var(--dark-soft); letter-spacing:.03em; opacity:.7; pointer-events:none; white-space:nowrap; }
+
+  .graph-grow{ position:absolute; left:0; bottom:0; height:2px; width:100%; z-index:4; background:rgba(244,244,237,.08); }
+  .graph-grow i{ display:block; height:100%; width:0; background:linear-gradient(90deg,var(--accent),#a78bfa); }
+  @media(max-width:680px){ .graph-legend{ max-width:92vw; } .graph-count,.graph-hint{ display:none; } .graph-tools{ width:min(200px,60vw); } }
 
   /* --- updating list + 蹲蹲 --- */
   .up-row{
@@ -914,44 +1010,82 @@
   .hs-tok i{ font-size:9.5px; letter-spacing:.08em; color:var(--ink-soft); }
   .hs-cap{ margin-top:9px; font-size:9.5px; font-style:normal; color:var(--ink-soft); letter-spacing:.08em; }
 
-  /* --- horizontal album track (xhs 近期更新长廊) --- */
-  /* overflow:visible — .sec's overflow:hidden would break position:sticky;
-     the row itself is clipped by .album-pin */
-  .s-album{ padding:0; height:300svh; background:#111112; overflow:visible; }
-  .album-pin{
-    position:sticky; top:0; height:100svh; overflow:hidden;
-    display:flex; align-items:center;
-  }
-  .album-head{ position:absolute; top:clamp(56px,9vh,110px); left:clamp(16px,4vw,48px); z-index:2; }
+  /* --- horizontal album track — 原站 is-horizontal-track 像素级移植 --- */
+  /* overflow:visible so .sec's overflow:hidden doesn't break sticky;
+     the track is clipped by .album-pin. .s-album height is set by JS to fit
+     the real track width (long content → long scroll). */
+  .s-album{ padding:0; background:#23271c; overflow:visible; }
+  .album-pin{ position:sticky; top:0; height:100svh; overflow:hidden; color:#f4f4ed; }
+  .album-head{ position:absolute; top:clamp(56px,9vh,110px); left:clamp(16px,4vw,48px); z-index:3; color:inherit; pointer-events:none; }
   .album-head .eyebrow{ color:inherit; opacity:.7; margin-bottom:10px; }
-  .album-head h2{ margin-bottom:0; font-size:clamp(28px,3.6vw,54px); }
-  .album-row{
-    display:flex; align-items:center; gap:clamp(20px,3.4vw,52px);
-    padding-left:58vw; will-change:transform;
+  .album-head h2{ margin-bottom:0; color:inherit; font-size:clamp(28px,3.6vw,54px); }
+
+  /* the moving track: flex row of columns + spacers, ported metrics */
+  .album-track{
+    --gap:1.25rem; --spacer:25vh;
+    display:flex; align-items:stretch; flex:none;
+    height:100svh; box-sizing:border-box;
+    padding-left:75vw; padding-right:var(--gap);
+    padding-top:7vh; padding-bottom:calc(var(--gap)*2);
+    will-change:transform;
   }
-  .album-card{ flex-shrink:0; width:clamp(230px,28vw,400px); }
+  .album-col{
+    display:flex; flex-flow:column; flex:none; height:100%;
+    justify-content:flex-start; align-items:flex-start;
+    gap:clamp(1.4rem,4vh,3.2rem);
+  }
+  .album-spacer{ flex:none; width:var(--spacer); }
+  .album-spacer.half{ width:calc(var(--spacer)*.5); }
+  .album-spacer.quarter{ width:calc(var(--spacer)*.25); }
+
+  .album-item{ position:relative; display:flex; flex-flow:column; gap:.7rem; flex:none; }
   .album-top{
     display:flex; justify-content:space-between; gap:10px;
-    font-size:10.5px; font-style:normal; letter-spacing:.08em; text-transform:uppercase;
-    margin-bottom:10px; opacity:.75;
+    font-family:'Mona Sans Variable','Microsoft YaHei',Arial,sans-serif;
+    font-size:.625rem; font-weight:400; letter-spacing:0; line-height:1;
+    text-transform:uppercase; opacity:.82;
   }
   .album-cover{
-    aspect-ratio:3/4; border-radius:10px; position:relative; overflow:hidden;
-    box-shadow:0 24px 50px -30px rgba(0,0,0,.6);
+    position:relative; overflow:hidden; border-radius:0; flex:none; width:fit-content;
+    background:#1b1d18; box-shadow:0 24px 50px -30px rgba(0,0,0,.55);
   }
-  .album-cover::after{
+  /* real covers: scale to fit a per-tier bounding box, never crop (max-w/h set inline) */
+  .album-cover img{ display:block; width:auto; height:auto; max-width:100%; }
+  .album-cover.ph::after{   /* halftone only on gradient placeholders */
     content:''; position:absolute; inset:0;
-    background-image:radial-gradient(rgba(20,22,15,.25) 1px, transparent 1.4px);
-    background-size:10px 10px; mix-blend-mode:multiply;
+    background-image:radial-gradient(rgba(20,22,15,.22) 1px, transparent 1.4px);
+    background-size:10px 10px; mix-blend-mode:multiply; pointer-events:none;
   }
   .album-cover b{
     position:absolute; left:14px; bottom:10px;
     font-family:'Mona Sans Variable','Microsoft YaHei',Arial,sans-serif; font-weight:400;
-    font-size:clamp(30px,3.4vw,46px); letter-spacing:.02em;
+    font-size:clamp(24px,2.8vw,42px); letter-spacing:.02em;
     color:rgba(255,255,255,.94); text-transform:uppercase;
   }
-  .album-line{ margin-top:12px; font-size:13.5px; font-style:normal; line-height:1.7; }
-  .album-pin, .album-pin .eyebrow::after{ transition:color .25s linear; }
+  .album-line{ font-size:13px; line-height:1.55; max-width:30ch; opacity:.9; }
+  /* callout 黄条高亮擦扫入场 + 落款小字 */
+  .q-wrap{ position:relative; }
+  .q-wrap.armed{ overflow:hidden; }
+  .q-wrap.armed .q{ clip-path:inset(0 101% 0 0); }
+  .q-wrap.armed.is-in .q{ animation:qReveal .85s cubic-bezier(.19,1,.22,1) .06s forwards; }
+  @keyframes qReveal{ to{ clip-path:inset(0 0 0 0); } }
+  .q-sweep{ display:none; }
+  .q-wrap.armed .q-sweep{ display:block; position:absolute; top:-.06em; bottom:-.06em; left:0; width:.5em; margin-left:-.25em; background:var(--lime,#d2ff00); opacity:0; pointer-events:none; }
+  .q-wrap.armed.is-in .q-sweep{ animation:qSweep .85s cubic-bezier(.19,1,.22,1) .06s forwards; }
+  @keyframes qSweep{ 0%{ left:0; opacity:0; } 9%{ opacity:1; } 90%{ opacity:1; } 100%{ left:100%; opacity:0; } }
+  .album-sub{ margin-top:.45rem; font-family:'Mona Sans Variable','Microsoft YaHei',Arial,sans-serif; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; opacity:.6; }
+
+  /* interstitial handwriting callout (原站 .horizontal-item-text) */
+  .album-callout{ display:flex; flex-flow:column; gap:1.1rem; flex:none; max-width:30rem; align-self:center; }
+  .album-callout .q{
+    font-family:'Brier','Mona Sans Variable',serif; font-weight:400; font-style:normal;
+    font-size:clamp(1.25rem,1.6vw,1.6rem); line-height:.946; letter-spacing:.05rem; color:inherit;
+  }
+  /* lime 高亮词：永远记号笔高亮（字色随底色明暗自适应，永远可读），任何底色都不会是裸 lime */
+  .album-callout .q .hl{ color:inherit; background:linear-gradient(transparent 50%, rgba(210,255,0,.62) 50%); padding:0 .04em; }
+  .album-pin.on-paper .album-sig{ stroke:#5a6b00; opacity:.9; transition:stroke .3s ease; }
+  .album-callout .album-sig{ width:clamp(120px,12vw,180px); height:auto; opacity:.95; }
+  .album-pin{ transition:color .25s linear; }
 
   /* --- on/off track doors --- */
   .doors{ display:grid; grid-template-columns:1fr 1fr; }
@@ -1147,8 +1281,8 @@
     .album-card{ width:min(74vw,340px); }
     .about-grid{ grid-template-columns:1fr; }
     .about-aside{ position:static; }
-    .pulse-strip{ grid-template-columns:1fr 1fr; }
-    .pulse-cell:nth-child(2){ border-right:none; }
+    .rc-grid{ grid-template-columns:1fr; }
+    .rc-dash{ min-height:auto; }
     .wf-grid{ grid-template-columns:1fr; }
     .topic-grid{ grid-template-columns:1fr; }
     .up-row{ grid-template-columns:minmax(0,1fr) auto; }
@@ -1191,7 +1325,8 @@ body{ font-family:'Mona Sans Variable','Microsoft YaHei',Arial,sans-serif;
     <path d="M-40 640 C220 580 460 700 700 640 S1080 580 1260 660"/>
   </svg>
   <div class="hb-marquee" id="hbMarquee" aria-hidden="true">
-    <div class="hb-row" id="hbRow"><span>BUILD SOMETHING COOL — 操作熵↓ — OPEN SOURCE — 好奇心驱动 — </span></div>
+    <div class="hb-row hb-row-1" id="hbRow"><span>BUILD SOMETHING COOL — 操作熵↓ — OPEN SOURCE — 好奇心驱动 — </span></div>
+    <div class="hb-row hb-row-2" id="hbRow2"><span>LIXON — VIBE CODING — BUILD IN PUBLIC — 蹲蹲 — </span></div>
   </div>
 </div>
 <canvas id="gl"></canvas>
@@ -1222,7 +1357,7 @@ body{ font-family:'Mona Sans Variable','Microsoft YaHei',Arial,sans-serif;
       <a class="menu-page" href="#/calendar" style="--i:3"><span class="mi"><span>CALENDAR <small>仪表盘</small></span></span></a>
     </nav>
     <div class="menu-side">
-      <a href="#graph" data-menu-anchor>项目星图</a>
+      <a href="#graph" data-menu-anchor>知识图谱</a>
       <a href="#updating" data-menu-anchor>正在更新 · 蹲蹲</a>
       <a href="#workflow" data-menu-anchor>工作流陈列室</a>
       <a href="#socials" data-menu-anchor>小红书</a>
@@ -1283,53 +1418,198 @@ body{ font-family:'Mona Sans Variable','Microsoft YaHei',Arial,sans-serif;
 <button class="lock-pill" id="lockPill">tap to lock</button>
 <!-- 转场签名：钉住阶段由滚动进度描画，盖在变灰收缩的画布上 -->
 <svg class="sig hero-sig" id="heroSig" viewBox="0 0 420 220" aria-hidden="true">
-  <path d="M118 78 C92 26 28 20 22 78 C17 124 62 154 110 139 C140 130 152 108 150 90
-           M160 142 C170 100 178 64 178 40 C172 92 168 122 170 142 C178 124 192 116 200 122 C208 128 202 142 210 144
-           M224 118 C222 128 220 138 222 144
-           M228 100 C229 97 231 95 232 96
-           M262 112 C248 104 236 112 238 128 C240 142 256 146 268 138
-           M286 142 C294 104 300 70 300 46 C295 96 291 126 293 144 C300 128 313 120 321 126 C329 132 323 144 331 146
-           M348 116 C344 128 344 140 352 142 C362 144 370 134 372 122 C372 132 374 142 384 140 C396 137 402 126 404 116
-           M30 182 C140 212 300 208 405 160
-           M398 152 C403 147 409 145 414 148
-           M196 182 C198 180 201 180 202 182"/>
+  <path d="M62 32 C54 76 46 118 48 156 C80 166 120 166 150 150 C158 146 163 142 166 137
+           M158 34 C166 78 160 120 148 160
+           M178 34 C202 78 228 118 256 162
+           M262 36 C236 80 208 120 180 160
+           M326 48 C292 46 270 88 282 126 C291 158 330 162 346 132 C357 110 351 74 322 60
+           M356 162 C357 116 354 70 360 34 C382 80 404 120 420 160 C421 112 417 70 420 32
+           M6 196 C150 248 344 232 460 166 C492 152 478 114 446 136"/>
 </svg>
 </div>
 </header>
 
 <main id="main">
 
-  <!-- ====== 00 · PULSE: status strip + marquee (Hermes 接口预留) ====== -->
+  <!-- ====== 00 · AI TOKEN GRAND PRIX — 上海赛道直播大屏（首页门面 / 开机大屏） ====== -->
   <section class="sec sec-pulse" data-theme="dark" id="status">
-    <div class="pulse-strip">
-      <div class="pulse-cell" data-rise style="--i:0">
-        <div class="pulse-k">现在</div>
-        <div class="pulse-v" data-hermes="now">离线 <small>· hermes probing</small></div>
+    <div class="rc-dash">
+      <div class="rc-hd">
+        <div class="rc-brand"><span class="rc-v">V</span><b>VIBE CODER</b><small> // AI TOKEN GRAND PRIX</small></div>
+        <div class="rc-on"><i class="rc-dot"></i>ONLINE</div>
+        <span data-hermes="now" hidden></span><span data-hermes="hours" hidden></span><span data-hermes="lastlog" hidden></span>
+        <div class="rc-hsp"></div>
+        <div class="rc-hi"><span class="rc-k" data-i18n="time">本地</span><span class="v" id="rcClock">--:--:--</span></div>
+        <div class="rc-hi"><span class="rc-k" data-i18n="stint">连续工作</span><span class="v">00:47:12</span></div>
+        <div class="rc-hi"><span class="rc-k" data-i18n="tokens">今日 token</span><span class="v" data-hermes="tokens">2.35M</span></div>
+        <div class="rc-lang" id="rcLang"><button data-lang="zh">中</button><button data-lang="both" class="on">双语</button><button data-lang="en">EN</button></div>
       </div>
-      <div class="pulse-cell" data-rise style="--i:1">
-        <div class="pulse-k">今日 tokens</div>
-        <div class="pulse-v" data-hermes="tokens">——<small> · 待探测</small></div>
+
+      <div class="rc-body">
+        <div class="rc-side l">
+          <div class="rc-ph"><span class="t" data-i18n="standings">模型排名 / MODEL STANDINGS</span></div>
+          <div id="rcStand"></div>
+        </div>
+
+        <div class="rc-stage">
+          <div class="gp">SHANGHAI CIRCUIT<i data-i18n="live">AI 车队实时 · LIVE</i></div>
+          <div class="rc-stagei" id="rcStageI">
+            <svg id="rcWf" viewBox="0 0 1207 765" preserveAspectRatio="xMidYMid meet" aria-label="Shanghai International Circuit">
+              <g transform="translate(1298.8737,-346.65234)"><path id="rcTrack" d="m -853.46939,684.61728 c 38.16139,-92.75986 75.45518,-186.8445 110.44898,-278.94642 4.37706,-11.52021 16.72891,-21.75786 27.61225,-27.29847 12.12686,-6.17367 26.56106,-8.56704 39.84948,-8.15816 13.90546,0.42785 29.88085,3.14734 41.73215,10.66836 9.9038,6.2851 18.91494,17.0757 23.84694,27.61225 4.27208,9.12672 5.8417,21.61849 3.7653,31.37755 -2.10728,9.90421 -8.86977,20.60372 -16.31632,27.61224 -6.77794,6.37923 -17.17826,10.48367 -25.10205,8.78571 -9.64764,-2.06735 -19.7519,-12.14329 -23.84693,-23.53316 -3.10178,-8.62723 -16.44578,-15.98154 -23.53317,-18.51275 -4.6269,-1.65247 -15.61631,2.93201 -19.76786,6.90306 -5.4709,5.23303 -10.70616,14.74792 -10.66836,21.96429 0.0435,8.30493 5.28309,19.56263 10.04082,26.98469 5.70146,8.89427 13.55208,18.89277 22.59184,24.78827 10.20513,6.65552 23.2857,12.78326 35.14285,11.60969 20.73207,-2.05197 45.17196,-6.14686 67.77551,-9.41327 49.774,-7.19277 99.49621,-14.30811 149.35714,-20.70918 12.05743,-1.54791 26.20746,-2.70592 37.96684,-1e-5 54.58925,12.56138 105.77827,26.14919 159.39796,41.41837 9.55378,2.72061 21.14246,5.26609 27.92602,11.29592 4.51236,4.01099 4.84068,12.67551 3.13775,17.57143 -1.64401,4.72653 -6.64162,7.72341 -12.55102,10.04082 -15.42733,6.04993 -31.44261,11.76983 -47.69387,15.06122 -16.79976,3.40248 -34.60026,3.30772 -51.77297,2.82398 -42.23545,-1.18973 -84.15896,-5.4448 -126.45152,-7.84438 -16.69723,-0.94736 -33.87182,-2.54529 -50.20408,0 -15.88202,2.47512 -31.88897,9.0391 -45.18368,17.25765 -9.7155,6.00594 -18.22268,15.13699 -23.84694,25.41581 -6.50839,11.89465 -10.97375,25.55559 -13.80612,38.90817 -3.02478,14.25966 -2.8164,29.9556 -0.31378,43.92857 2.51779,14.05764 8.09241,27.33202 15.37501,40.16326 10.28883,18.12794 23.70869,34.55705 33.88775,52.71429 5.30053,9.45501 11.17049,19.66986 12.55102,30.12245 1.54804,11.72088 0.99874,25.83419 -3.76531,36.39796 -4.8584,10.77297 -15.09865,20.68682 -25.10204,27.61224 -11.75171,8.1358 -26.1957,16.90631 -40.16326,17.57143 -21.1753,1.00835 -43.3895,-9.63424 -65.26531,-12.55102 -9.50174,-1.2669 -19.84449,-1.19238 -26.98469,2.82398 -6.24755,3.51425 -10.01906,11.73019 -9.41326,19.45408 1.06767,13.61285 7.54056,27.76501 12.55101,41.73215 4.23293,11.7997 6.7575,23.51168 13.80612,31.06377 4.66566,4.99888 13.64663,6.63688 21.33674,6.58928 18.28428,-0.1132 35.87658,-0.5568 54.28316,0.3138 105.43015,4.9865 212.42876,10.2764 317.54083,13.8061 7.00648,0.2352 13.01766,-4.6145 16.00254,-10.3546 2.45389,-4.719 -1.52466,-11.31348 -2.82398,-16.94387 -2.46599,-10.68594 -11.19448,-22.69356 -8.47194,-32.0051 4.26138,-14.57461 11.56882,-19.17883 21.65052,-21.02296 10.67759,-1.95313 24.52827,-2.26143 36.08418,0.62755 13.54613,3.38653 26.83884,9.79962 37.33928,18.51276 9.16282,7.60319 14.91638,15.56091 18.51276,26.98469 3.51587,11.16805 4.31516,24.52973 1.88265,36.08413 -2.5879,12.2925 -10.32153,24.067 -17.57142,34.5154 -6.9746,10.0516 -15.10627,19.6241 -25.41583,26.0433 -11.86391,7.387 -25.82223,13.4475 -39.84948,15.0613 -33.24826,3.825 -67.14632,1.419 -101.03572,1.2551 -312.10041,-1.5096 -624.17497,-0.1149 -935.6786,-5.0205 -7.2923,-0.1148 -13.9054,-3.1034 -16.0025,-7.5306 -1.6682,-3.5218 5.7168,-12.7733 10.6683,-15.375 19.7322,-10.3677 39.6036,-18.2435 62.1276,-21.6504 27.2617,-4.1237 52.9652,-2.0313 80.9541,-3.4516 46.2393,-2.3463 89.7781,-3.7843 135.551,-5.9617 6.6515,-0.3164 17.53961,-2.8771 20.39541,-9.0996 3.87956,-8.4531 5.45356,-18.4735 8.78572,-27.6122 38.92294,-106.74903 73.48249,-213.3727 116.72448,-318.48212 z" fill="none"/></g>
+              <g id="rcWfAgents"></g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="rc-side r">
+          <div class="rc-ph"><span class="t" data-i18n="alerts">通知中心 / ALERT FEED</span><span class="s">live</span></div>
+          <div class="rc-alerts" id="rcAlerts"></div>
+        </div>
       </div>
-      <div class="pulse-cell" data-rise style="--i:2">
-        <div class="pulse-k">今日在场</div>
-        <div class="pulse-v" data-hermes="hours">——<small> · 待探测</small></div>
-      </div>
-      <div class="pulse-cell" data-rise style="--i:3">
-        <div class="pulse-k">昨日更新</div>
-        <div class="pulse-v" data-hermes="lastlog">hero v2 上线</div>
+
+      <div class="rc-tele" id="rcTele"></div>
+
+      <div class="rc-log">
+        <div class="rc-ph"><span class="t" data-i18n="liveLog">实时日志 / LIVE LOG</span><span class="s">live</span></div>
+        <div class="rc-loglist" id="rcLog"></div>
       </div>
     </div>
-    <div class="marquee" aria-hidden="true">
-      <div class="mq-row" data-mq data-dir="1">
-        <div class="mq-chunk"><span>VIBE CODER</span><span class="o">·18·</span><span class="lime">操作熵↓</span><span class="o">OPEN SOURCE</span></div>
-      </div>
-      <div class="mq-row" data-mq data-dir="-1">
-        <div class="mq-chunk"><span class="o">BUILD IN PUBLIC</span><span class="lime">好奇心驱动</span><span>DOGFOOD EVERYTHING</span><span class="o">·</span></div>
-      </div>
-    </div>
-    <div class="hermes-note">
-      ※ 这一条数据带 + 公屏留言板 + 每日更新日志由 Hermes 负责（vibe-coder-dashboard），接口已留：<code>window.VIBE_DASH</code> — 他做完即插即用。
-    </div>
+
+    <script>
+    (function(){
+      var sec=document.getElementById('status'); if(!sec) return;
+      var NS='http://www.w3.org/2000/svg';
+      // 车手品牌色（用户钦定）
+      var BRAND={claude:'#FF8A3D',codex:'#8FD6FF',deepseek:'#1E5CFF',hermes:'#FFFFFF',cai:'#B7FF00'};
+      // i18n（轻量：只切模块标题 + 状态栏，通知/日志正文保持中文）
+      var I18N={ zh:{time:'本地 · 北京',stint:'连续工作',tokens:'今日 token',standings:'模型排名',alerts:'通知中心',liveLog:'实时日志',live:'AI 车队实时'},
+                 en:{time:'LOCAL · BJ',stint:'STINT',tokens:'TOKENS',standings:'MODEL STANDINGS',alerts:'ALERT FEED',liveLog:'LIVE LOG',live:'LIVE'} };
+      var lang='both';
+      function tr(k){ var z=I18N.zh[k]; if(z==null) return ''; var e=I18N.en[k]; return lang==='zh'?z:lang==='en'?e:z+' / '+e; }
+      function applyLang(){ sec.querySelectorAll('[data-i18n]').forEach(function(el){ var v=tr(el.getAttribute('data-i18n')); if(v) el.textContent=v; }); }
+      var lb=document.getElementById('rcLang');
+      if(lb) lb.querySelectorAll('button').forEach(function(b){ b.addEventListener('click',function(){ lang=b.getAttribute('data-lang'); lb.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on',x===b); }); applyLang(); }); });
+
+      var AGENTS=[
+        {id:'claude',name:'CLAUDE',status:'active',tokens:'1.84M',share:'78%',progress:0.12,speed:0.020},
+        {id:'codex',name:'CODEX',status:'active',tokens:'412K',share:'18%',progress:0.46,speed:0.014},
+        {id:'deepseek',name:'DEEPSEEK',status:'idle',tokens:'96K',share:'4%',progress:0.70,speed:0.004},
+        {id:'hermes',name:'HERMES',status:'waiting',tokens:'18K',share:'<1%',progress:0.86,speed:0},
+        {id:'cai',name:'CAI',status:'error',tokens:'12K',share:'<1%',progress:0.30,speed:0}
+      ];
+      var ALERTS=[
+        {lv:'red',tx:'Hermes 等待写入权限'},
+        {lv:'yellow',tx:'Git 有 17 个文件未提交'},
+        {lv:'green',tx:'Claude 完成 context loader 重构'},
+        {lv:'blue',tx:'DeepSeek 新增 token 边界测试'}
+      ];
+      var TELE=[['TOKENS','2.35M','','pri'],['BURN','24.3K/min','','sec'],['COST','$0.92','','sec'],['ACTIVE','3','rc-lime','pri'],['PIT','1','rc-or','sec'],['ERROR','1','rc-or','sec'],['OUTPUT','3 commits / 4 docs','','pri']];
+      var LOGZ=[['22:31','CLAUDE','完成：重构 context loader'],['22:30','HERMES','等待权限：写入 /docs'],['22:30','CODEX','推送 3 个 commit'],['22:29','SYSTEM','工作区 17 个文件未提交'],['22:28','DEEPSEEK','新增 token 边界测试']];
+
+      // standings
+      var standBox=document.getElementById('rcStand');
+      if(standBox) AGENTS.forEach(function(a,idx){
+        var r=document.createElement('div'); r.className='rc-lbr'+(idx===0?' lead':''); r.setAttribute('data-ag',a.id);
+        var tag = a.status==='waiting'?'<span class="rc-pit">PIT</span>' : a.status==='error'?'<span class="rc-pit" style="color:var(--rc-red);border-color:rgba(255,77,77,.45)">ERR</span>' : a.share;
+        r.innerHTML='<span class="p">'+(idx+1)+'</span><span class="rc-nm"><i style="color:'+BRAND[a.id]+';background:'+BRAND[a.id]+'"></i>'+a.name+'</span><span class="rc-tk">'+a.tokens+'</span><span class="rc-sh">'+tag+'</span>';
+        standBox.appendChild(r);
+      });
+
+      // alerts
+      var alBox=document.getElementById('rcAlerts'), FG={red:'⚑',yellow:'⚑',green:'✓',blue:'›'};
+      if(alBox) ALERTS.forEach(function(al){ var d=document.createElement('div'); d.className='rc-al '+al.lv; d.innerHTML='<span class="fg">'+FG[al.lv]+'</span><span class="tx">'+al.tx+'</span>'; alBox.appendChild(d); });
+
+      // telemetry
+      var teBox=document.getElementById('rcTele');
+      if(teBox) TELE.forEach(function(t){ var d=document.createElement('div'); d.className='rc-te '+(t[3]||''); d.innerHTML='<span class="k">'+t[0]+'</span><span class="v '+t[2]+'">'+t[1]+'</span>'; teBox.appendChild(d); });
+
+      // live log
+      var logBox=document.getElementById('rcLog');
+      if(logBox) LOGZ.forEach(function(r){ var d=document.createElement('div'); var c=BRAND[r[1].toLowerCase()]||'#b4b8a5'; d.innerHTML='<time>'+r[0]+'</time><b style="color:'+c+'">['+r[1]+']</b> '+r[2]; logBox.appendChild(d); });
+
+      // ===== circuit: volumetric floating track + pit/error bays + glued agents + trails =====
+      var track=document.getElementById('rcTrack'), markers={};
+      if(track){
+        var par=track.parentNode, L=track.getTotalLength();
+        function loc(p){ p=((p%1)+1)%1; return track.getPointAtLength(p*L); }            // LOCAL path coords — glued, no getCTM drift
+        function perp(p,d){ var a=loc(p), b=loc(p+0.004), dx=b.x-a.x, dy=b.y-a.y, n=Math.hypot(dx,dy)||1; return {x:a.x - dy/n*d, y:a.y + dx/n*d}; }
+        function mk(n){ return document.createElementNS(NS,n); }
+        function clone(cls,tf,stroke){ var c=track.cloneNode(); c.removeAttribute('id'); c.setAttribute('class',cls); if(tf) c.setAttribute('transform',tf); if(stroke) c.setAttribute('stroke',stroke); return c; }
+        // float shadow + halo (behind)
+        par.insertBefore(clone('rc-trackshadow','translate(0,48)'), track);
+        par.insertBefore(clone('rc-trackbase'), track);
+        // extruded side wall: stacked downward copies darkening with depth → real thickness under the tilt
+        for(var k=10;k>=1;k--){ var sh=14-k; par.insertBefore(clone('rc-trackside','translate(0,'+k+')','rgb('+(18+sh)+','+(22+sh)+','+(11+sh)+')'), track); }
+        // glowing rim + lit top + flow highlight (front)
+        par.insertBefore(clone('rc-trackedge'), track);
+        par.appendChild(clone('rc-flowline'));
+        // start/finish tick + sector dots
+        (function(){ var a=loc(0), b=loc(0.006), dx=b.x-a.x, dy=b.y-a.y, n=Math.hypot(dx,dy)||1, ux=-dy/n, uy=dx/n;
+          var sf=mk('line'); sf.setAttribute('x1',a.x-ux*9); sf.setAttribute('y1',a.y-uy*9); sf.setAttribute('x2',a.x+ux*9); sf.setAttribute('y2',a.y+uy*9); sf.setAttribute('class','rc-sf'); par.appendChild(sf);
+          var sl=mk('text'); sl.setAttribute('x',a.x+ux*17); sl.setAttribute('y',a.y+uy*17+3); sl.setAttribute('text-anchor','middle'); sl.setAttribute('class','rc-sflab'); sl.textContent='S/F'; par.appendChild(sl);
+          [0.33,0.66].forEach(function(sp){ var q=loc(sp); var c=mk('circle'); c.setAttribute('cx',q.x); c.setAttribute('cy',q.y); c.setAttribute('r','2.4'); c.setAttribute('class','rc-sector'); par.appendChild(c); });
+        })();
+        // pit lane (Hermes) + error bay (CAI) — real little regions beside the track
+        var pitA=perp(0.0,52), pitB=perp(0.07,52), PIT={x:(pitA.x+pitB.x)/2,y:(pitA.y+pitB.y)/2};
+        var slot=mk('line'); slot.setAttribute('x1',pitA.x); slot.setAttribute('y1',pitA.y); slot.setAttribute('x2',pitB.x); slot.setAttribute('y2',pitB.y); slot.setAttribute('class','rc-pitslot'); par.appendChild(slot);
+        var pl=mk('line'); var pm=loc(0.035); pl.setAttribute('x1',pm.x); pl.setAttribute('y1',pm.y); pl.setAttribute('x2',PIT.x); pl.setAttribute('y2',PIT.y); pl.setAttribute('class','rc-pitlane'); par.appendChild(pl);
+        var plab=mk('text'); plab.setAttribute('x',PIT.x); plab.setAttribute('y',PIT.y-13); plab.setAttribute('text-anchor','middle'); plab.setAttribute('class','rc-pitlabel'); plab.textContent='PIT LANE'; par.appendChild(plab);
+        var ERRB=perp(0.13,56); var bay=mk('rect'); bay.setAttribute('x',ERRB.x-13); bay.setAttribute('y',ERRB.y-11); bay.setAttribute('width','26'); bay.setAttribute('height','22'); bay.setAttribute('rx','3'); bay.setAttribute('class','rc-baybox'); par.appendChild(bay);
+        var elab=mk('text'); elab.setAttribute('x',ERRB.x); elab.setAttribute('y',ERRB.y-16); elab.setAttribute('text-anchor','middle'); elab.setAttribute('class','rc-pitlabel'); elab.setAttribute('fill','#ff4d4d'); elab.textContent='ERR BAY'; par.appendChild(elab);
+        // markers + motion trails (inside par → glued)
+        AGENTS.forEach(function(a){
+          var trail=[]; for(var i=0;i<3;i++){ var td=mk('circle'); td.setAttribute('r',(3-i*0.7).toFixed(1)); td.setAttribute('fill',BRAND[a.id]); td.setAttribute('opacity','0'); par.appendChild(td); trail.push(td); }
+          var g=mk('g'); g.setAttribute('class','rc-agent'); g.setAttribute('data-ag',a.id);
+          var ring=mk('circle'); ring.setAttribute('r','9'); ring.setAttribute('fill','none'); ring.setAttribute('stroke',BRAND[a.id]); ring.setAttribute('stroke-width','2');
+          var dot=mk('circle'); dot.setAttribute('r','4.5'); dot.setAttribute('fill',BRAND[a.id]);
+          var lbl=mk('text'); lbl.setAttribute('class','hl'); lbl.setAttribute('y','-13'); lbl.setAttribute('text-anchor','middle'); lbl.setAttribute('fill',BRAND[a.id]); lbl.textContent=a.name;
+          g.appendChild(ring); g.appendChild(dot); g.appendChild(lbl); par.appendChild(g);
+          markers[a.id]={g:g,ring:ring,dot:dot,trail:trail,a:a};
+        });
+        function moving(a){ return a.status==='active'||a.status==='idle'||a.status==='busy'; }
+        function pos(a){ return a.status==='waiting'?PIT : a.status==='error'?ERRB : loc(a.progress); }
+        function trailUpd(a,m){ for(var i=0;i<m.trail.length;i++){ var t=m.trail[i]; if(moving(a)){ var q=loc(a.progress-(i+1)*0.006); t.setAttribute('cx',q.x.toFixed(1)); t.setAttribute('cy',q.y.toFixed(1)); t.setAttribute('opacity',(0.22-i*0.06).toFixed(2)); } else t.setAttribute('opacity','0'); } }
+        function place(){ AGENTS.forEach(function(a){ var m=markers[a.id], p=pos(a); m.g.setAttribute('transform','translate('+p.x.toFixed(1)+','+p.y.toFixed(1)+')'); trailUpd(a,m); }); }
+        place();
+        var running=false, last=0;
+        function frame(ts){ if(!running) return; var dt=last?Math.min(0.05,(ts-last)/1000):0.016; last=ts;
+          AGENTS.forEach(function(a){ var m=markers[a.id]; if(!m) return;
+            if(moving(a)) a.progress=((a.progress+a.speed*dt)%1+1)%1;
+            var p=pos(a); m.g.setAttribute('transform','translate('+p.x.toFixed(1)+','+p.y.toFixed(1)+')'); trailUpd(a,m);
+            if(a.status==='error'){ m.ring.setAttribute('stroke','#ff4d4d'); m.ring.setAttribute('stroke-opacity',(Math.sin(ts/170)>0?1:0.2).toFixed(2)); m.dot.setAttribute('fill','#ff4d4d'); }
+            else if(a.status==='waiting'){ m.ring.setAttribute('stroke','#ff6b00'); m.ring.setAttribute('stroke-opacity',(0.5+0.5*Math.abs(Math.sin(ts/470))).toFixed(2)); }
+            else m.ring.setAttribute('stroke-opacity', a.status==='idle'?'0.4':'0.92');
+          });
+          requestAnimationFrame(frame);
+        }
+        function start(){ if(running) return; running=true; last=0; requestAnimationFrame(frame); }
+        function stop(){ running=false; }
+        function hot(id,on){ var r=sec.querySelector('.rc-lbr[data-ag="'+id+'"]'); if(r) r.classList.toggle('hot',on); var m=markers[id]; if(m){ m.dot.setAttribute('r',on?'6.5':'4.5'); var t=m.g.querySelector('text.hl'); if(t) t.style.opacity=on?'1':''; } }
+        Object.keys(markers).forEach(function(id){ var m=markers[id]; m.g.addEventListener('mouseenter',function(){hot(id,true);}); m.g.addEventListener('mouseleave',function(){hot(id,false);}); });
+        sec.querySelectorAll('.rc-lbr').forEach(function(r){ var id=r.getAttribute('data-ag'); r.addEventListener('mouseenter',function(){hot(id,true);}); r.addEventListener('mouseleave',function(){hot(id,false);}); });
+        if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ var e=es[0]; document.body.classList.toggle('rc-immersive', e.isIntersecting&&e.intersectionRatio>=0.5); if(e.isIntersecting){ start(); place(); } else stop(); },{threshold:[0,0.5,0.9]}).observe(sec); } else start();
+      }
+
+      // ===== drag-to-rotate pseudo-3D + spring back =====
+      var stageI=document.getElementById('rcStageI');
+      if(stageI){
+        var DEF={x:38,y:0}, cur={x:38,y:0}, dragging=false, sx=0, sy=0, bx=38, by=0;
+        function apply(){ stageI.style.transform='rotateX('+cur.x.toFixed(1)+'deg) rotateZ(-5deg) rotateY('+cur.y.toFixed(1)+'deg)'; }
+        apply();
+        stageI.addEventListener('pointerdown',function(e){ dragging=true; stageI.classList.add('drag'); sx=e.clientX; sy=e.clientY; bx=cur.x; by=cur.y; if(stageI.setPointerCapture) try{stageI.setPointerCapture(e.pointerId);}catch(_){} });
+        addEventListener('pointermove',function(e){ if(!dragging) return; cur.y=Math.max(-26,Math.min(26, by+(e.clientX-sx)*0.18)); cur.x=Math.max(-8,Math.min(44, bx-(e.clientY-sy)*0.16)); apply(); });
+        addEventListener('pointerup',function(){ if(!dragging) return; dragging=false; stageI.classList.remove('drag'); cur.x=DEF.x; cur.y=DEF.y; apply(); });
+      }
+
+      // clock (Beijing)
+      var clk=document.getElementById('rcClock');
+      function p2(n){ return String(n).padStart(2,'0'); }
+      function tick(){ var d=new Date(); var bj=new Date(d.getTime()+(d.getTimezoneOffset()+480)*60000); if(clk) clk.textContent=p2(bj.getHours())+':'+p2(bj.getMinutes())+':'+p2(bj.getSeconds()); }
+      tick(); setInterval(tick,1000);
+
+      applyLang();
+    })();
+    </script>
   </section>
 
   <!-- ====== 01 · ABOUT — 深色宣言屏，承接 hero 退场的暗场，给深色足够篇幅 ====== -->
@@ -1369,7 +1649,7 @@ body{ font-family:'Mona Sans Variable','Microsoft YaHei',Arial,sans-serif;
         <p class="eyebrow">02 — 近期更新 · recent notes</p>
         <h2 style="transform:none">小红书施工日志<span class="serif-it">，</span>横着看<span class="serif-it">。</span></h2>
       </div>
-      <div class="album-row" id="albumRow"><!-- cards injected --></div>
+      <div class="album-track" id="albumTrack"><!-- columns injected --></div>
     </div>
   </section>
 
@@ -1394,25 +1674,41 @@ body{ font-family:'Mona Sans Variable','Microsoft YaHei',Arial,sans-serif;
     </div>
   </section>
 
-  <!-- ====== 04 · PROJECT GRAPH — 浅色章节里嵌一块深色「屏幕」，不再整屏切深 ====== -->
-  <section class="sec" id="graph">
-    <div class="wrap">
-      <p class="eyebrow" data-rise>04 — 项目星图 · constellation</p>
-      <h2 data-split>灵感不删除，<br><span class="alt">只是还没连上线</span><span class="serif-it">。</span></h2>
-      <div class="graph-stage" data-rise>
-        <canvas id="graphCanvas"></canvas>
-        <div class="graph-info" id="graphInfo">
-          <div class="t"></div>
-          <div class="d"></div>
-          <span class="s"></span>
-        </div>
+  <!-- ====== 04 · KNOWLEDGE GRAPH — 全屏钉住，滚动从一颗种子长成森林 ====== -->
+  <section class="sec s-graph" id="graph" data-theme="dark">
+    <div class="graph-pin" id="graphPin">
+      <canvas id="graphCanvas"></canvas>
+
+      <div class="graph-intro" id="graphIntro">
+        <p class="eyebrow">04 — 知识图谱 · everything i've grown</p>
+        <h2>从一颗种子，<br><span class="alt">长成一整座森林</span><span class="serif-it">。</span></h2>
+        <p class="graph-intro-sub">GitHub · Obsidian · Claude 三处的我，连成一张网 —— 往下滚，看它生长 ↓</p>
       </div>
-      <div class="graph-legend" data-rise>
-        <span><i style="background:#d2ff00"></i>正在更新</span>
-        <span><i style="background:#f4f4ed"></i>已上线</span>
-        <span><i style="background:#6b7060"></i>蛰伏中</span>
-        <span style="opacity:.7">— 大点是项目，小点是它的分支动态 · 鼠标可以拨弄它们</span>
+
+      <div class="graph-hud" id="graphHud" style="opacity:0">
+        <div class="graph-views" id="graphViews"></div>
+        <div class="graph-count" id="graphCount"></div>
       </div>
+
+      <div class="graph-actions" id="graphActions" style="opacity:0">
+        <button id="graphLock" title="锁定后可自由缩放/拖拽，页面不会滚走">🔒 锁定探索</button>
+        <button id="graphFull" title="全屏沉浸">⛶ 全屏</button>
+      </div>
+
+      <div class="graph-tools" id="graphTools" style="opacity:0">
+        <input class="graph-search" id="graphSearch" placeholder="搜索项目 / 笔记 / 学科…" autocomplete="off">
+        <div class="graph-layers" id="graphLayers"></div>
+      </div>
+
+      <aside class="graph-info" id="graphInfo">
+        <span class="gi-tag"></span>
+        <div class="gi-t"></div>
+        <div class="gi-d"></div>
+      </aside>
+
+      <div class="graph-legend" id="graphLegend" style="opacity:0"></div>
+      <div class="graph-hint" id="graphHint" style="opacity:0">滚动生长 · 点击节点选中 · 锁定后可缩放拖拽</div>
+      <div class="graph-grow" id="graphGrow"><i></i></div>
     </div>
   </section>
 
@@ -2241,6 +2537,7 @@ const pointer = {
 };
 function onMove(cx, cy){
   if (fluidLock) return;        // tap-to-lock: autopilot owns the brush
+  if (heroExitP > 0.012) return;   // exit underway → ignore the cursor (no face-deform), like the reference
   pointer.x = cx / viewW;
   pointer.y = 1 - cy / viewH;
   pointer.lastMove = performance.now();
@@ -2254,6 +2551,15 @@ addEventListener('pointermove', e => onMove(e.clientX, e.clientY), { passive:tru
 addEventListener('touchmove',  e => { const t = e.touches[0]; if (t) onMove(t.clientX, t.clientY); }, { passive:true });
 
 function updatePointer(now, t, elapsedMs){
+  // once the scroll-driven exit begins, the hero is a shrinking still card —
+  // like the reference it stops responding to the cursor, so the face never
+  // deforms under the mouse. freeze the brush: no velocity, no autopilot.
+  if (heroExitP > 0.012){
+    pointer.vx = 0; pointer.vy = 0;
+    pointer.px = pointer.x; pointer.py = pointer.y;
+    pointer.auto = 0;
+    return;
+  }
   const idleFor = now - pointer.lastMove;
   const wantAuto = (idleFor > CONF.idleAfter) ? 1 : 0;
   pointer.auto += (wantAuto - pointer.auto) * 0.022;   // ease in/out of autopilot
@@ -2694,7 +3000,8 @@ buildXhs(XHS_NOTES);
 const sloganEl = document.getElementById('slogan');
 const sloganFill = sloganEl ? sloganEl.querySelector('.slogan-fill') : null;
 
-// horizontal album: 近期小红书更新（封面 + 我的口吻一行）
+// horizontal album: 近期小红书更新 — 原站 is-horizontal-track 像素级移植（B 可扩展模板）
+// 占位快照（无封面时显示渐变方块）；真数据从 xhs.json 进来后整列重排。
 const ALBUM = [
   { tag:'#施工日志', d:'今天', w:'FLUID',  g:['#c5e016','#86a009'], line:'把 F1 官网的流体头盔搬回家，顺手修掉 17 个审查发现。' },
   { tag:'#上线了',   d:'本周', w:'CHESS',  g:['#282c20','#4a5240'], line:'国象和将棋生了个孩子：9×9，规则已锁，先手没必胜。' },
@@ -2703,31 +3010,123 @@ const ALBUM = [
   { tag:'#工作流',   d:'上月', w:'FLOW',   g:['#5c6150','#282c20'], line:'一个人同时推五个项目的秘密：sessionss 并行会话。' },
   { tag:'#剧本杀',   d:'上月', w:'OCR',    g:['#8a3414','#d2691e'], line:'21 本剧本、1845 页，OCR 蒸馏出一部 59 万字故事圣经。' },
 ];
+// 尺寸三档 (w×h vh)，照搬原站 .horizontal-item-img-w.is-home*
+const ALB_TIERS = {
+  sm1:[24.5,23.5], sm2:[24,30], sm3:[23.5,23.5],
+  md1:[27.5,34], md2:[29.5,29.5], md3:[31,28], md4:[27.5,25], md5:[31.5,30.5],
+  lg1:[50,45.5], lg2:[47,47]
+};
+// 原站列/间距/错位序列（基础模板）。col.s=该列后间距; item: tier 或 callout, mt/mb='auto'|vh, left=vh
+const ALB_TEMPLATE = [
+  { s:'full', items:[ {tier:'md1'}, {tier:'md2', mt:'auto', mb:4.2, left:7} ] },
+  { s:'full', items:[ {callout:0}, {tier:'lg1', mt:'auto'} ] },
+  { s:'half', items:[ {tier:'md3', left:-8}, {tier:'sm1', mt:'auto', mb:4} ] },
+  { s:'',     items:[ {tier:'sm2', mt:'auto', mb:1.17} ] },
+  { s:'half', items:[ {tier:'sm3', mb:'auto', mt:4} ] },
+  { s:'full', items:[ {tier:'lg2', mt:2}, {callout:1} ] },
+  { s:'',     items:[ {tier:'md5', mt:7}, {tier:'md4', mt:'auto', mb:2.5, left:-8} ] }
+];
+// 续列模式（笔记多于模板时循环铺开，保持错落词汇）
+const ALB_EXTRA = [
+  { s:'half', items:[ {tier:'md2'}, {tier:'sm3', mt:'auto', mb:3} ] },
+  { s:'full', items:[ {tier:'lg1', mt:'auto'} ] },
+  { s:'half', items:[ {tier:'sm1', mt:4}, {tier:'md5', mt:'auto'} ] },
+  { s:'',     items:[ {tier:'md3', mt:'auto', mb:2} ] }
+];
+// 引言 callout —— chichu 调性代笔（真签名待矢量化；可改）
+const ALB_CALLOUTS = [
+  { q:'爱<span class="hl">具体</span>的生活，不要爱<span class="hl">幻象</span>。', sub:'坦坦荡荡，见自己。' },
+  { q:'把手<span class="hl">弄脏</span>。不及格的想法，也能<span class="hl">跑起来</span>。' }
+];
+
 const albumPin = document.getElementById('albumPin');
-const albumRow = document.getElementById('albumRow');
+const albumSection = document.getElementById('album');
+const albumTrack = document.getElementById('albumTrack');
+const albumHead = albumPin ? albumPin.querySelector('.album-head') : null;
+let albumCur = 0, albumTarget = 0;
+// 黄条擦扫入场：callout 进视口触发一次（横向轨道平移会把它带进来）
+// 每次这句话进视口都重放擦扫（离开就重置），不再只触发一次
+const albIO = ('IntersectionObserver' in window) ? new IntersectionObserver((es) => {
+  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-in'); else e.target.classList.remove('is-in'); });
+}, { threshold: 0.4 }) : null;
+
+function albImg(note, tier){
+  const d = ALB_TIERS[tier] || ALB_TIERS.md2, w = d[0], h = d[1];
+  const el = document.createElement('div');
+  el.className = 'album-item t-' + tier;
+  const top = `<div class="album-top"><span>${note.tag || '#施工日志'}</span><span>${note.d || ''}</span></div>`;
+  const cover = note.cover
+    ? `<div class="album-cover"><img src="${note.cover}" alt="" loading="eager" style="max-width:${w}vh;max-height:${h}vh"></div>`
+    : `<div class="album-cover ph" style="width:${w}vh;height:${h}vh;background:linear-gradient(150deg,${(note.g&&note.g[0])||'#3b3c38'},${(note.g&&note.g[1])||'#282c20'})"><b>${note.w || 'NOTE'}</b></div>`;
+  const line = note.line ? `<div class="album-line">${note.line}</div>` : '';
+  el.innerHTML = top + cover + line;
+  if (note.url){ el.style.cursor = 'pointer'; el.addEventListener('click', () => open(note.url, '_blank')); }
+  return el;
+}
+function albCallout(idx){
+  const c = ALB_CALLOUTS[idx] || ALB_CALLOUTS[0];
+  const el = document.createElement('div');
+  el.className = 'album-callout';
+  el.innerHTML =
+    `<div class="q-wrap"><div class="q">${c.q}</div><span class="q-sweep"></span></div>` +
+    `<svg class="album-sig" data-todo="真签名待矢量化" viewBox="0 0 200 58" fill="none" stroke="var(--lime,#d2ff00)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 40 C 28 6, 44 8, 38 34 C 35 50, 55 48, 62 28 C 68 12, 78 44, 92 34 C 110 22, 128 48, 158 16 M118 40 L188 28"/></svg>` +
+    (c.sub ? `<div class="album-sub">${c.sub}</div>` : '');
+  return el;
+}
+function albStagger(el, it){
+  if (it.mt != null) el.style.marginTop = it.mt === 'auto' ? 'auto' : it.mt + 'vh';
+  if (it.mb != null) el.style.marginBottom = it.mb === 'auto' ? 'auto' : it.mb + 'vh';
+  if (it.left != null) el.style.left = it.left + 'vh';
+}
 function buildAlbum(notes){
-  if (!albumRow) return;
-  albumRow.textContent = '';
-  notes.forEach(a => {
-    const card = document.createElement('div');
-    card.className = 'album-card';
-    const cover = a.cover
-      ? `<div class="album-cover" style="background:#222 url('${a.cover}') center/cover"></div>`
-      : `<div class="album-cover" style="background:linear-gradient(150deg,${a.g[0]},${a.g[1]})"><b>${a.w}</b></div>`;
-    card.innerHTML =
-      `<div class="album-top"><span>${a.tag}</span><span>${a.d}</span></div>` + cover +
-      `<div class="album-line">${a.line}</div>`;
-    if (a.url) { card.style.cursor = 'pointer'; card.addEventListener('click', () => open(a.url, '_blank')); }
-    albumRow.appendChild(card);
-  });
+  if (!albumTrack) return;
+  albumTrack.textContent = '';
+  notes = (notes || []).slice();
+  const seq = ALB_TEMPLATE.slice();
+  const imgCount = cols => cols.reduce((n,c) => n + c.items.filter(i => i.tier).length, 0);
+  let guard = 0;
+  while (imgCount(seq) < notes.length && guard++ < 60) seq.push(ALB_EXTRA[(seq.length - ALB_TEMPLATE.length) % ALB_EXTRA.length]);
+  let ni = 0;
+  for (const col of seq){
+    const need = col.items.filter(i => i.tier).length;
+    if (need && ni >= notes.length) break;            // 没图可填了，停在这
+    const colEl = document.createElement('div');
+    colEl.className = 'album-col';
+    for (const it of col.items){
+      let el = null;
+      if (it.tier){ if (ni >= notes.length) continue; el = albImg(notes[ni++], it.tier); }
+      else if (it.callout != null){ el = albCallout(it.callout); }
+      if (!el) continue;
+      albStagger(el, it);
+      colEl.appendChild(el);
+    }
+    if (!colEl.children.length) continue;
+    albumTrack.appendChild(colEl);
+    const sp = document.createElement('div');
+    sp.className = 'album-spacer' + (col.s === 'full' ? '' : ' ' + (col.s || 'half'));
+    albumTrack.appendChild(sp);
+  }
+  if (albIO && !matchMedia('(prefers-reduced-motion: reduce)').matches)
+    albumTrack.querySelectorAll('.q-wrap').forEach(w => { w.classList.add('armed'); albIO.observe(w); });
+  // 封面按自然比例缩放，宽度要等图片载入才定 → 每张载入后重算滚程高度
+  albumTrack.querySelectorAll('.album-cover img').forEach(img => { if (!img.complete) img.addEventListener('load', sizeAlbum, { once:true }); });
+  sizeAlbum();
+}
+function sizeAlbum(){
+  if (!albumTrack || !albumSection) return;
+  const travel = Math.max(0, albumTrack.scrollWidth - innerWidth);
+  albumSection.style.height = (innerHeight + travel * 0.75) + 'px';   // 横移比纵滚快一档 → 屏数更短，配内容长度
 }
 buildAlbum(ALBUM);
+addEventListener('resize', sizeAlbum, { passive:true });
 
 // xhs.json — drop next to index.html to replace the snapshot with real notes.
-// Produce it from the user's OpenCLI:
-//   opencli xiaohongshu user 626e17a00000000021028b6e --limit 12 -f json   (titles+urls)
-//   opencli xiaohongshu download <note> ...                                (covers -> assets/xhs/)
+// Produce it from the user's OpenCLI (Chrome bridge extension + logged into xhs):
+//   opencli xiaohongshu creator-notes -f json            (own account: titles/dates/covers)
+//   opencli xiaohongshu user 626e17a00000000021028b6e -f json   (or public profile notes)
+//   opencli xiaohongshu download <note-id> ...           (covers -> assets/xhs/)
 // then shape it as: { profile, album:[{tag,d,line,cover,url}], notes:[{tag,t,d,cover,url}] }
+// album[] feeds the horizontal wall (covers shown at natural ratio in vh tiers).
 fetch('xhs.json').then(r => r.ok ? r.json() : null).then(j => {
   if (!j) return;
   if (j.profile) XHS_PROFILE = j.profile;
@@ -2771,7 +3170,11 @@ function pageLoop(now){
     const S = 1 - 0.64 * shrink;                        // → ~0.36, matching the reference's smaller card
     canvas.style.transform = `translateY(${(-exit * 130).toFixed(2)}vh) scale(${S.toFixed(4)})`;
     canvas.style.borderRadius = '0px';                 // square corners, like the reference card
-    heroBack.style.opacity = clamp01(pinP * 3.2);
+    // the reference's stage is DARK from the first instant of the exit. the mat
+    // sits behind the full-screen canvas at rest, so ramping it to full opacity
+    // almost immediately (was *3.2 — far too slow, so the cream page showed
+    // through the shrinking border) puts the dark green there from frame one.
+    heroBack.style.opacity = clamp01(pinP * 60);
     heroExitP = clamp01(pinP * 2.6);                   // → uDesat (warm print)
     heroUi.style.opacity = 1 - clamp01(pinP * 4.5);
     // signature: SCROLL-SCRUBBED (scroll up un-writes). It rides up on the
@@ -2780,11 +3183,14 @@ function pageLoop(now){
     heroSig.style.opacity = clamp01((pinP - 0.10) * 8);
     heroSig.style.transform = `translate(-50%, -52%) translateY(${(-exit * 130).toFixed(2)}vh) rotate(-6deg)`;
     drawSig(heroSigObj, reducedMotion ? 1 : sigP);
-    // giant marquee scrolls across the dark stage behind the card
-    if (hbRow && hbSegW){
-      hbX = (hbX + 0.6 * dt / 16.7) % hbSegW;
-      hbRow.style.transform = `translateX(${-hbX.toFixed(1)}px)`;
+    // two bright marquee rows scroll across the dark stage (opposite ways) AND ride
+    // up with the card on exit — the text leaves bound to the card, like the reference
+    for (const r of hbRows){
+      r.x = (r.x + 0.6 * dt / 16.7) % r.w;
+      const tx = r.dir < 0 ? -r.x : (r.x - r.w);   // dir<0 drifts left, dir>0 drifts right
+      r.row.style.transform = `translateX(${tx.toFixed(1)}px)`;
     }
+    if (hbMarquee) hbMarquee.style.transform = `translateY(-50%) translateY(${(-exit * 130).toFixed(2)}vh)`;
     // scroll cue hides as soon as the exit begins
     if (scrollCue) scrollCue.classList.toggle('bye', pinP > 0.02);
     // subtle DOM parallax against the cursor
@@ -2794,18 +3200,27 @@ function pageLoop(now){
       pl.el.style.translate = `${(-plxX * pl.f).toFixed(1)}px ${(-plxY * pl.f).toFixed(1)}px`;
   }
 
-  // horizontal album: scroll → sideways travel + dark-to-paper color morph
-  if (albumPin && albumPin.offsetParent !== null){
-    const ar = albumPin.parentElement.getBoundingClientRect();
+  // horizontal album: scroll → smoothed sideways travel + 暗绿→纸 color morph
+  if (albumPin && albumTrack && albumSection && albumPin.offsetParent !== null){
+    const ar = albumSection.getBoundingClientRect();
     if (!(ar.bottom < -100 || ar.top > ih + 100)){
-      const p = reducedMotion ? 1 : clamp01(-ar.top / (ar.height - ih));
-      const travel = albumRow.scrollWidth - innerWidth + innerWidth * 0.12;
-      albumRow.style.transform = `translateX(${-p * Math.max(0, travel)}px)`;
-      // color morph #111112 → paper
-      const mixc = (a, b) => Math.round(a + (b - a) * p);
-      albumPin.parentElement.style.background =
-        `rgb(${mixc(17,248)},${mixc(20,248)},${mixc(13,243)})`;
-      albumPin.style.color = p > 0.55 ? 'var(--ink)' : '#f4f4ed';
+      const lead = ih * 0.55;   // 进场提前量：章节顶进到视口约 55% 就开滚（像原站照片一进场就左移）
+      const p = reducedMotion ? 1 : clamp01((lead - ar.top) / (lead + ar.height - ih));
+      const maxTravel = Math.max(0, albumTrack.scrollWidth - innerWidth);
+      albumTarget = p * maxTravel;
+      albumCur += (albumTarget - albumCur) * 0.085;        // lerp → 惯性滑行/过冲
+      if (reducedMotion || Math.abs(albumTarget - albumCur) < 0.2) albumCur = albumTarget;
+      albumTrack.style.transform = `translate3d(${-albumCur}px,0,0)`;
+      // intro 标题在墙开动后淡出，让照片成焦点（原站墙上无大标题）
+      if (albumHead) albumHead.style.opacity = clamp01(1 - p / 0.2);
+      // 一半深一半浅：暗→纸随滚动均匀渐变，中点 p=.5 正好是暗↔亮交界（暗墙占前半、纸白占后半）
+      const ss = (a, b, x) => { const t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+      const cp = ss(0.06, 0.94, p);
+      const mixc = (a, b) => Math.round(a + (b - a) * cp);
+      albumSection.style.background = `rgb(${mixc(40,239)},${mixc(44,239)},${mixc(32,229)})`;
+      const onPaper = cp > 0.5;
+      albumPin.style.color = onPaper ? 'var(--ink)' : '#f4f4ed';
+      albumPin.classList.toggle('on-paper', onPaper);   // 纸白段：lime 高亮词转可读
     }
   }
 
@@ -2862,109 +3277,218 @@ requestAnimationFrame(pageLoop);
 // debug hook: drive one choreography tick while the tab is hidden (rAF parked)
 window.HERO.pageTick = () => pageLoop(performance.now());
 
-/* --- 8g. project constellation (obsidian-style graph) --- */
-const NODES = [
-  { id:'zima',     n:'齐马蓝 · 本站',    d:'你正在看的这个网站。流体显形 hero + 全站动效，单文件零依赖。', s:'updating', x:.50, y:.42, r:15, sat:4 },
-  { id:'chess',    n:'棋界融合',         d:'国际象棋 × 将棋的 9×9 融合棋，规则已锁定，已上线可玩。', s:'live', x:.18, y:.30, r:12, sat:3 },
-  { id:'dazi',     n:'打字爽',           d:'中文打字练习站，Monkeytype 式手感 + 强反馈 + 自定义文章导入。', s:'updating', x:.30, y:.66, r:12, sat:3 },
-  { id:'mofa',     n:'嬤法大逃杀',       d:'多人混战小游戏实验，已部署上线。', s:'live', x:.10, y:.55, r:9, sat:2 },
-  { id:'kindle',   n:'kindle-station',  d:'EPUB 上传 → AI 魔改 → 转发 Kindle，外加高亮抓取同步。', s:'updating', x:.68, y:.24, r:11, sat:3 },
-  { id:'remix',    n:'EPUB remixer',    d:'kindle-station 的前身实验，ADHD 友好的电子书重排。', s:'dormant', x:.80, y:.12, r:6, sat:0 },
-  { id:'ody',      n:'odysseus 汉化',   d:'自托管 AI 工作台的中文本地化，已开源。', s:'live', x:.84, y:.46, r:9, sat:2 },
-  { id:'card',     n:'cardputer 掌机',  d:'M5Stack 掌上终端的固件折腾，键盘唤醒等坑已踩平。', s:'updating', x:.62, y:.72, r:10, sat:3 },
-  { id:'pen',      n:'vibe 笔',         d:'笔形外设 DIY。蛰伏中——等互动模块学完就回来定 BOM。可蹲。', s:'dormant', x:.76, y:.86, r:8, sat:0 },
-  { id:'liumang',  n:'剧本杀宇宙',       d:'21 本 1845 页剧本 OCR 成 59 万字故事圣经，改写与续写进行中。', s:'dormant', x:.36, y:.14, r:8, sat:1 },
-  { id:'sess',     n:'sessionss',       d:'多 session 并行大项目的 skill，工作流陈列室 WF·01。', s:'live', x:.44, y:.84, r:8, sat:2 },
-  { id:'cook',     n:'动效食谱',         d:'65 个高端 web 动效 demo，从 lando 官网逆向而来。', s:'live', x:.58, y:.55, r:9, sat:2 },
-];
-const EDGES = [['zima','cook'],['cook','sess'],['zima','sess'],['chess','liumang'],['dazi','zima'],
-               ['kindle','remix'],['card','pen'],['mofa','chess'],['ody','sess'],['kindle','zima']];
-const GCOL = { updating:'#d2ff00', live:'#f4f4ed', dormant:'#6b7060' };
-const gCanvas = document.getElementById('graphCanvas');
-const gInfo = document.getElementById('graphInfo');
-if (gCanvas){
-  const gtx = gCanvas.getContext('2d');
-  let gw = 0, gh = 0, gdpr = 1, gVisible = false, gMouse = { x:-1e4, y:-1e4 }, hovered = null;
-  const sats = [];
-  NODES.forEach(nd => {
-    for (let i = 0; i < nd.sat; i++)
-      sats.push({ p:nd, a:Math.random() * 6.28, dist:nd.r + 14 + Math.random() * 22, sp:(0.12 + Math.random() * 0.25) * (Math.random() < .5 ? -1 : 1) });
-  });
-  function gSize(){
-    const r = gCanvas.getBoundingClientRect();
-    gdpr = Math.min(devicePixelRatio || 1, 2);
-    gw = r.width; gh = r.height;
-    gCanvas.width = Math.round(gw * gdpr); gCanvas.height = Math.round(gh * gdpr);
-    gtx.setTransform(gdpr, 0, 0, gdpr, 0, 0);
+/* --- 8g. knowledge graph · multi-source, scroll-grown, full-screen --- */
+/*__GRAPH_DATA__*/
+const GRAPH={"meta":{"built":"2026-06-21","counts":{"nodes":140,"edges":395,"github":33,"claude":28,"obsidian":56,"bridges":20},"disciplines":["3D建模","AI工作台","ClaudeCode生态","Web动效","个人站","中文打字","商业","工具脚本","成长","教育","旅行","游戏","电影","硬件","设计","阅读"],"languages":["Astro","HTML","JavaScript","PowerShell","Python","TypeScript"]},"nodes":[{"id":"root","label":"chichu","desc":"18 岁 vibe coder · 操作熵↓ · build in public · 好奇心第一动力。这张图就是我这一年长出来的全部。","platform":"core","cat":"root","status":null,"deg":19,"r":20,"disc":[]},{"id":"hub:github","label":"GitHub","desc":"开源仓库 · 公开 build in public 的全部产物","platform":"github","cat":"hub","status":null,"deg":33,"r":15,"disc":[]},{"id":"hub:claude","label":"Claude","desc":"我和 Claude 的长期记忆：项目档案 / 协作偏好 / 参考","platform":"claude","cat":"hub","status":null,"deg":28,"r":15,"disc":[]},{"id":"hub:obsidian","label":"Obsidian","desc":"个人笔记库：学习、规划、读书与随想","platform":"obsidian","cat":"hub","status":null,"deg":26,"r":15,"disc":[]},{"id":"gh:lixon","label":"lixon","desc":"复刻 landonorris.com 流体头盔首屏的零依赖单文件 hero（流体+SDF 全程序化）","platform":"github","cat":"project","status":"updating","lang":"HTML","private":false,"url":"https://github.com/xing0325/lixon","repoUrl":"https://github.com/xing0325/lixon","stars":0,"disc":["Web动效","个人站"],"deg":7,"r":10.9},{"id":"lang:HTML","label":"HTML","desc":"技术栈","platform":"core","cat":"skill","status":null,"isLang":true,"deg":15,"r":14.1,"disc":[]},{"id":"gh:chichu_habit","label":"chichu_habit","desc":"记录整理 chichu 习惯的仓库，由各 session 的 Claude 提取推送","platform":"github","cat":"project","status":"updating","lang":"HTML","private":false,"url":"https://github.com/xing0325/chichu_habit","repoUrl":"https://github.com/xing0325/chichu_habit","stars":0,"disc":["ClaudeCode生态"],"deg":4,"r":9.2},{"id":"gh:jingqi-share","label":"jingqi-share","desc":"chichu「在惊奇分享」一年 build in public 单页站，含可缩放答辩画板","platform":"github","cat":"project","status":"updating","lang":"HTML","private":false,"url":"https://github.com/xing0325/jingqi-share","repoUrl":"https://github.com/xing0325/jingqi-share","stars":0,"disc":["教育"],"deg":5,"r":9.8},{"id":"gh:chichu-visual-talk-notes","label":"chichu-visual-talk-notes","desc":"替代 PPT 的静态分享站 V2，更贴近原始笔记叙述并补灵感素材","platform":"github","cat":"project","status":"updating","lang":"HTML","private":false,"url":"https://github.com/xing0325/chichu-visual-talk-notes","repoUrl":"https://github.com/xing0325/chichu-visual-talk-notes","stars":0,"disc":[],"deg":3,"r":8.5},{"id":"gh:chichu-visual-talk","label":"chichu-visual-talk","desc":"替代 PPT 的静态可视化演讲站，可 GitHub Pages 部署","platform":"github","cat":"project","status":"updating","lang":"HTML","private":false,"url":"https://github.com/xing0325/chichu-visual-talk","repoUrl":"https://github.com/xing0325/chichu-visual-talk","stars":0,"disc":[],"deg":3,"r":8.5},{"id":"gh:chess-shogi","label":"chess-shogi","desc":"国象 × 将棋 9×9 融合在线对战，含规则引擎与联机大厅","platform":"github","cat":"project","status":"updating","lang":"TypeScript","private":false,"url":"https://github.com/xing0325/chess-shogi","repoUrl":"https://github.com/xing0325/chess-shogi","stars":0,"disc":["游戏"],"deg":4,"r":9.2},{"id":"lang:TypeScript","label":"TypeScript","desc":"技术栈","platform":"core","cat":"skill","status":null,"isLang":true,"deg":3,"r":8.5,"disc":[]},{"id":"gh:xiaohongshu-preview","label":"xiaohongshu-preview","desc":"小红书图文工作台：AI 用 HTML/CSS 写卡片，预览排版并一键导出 PNG","platform":"github","cat":"skill","status":"updating","lang":"HTML","private":false,"url":"https://github.com/xing0325/xiaohongshu-preview","repoUrl":"https://github.com/xing0325/xiaohongshu-preview","stars":2,"disc":[],"deg":2,"r":7.7},{"id":"gh:odysseus-zh-CN","label":"odysseus-zh-CN","desc":"PewDiePie 自托管 AI 工作台 Odysseus 的中文汉化覆盖层（油猴/补丁）","platform":"github","cat":"skill","status":"updating","lang":"Python","private":false,"url":"https://github.com/xing0325/odysseus-zh-CN","repoUrl":"https://github.com/xing0325/odysseus-zh-CN","stars":1,"disc":["AI工作台","工具脚本"],"deg":5,"r":9.8},{"id":"lang:Python","label":"Python","desc":"技术栈","platform":"core","cat":"skill","status":null,"isLang":true,"deg":4,"r":9.2,"disc":[]},{"id":"gh:warhol-factory","label":"warhol-factory","desc":"安迪·沃霍尔「银色工厂」互动致敬站，亲手丝网印刷/混墨/试镜","platform":"github","cat":"project","status":"updating","lang":"JavaScript","private":false,"url":"https://github.com/xing0325/warhol-factory","repoUrl":"https://github.com/xing0325/warhol-factory","stars":0,"disc":[],"deg":2,"r":7.7},{"id":"lang:JavaScript","label":"JavaScript","desc":"技术栈","platform":"core","cat":"skill","status":null,"isLang":true,"deg":4,"r":9.2,"disc":[]},{"id":"gh:zima-blue","label":"zima-blue","desc":"「齐马蓝」chichu 个人站：单页下潜长滚动，GSAP 纯静态","platform":"github","cat":"project","status":"updating","lang":"JavaScript","private":false,"url":"https://xing0325.github.io/zima-blue/","repoUrl":"https://github.com/xing0325/zima-blue","stars":0,"disc":["Web动效","个人站"],"deg":7,"r":10.9},{"id":"gh:mofazhusha","label":"mofazhusha","desc":"嬷法大逃杀：Minecraft 风课堂签到游戏化系统，实时多人","platform":"github","cat":"project","status":"updating","lang":"HTML","private":false,"url":"https://github.com/xing0325/mofazhusha","repoUrl":"https://github.com/xing0325/mofazhusha","stars":0,"disc":["游戏"],"deg":6,"r":10.4},{"id":"gh:zima","label":"zima","desc":"chichu 个人站「齐马蓝」，随滚动下潜的 Astro + three.js 站","platform":"github","cat":"project","status":"updating","lang":"Astro","private":false,"url":"https://github.com/xing0325/zima","repoUrl":"https://github.com/xing0325/zima","stars":0,"disc":["Web动效","个人站"],"deg":8,"r":11.4},{"id":"lang:Astro","label":"Astro","desc":"技术栈","platform":"core","cat":"skill","status":null,"isLang":true,"deg":1,"r":6.6,"disc":[]},{"id":"gh:chichu-feishu-habits","label":"chichu-feishu-habits","desc":"chichu 个人站（齐马蓝主题），Next.js + R3F 水面 Hero","platform":"github","cat":"project","status":"updating","lang":"TypeScript","private":true,"url":"https://zimablue-alpha.vercel.app","repoUrl":"https://github.com/xing0325/chichu-feishu-habits","stars":0,"disc":["Web动效","个人站"],"deg":6,"r":10.4},{"id":"gh:vibe-coding-class","label":"vibe-coding-class","desc":"给 Vibe Coder 的 GitHub 协作互动教学，30 分钟通关 issue→PR","platform":"github","cat":"project","status":"updating","lang":"JavaScript","private":false,"url":"https://github.com/xing0325/vibe-coding-class","repoUrl":"https://github.com/xing0325/vibe-coding-class","stars":1,"disc":["教育"],"deg":3,"r":8.5},{"id":"gh:siemens-training","label":"siemens-training","desc":"对标西门子 SITRAIN 的工业培训演示站，纯静态双主题","platform":"github","cat":"project","status":"updating","lang":"HTML","private":false,"url":"https://github.com/xing0325/siemens-training","repoUrl":"https://github.com/xing0325/siemens-training","stars":0,"disc":["教育"],"deg":4,"r":9.2},{"id":"gh:qiantaici-decoder","label":"qiantaici-decoder","desc":"潜台词解码器，依恋类型互动作业，可嵌入 Notion","platform":"github","cat":"project","status":"live","lang":"HTML","private":false,"url":"https://github.com/xing0325/qiantaici-decoder","repoUrl":"https://github.com/xing0325/qiantaici-decoder","stars":0,"disc":[],"deg":2,"r":7.7},{"id":"gh:claude-account-switch-migration","label":"claude-account-switch-migration","desc":"Claude Code 换账号后找回旧 session 的迁移指南","platform":"github","cat":"skill","status":"live","lang":null,"private":false,"url":"https://github.com/xing0325/claude-account-switch-migration","repoUrl":"https://github.com/xing0325/claude-account-switch-migration","stars":0,"disc":["工具脚本","ClaudeCode生态"],"deg":5,"r":9.8},{"id":"gh:late-penalty","label":"late-penalty","desc":"迟到惩罚转盘，随机抽惩罚的网页小工具","platform":"github","cat":"project","status":"live","lang":"HTML","private":false,"url":"https://github.com/xing0325/late-penalty","repoUrl":"https://github.com/xing0325/late-penalty","stars":0,"disc":["游戏","工具脚本"],"deg":4,"r":9.2},{"id":"gh:dazi-juice","label":"dazi-juice","desc":"中文打字练习网页，Monkeytype 风 + 强反馈 + 导入文章","platform":"github","cat":"project","status":"live","lang":"HTML","private":false,"url":"https://github.com/xing0325/dazi-juice","repoUrl":"https://github.com/xing0325/dazi-juice","stars":0,"disc":["中文打字"],"deg":4,"r":9.2},{"id":"gh:curi-online","label":"curi-online","desc":"好奇学院线上版，10 人协作的 Next.js + Supabase 平台","platform":"github","cat":"project","status":"live","lang":null,"private":true,"url":"https://github.com/xing0325/curi-online","repoUrl":"https://github.com/xing0325/curi-online","stars":0,"disc":["教育"],"deg":4,"r":9.2},{"id":"gh:kiidschool","label":"kiidschool","desc":"钥匙玩校 2026 夏令营招生 H5 落地页","platform":"github","cat":"project","status":"live","lang":"HTML","private":false,"url":"https://github.com/xing0325/kiidschool","repoUrl":"https://github.com/xing0325/kiidschool","stars":0,"disc":["教育"],"deg":6,"r":10.4},{"id":"gh:china-truth-graph","label":"china-truth-graph","desc":"中国近现代禁书与异见者知识图谱，166 节点可视化","platform":"github","cat":"project","status":"live","lang":"JavaScript","private":false,"url":"https://github.com/xing0325/china-truth-graph","repoUrl":"https://github.com/xing0325/china-truth-graph","stars":0,"disc":[],"deg":3,"r":8.5},{"id":"gh:sessionss","label":"sessionss","desc":"Claude Code 多 session 并行开发同一网站的脚手架，一行命令生成 worktree 与分工","platform":"github","cat":"skill","status":"live","lang":"PowerShell","private":true,"url":"https://github.com/xing0325/sessionss","repoUrl":"https://github.com/xing0325/sessionss","stars":0,"disc":["ClaudeCode生态"],"deg":4,"r":9.2},{"id":"lang:PowerShell","label":"PowerShell","desc":"技术栈","platform":"core","cat":"skill","status":null,"isLang":true,"deg":2,"r":7.7,"disc":[]},{"id":"gh:credit-score","label":"credit-score","desc":"学习社区信用积分管理系统，多角色加减分与排行，FastAPI + SQLite","platform":"github","cat":"project","status":"live","lang":"Python","private":true,"url":"https://github.com/xing0325/credit-score","repoUrl":"https://github.com/xing0325/credit-score","stars":0,"disc":["教育"],"deg":4,"r":9.2},{"id":"gh:bypass-pet","label":"bypass-pet","desc":"Windows 像素桌宠，单击切换 Claude bypass 模式，搏击俱乐部双形态","platform":"github","cat":"skill","status":"live","lang":"Python","private":false,"url":"https://github.com/xing0325/bypass-pet","repoUrl":"https://github.com/xing0325/bypass-pet","stars":0,"disc":["ClaudeCode生态"],"deg":5,"r":9.8},{"id":"gh:claude-bypass-hook","label":"claude-bypass-hook","desc":"PreToolUse hook，用哨兵文件强行打开 bypass 权限，绕过 settings.json 失效 bug","platform":"github","cat":"skill","status":"live","lang":"PowerShell","private":false,"url":"https://github.com/xing0325/claude-bypass-hook","repoUrl":"https://github.com/xing0325/claude-bypass-hook","stars":0,"disc":["工具脚本","ClaudeCode生态"],"deg":6,"r":10.4},{"id":"gh:web-anim-cookbook","label":"web-anim-cookbook","desc":"逆向 landonorris.com 的高级 web 动效配方集，单文件零依赖打开即跑","platform":"github","cat":"project","status":"live","lang":"HTML","private":false,"url":"https://github.com/xing0325/web-anim-cookbook","repoUrl":"https://github.com/xing0325/web-anim-cookbook","stars":0,"disc":["Web动效"],"deg":5,"r":9.8},{"id":"gh:landonorris-teardown","label":"landonorris-teardown","desc":"landonorris.com 官网全站逆向拆解报告，含可交互 demo 与组件表","platform":"github","cat":"project","status":"live","lang":"HTML","private":false,"url":"https://github.com/xing0325/landonorris-teardown","repoUrl":"https://github.com/xing0325/landonorris-teardown","stars":0,"disc":[],"deg":4,"r":9.2},{"id":"gh:allow-floating-ball","label":"allow-floating-ball","desc":"Windows 悬浮球，自动点击 Claude Desktop 的 MCP 授权弹窗","platform":"github","cat":"skill","status":"live","lang":"Python","private":true,"url":"https://github.com/xing0325/allow-floating-ball","repoUrl":"https://github.com/xing0325/allow-floating-ball","stars":0,"disc":["ClaudeCode生态"],"deg":4,"r":9.2},{"id":"gh:mom-2026","label":"mom-2026","desc":"2026 母亲节写给妈妈的一封信，单页 HTML","platform":"github","cat":"project","status":"live","lang":"HTML","private":false,"url":"https://github.com/xing0325/mom-2026","repoUrl":"https://github.com/xing0325/mom-2026","stars":0,"disc":[],"deg":2,"r":7.7},{"id":"gh:calling-suishoji","label":"calling-suishoji","desc":"个人随手记应用，AI 自动分类，日历与日记，周总结月洞察","platform":"github","cat":"project","status":"live","lang":"TypeScript","private":false,"url":"https://github.com/xing0325/calling-suishoji","repoUrl":"https://github.com/xing0325/calling-suishoji","stars":0,"disc":["AI工作台"],"deg":4,"r":9.2},{"id":"gh:private-insight-officer","label":"private-insight-officer","desc":"让 AI 通读 Obsidian 笔记，产出跨时间成长图谱与深度洞察","platform":"github","cat":"skill","status":"live","lang":null,"private":true,"url":"https://github.com/xing0325/private-insight-officer","repoUrl":"https://github.com/xing0325/private-insight-officer","stars":0,"disc":["AI工作台","成长"],"deg":4,"r":9.2},{"id":"cl:cai_deepseek_proxy_reset_fix","label":"CAI 不睬人=Karing 代理 reset DeepSeek","desc":"症状/根因/修复：launcher 改走 Karing 3066 直连口(非 3067)，改完重启 CAI；复发问题照方抓药","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["ClaudeCode生态"],"deg":4,"r":9.2},{"id":"cl:project_cai_harness","label":"CAI harness（官方 cai CLI）","desc":"CAI 权威 harness=官方 CLI(cai-framework 0.5.10,WSL Ubuntu/DeepSeek)；桌面 CAI.lnk→WT profile→cai-deepseek；自制 GUI 已删，禁止重建","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["ClaudeCode生态"],"deg":5,"r":9.8},{"id":"cl:project_chess_shogi","label":"国象×将棋融合对战游戏","desc":"9×9 融合棋盘，工程在 C:\\Users\\david\\chess-shogi，规则已锁，Plan 1-4 全完成，已上线 https://chess-shogi-production.up.railway.app","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["游戏","ClaudeCode生态"],"deg":6,"r":10.4},{"id":"cl:project_dazi_juice","label":"打字爽 dazi-juice 项目状态","desc":"中文打字网站，Monkeytype 风格 + 强反馈 + 自定义文章导入，朱慈类删号作者要用户自带备份","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["中文打字","工具脚本","ClaudeCode生态"],"deg":5,"r":9.8},{"id":"cl:project_ditie_paoku","label":"倒反天罡版地铁跑酷《没有目的地》","desc":"工程 C:\\Users\\david\\ditie-paoku;Three.js 3D三渲二;你即地铁碾人/电车难题倒玩/Wire冷调;人即金币+撞击+尸堆;碾人不致败只撞硬障碍败;spec v2 定稿建 MVP","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["游戏","Web动效","ClaudeCode生态","3D建模"],"deg":7,"r":10.9},{"id":"cl:project_hermes_gateway","label":"Hermes 网关（原生 Windows 自启）","desc":"Nous Hermes agent 常驻网关/连微信(e1116dcf);自启=2个计划任务+看门狗;GBK刷屏真凶=子进程按GBK解码,用 PYTHONUTF8=1 修(非PYTHONIOENCODING);已改隐藏后台,原件 gateway-service\\*.bak-20260621","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["Web动效","AI工作台","ClaudeCode生态"],"deg":6,"r":10.4},{"id":"cl:project_jingqi_share","label":"在惊奇分享展示站（chichu 一年长卷）","desc":"C:\\Users\\david\\jingqi-share 单页滚动站/7大主题提词器;画板 LZString 解压+自写SVG渲染可缩放拖动;NBSP路径坑;CAI段已脱敏;禁\"加戏\"保留原叙述与顺序","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["Web动效","个人站","硬件","ClaudeCode生态"],"deg":7,"r":10.9},{"id":"cl:project_kiidschool_detail_page_ux","label":"钥匙玩校 · 详情页长文阅读 UX 清单","desc":"9 条阅读 UX：进度条/TOC/阅读时间/折叠/锚点/懒加载/深色/字号/续读","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["阅读","Web动效","工具脚本","ClaudeCode生态","商业"],"deg":7,"r":10.9},{"id":"cl:project_kindle_station","label":"kindle-station 项目（EPUB Remixer + 高亮同步）","desc":"多用户 web：上传 EPUB → 可选 Claude 魔改 → 转发到 Kindle + bookmarklet 抓高亮","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["阅读","工具脚本","ClaudeCode生态"],"deg":5,"r":9.8},{"id":"cl:project_lando_hero_replica","label":"个人网站主工程（lando hero + 6 章节）","desc":"C:\\Users\\david\\lando-hero-replica 单文件零依赖,端口8170;VIBE_DASH 接口留给 Hermes;等正脸照片做蒙面显形;旧尝试在 lando-attempts-archive","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["Web动效","个人站","工具脚本","ClaudeCode生态","商业"],"deg":13,"r":13.4},{"id":"cl:project_liumang_xushi","label":"《流氓叙事》大型剧本杀 OCR + 故事圣经","desc":"21本/1845页/59万字已OCR(RapidOCR)+蒸馏,总纲在 C:\\高清电影中转站\\流氓叙事剧本\\_OCR_TEXT\\故事圣经_总纲.md,用户要改写/续写/创作","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["剧本杀","ClaudeCode生态"],"deg":2,"r":7.7},{"id":"cl:project_m5stack_cardputer","label":"M5Stack Cardputer-ADV 硬件开发项目","desc":"工程在 C:\\Users\\david\\cardputer-adv，PlatformIO + 官方 M5Cardputer 库；键盘按 fn 唤醒/TCA8418 等 ADV 坑","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["硬件","工具脚本","ClaudeCode生态"],"deg":4,"r":9.2},{"id":"cl:project_mofazhusha","label":"嬤法大逃杀（mofazhusha）项目状态","desc":"Railway URL https://mofazhusha-production.up.railway.app/，每次 push 后必带预览链接","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["游戏","ClaudeCode生态"],"deg":4,"r":9.2},{"id":"cl:project_neranjara","label":"尼连禅河·原始佛教3D漫步","desc":"Three.js无构建单页/端口8200/顺河走过一天=无常,4时刻体验无常无我缘起灭,不读经;v1切片完成","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["Web动效","ClaudeCode生态","佛教冥想","3D建模"],"deg":6,"r":10.4},{"id":"cl:project_odysseus","label":"odysseus 自托管 AI 工作台（PewDiePie，已装）","desc":"C:\\Users\\david\\odysseus，dev分支，端口7000，开机自启已设，大脑已接(ChatGPT+DeepSeek)，汉化已开源 xing0325/odysseus-zh-CN","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["AI工作台","ClaudeCode生态"],"deg":6,"r":10.4},{"id":"cl:project_siemens_sitrain_demo","label":"西门子 SITRAIN 培训站 demo（商单）","desc":"模仿 sc.yaowee.cn，静态站 5 页（含 admin/design），已部署 https://xing0325.github.io/siemens-training/ ，朋友负责国内部署，等反馈迭代","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["教育","Web动效","工具脚本","ClaudeCode生态"],"deg":6,"r":10.4},{"id":"cl:project_silver_jewelry","label":"银戒指/首饰 DIY","desc":"代码建模→3D打印可铸树脂→失蜡单件直铸(无开模)，工程 C:\\Users\\david\\jewelry，差异化=生成式定制，目标自媒体+麓湖摆摊","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["AI工作台","硬件","工具脚本","ClaudeCode生态","3D建模","商业"],"deg":11,"r":12.6},{"id":"cl:project_telemachus","label":"手机版 Odysseus（Telemachus）","desc":"Flutter+Railway AI agent，工作+记录生活，设计锁 v1.3（C:\\Users\\david\\telemachus），下一步出实现计划；前端交 Fable","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["AI工作台","工具脚本","ClaudeCode生态"],"deg":5,"r":9.8},{"id":"cl:project_vibe_pen","label":"Vibe 笔项目进度（暂停中）","desc":"笔形外设 DIY 进度档案，已锁形态/模块/偏好；等学完互动模块再回来定 BOM","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["硬件","ClaudeCode生态"],"deg":3,"r":8.5},{"id":"cl:project_zima","label":"个人站「齐马蓝」重做中","desc":"旧 zima 工程已被推翻禁止再动，新版在 桌面\\claude tui\\zima-blue 从零重做；动手前先确认基于哪个工程","platform":"claude","cat":"project","mtype":"project","status":"live","disc":["Web动效","个人站","AI工作台","ClaudeCode生态","3D建模"],"deg":10,"r":12.2},{"id":"cl:reference_camping_footage_backup","label":"露营周素材备份工作流","desc":"Insta360 GO 3S(DCIM\\Camera01,VID+LRV成对) → My Passport E:\\视频素材\\「年份季 露营周 地点」；禁用剪切，复制后逐文件校验再清卡","platform":"claude","cat":"reference","mtype":"reference","status":null,"disc":["工具脚本","ClaudeCode生态"],"deg":6,"r":10.4},{"id":"cl:reference_claude_account_migration","label":"Claude 桌面端换账号迁移 session","desc":"sidebar 看不到旧 session：拷贝 `%APPDATA%\\Claude\\claude-code-sessions\\` 下的 `local_*.json` 到新账号目录；canonical 在 https://github.com/xing0325/claude-account-switch-migration","platform":"claude","cat":"reference","mtype":"reference","status":null,"disc":["工具脚本","ClaudeCode生态","3D建模"],"deg":5,"r":9.8},{"id":"cl:reference_obsidian_vault","label":"Obsidian 笔记库位置","desc":"C:\\obsidian\\obsidian本机存储（**不在 home 下**，别在 C:\\Users\\david 翻半天）；约204篇日记/随笔/影评/复盘，挖宣言口号用","platform":"claude","cat":"reference","mtype":"reference","status":null,"disc":["教育","AI工作台","ClaudeCode生态","成长"],"deg":6,"r":10.4},{"id":"cl:reference_python_env","label":"用户机器 Python 环境","desc":"别用 PATH 的 python(agent venv 无pip)，用 py -3.12；国内装包走清华镜像","platform":"claude","cat":"reference","mtype":"reference","status":null,"disc":["AI工作台","工具脚本","ClaudeCode生态"],"deg":6,"r":10.4},{"id":"cl:reference_voice_input_capswriter","label":"中文语音输入 → CapsWriter-Offline","desc":"装在 C:\\Users\\david\\CapsWriter，按住 CapsLock 说话；Whispering 中文翻车别再走","platform":"claude","cat":"reference","mtype":"reference","status":null,"disc":["工具脚本","ClaudeCode生态"],"deg":3,"r":8.5},{"id":"cl:user_chichu_profile","label":"用户公开身份 chichu","desc":"18 岁 vibe coder 人设与文案口吻：操作熵/蹲蹲/build in public/好奇心第一动力","platform":"claude","cat":"identity","mtype":"user","status":null,"disc":["游戏","个人站","工具脚本","ClaudeCode生态"],"deg":12,"r":13},{"id":"cl:user_hardware_profile","label":"主力机硬件配置","desc":"Intel Ultra 7 155H / 31.5G / 仅 Intel 核显无独显无 CUDA / 非 Apple Silicon / Win11；判断\"能不能跑 X\"先对照这","platform":"claude","cat":"identity","mtype":"user","status":null,"disc":["硬件","ClaudeCode生态"],"deg":8,"r":11.4},{"id":"ob:2025秋 成人礼","label":"成人礼","desc":"随想：跳出视角看世界须靠吸收视角外之物","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":2,"r":7.7},{"id":"ob:2025秋 日本游学规划","label":"日本游学规划","desc":"日本游学城市清单与行程投票","platform":"obsidian","cat":"note","status":null,"disc":["旅行"],"deg":2,"r":7.7},{"id":"ob:2025秋 百万设计师","label":"百万设计师","desc":"最爱的游戏设计师 Jonathan Blow（吹哥）及其代表作介绍","platform":"obsidian","cat":"note","status":null,"disc":["设计","游戏"],"deg":6,"r":10.4},{"id":"ob:2025秋 给青少年的普世阅读指南","label":"给青少年的普世阅读指南","desc":"青少年荐书手册的构成与算法设计，附 2020-2022 书单","platform":"obsidian","cat":"note","status":null,"disc":["阅读","教育"],"deg":4,"r":9.2},{"id":"ob:2025秋 课程反馈","label":"课程反馈","desc":"好奇学习社区第一周十门课程逐一反馈，最看好百万设计师","platform":"obsidian","cat":"note","status":null,"disc":["教育"],"deg":3,"r":8.5},{"id":"ob:2025秋 贩冰冰计划","label":"贩冰冰计划","desc":"麓湖摆摊卖水/椰子水的进货零售保温方案与成本利润","platform":"obsidian","cat":"note","status":null,"disc":["商业"],"deg":3,"r":8.5},{"id":"ob:2025秋 露营周规划","label":"露营周规划","desc":"高原徒步露营装备清单、食品药品与爬坡分队事项","platform":"obsidian","cat":"note","status":null,"disc":["旅行"],"deg":3,"r":8.5},{"id":"ob:《7号房的故事》影评","label":"《7号房的故事》影评","desc":"论电影无法苛求真实，好坏须用真实之外的标准评判","platform":"obsidian","cat":"note","status":null,"disc":["电影"],"deg":2,"r":7.7},{"id":"ob:《BRAID》游戏画面","label":"《BRAID》游戏画面","desc":"《时空幻境》画面留存","platform":"obsidian","cat":"note","status":null,"disc":["游戏"],"deg":2,"r":7.7},{"id":"ob:《失败的逻辑》读书笔记","label":"《失败的逻辑》读书笔记","desc":"复杂系统中人为何失败：超信号、隐式目标与完美主义灾难","platform":"obsidian","cat":"note","status":null,"disc":["阅读"],"deg":2,"r":7.7},{"id":"ob:会议：如何构建品牌，如何制定战略","label":"会议：如何构建品牌，如何制定战略","desc":"顾问张雅文分享：增强品牌影响力所需的思维与储备","platform":"obsidian","cat":"note","status":null,"disc":["商业"],"deg":2,"r":7.7},{"id":"ob:数列","label":"数列","desc":"数学占位笔记","platform":"obsidian","cat":"note","status":null,"disc":["数学"],"deg":1,"r":6.6},{"id":"ob:数学学习","label":"数学学习","desc":"反思什么才算「学会」：抛开刷题排名，本质是输入输出锻炼神经通路对抗遗忘","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":2,"r":7.7},{"id":"ob:暑假突击计划","label":"暑假突击计划","desc":"8.20–8.31 冲刺：8 本书 + 托福 SAT 各 60h，每日时间表与责任复利","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":2,"r":7.7},{"id":"ob:替潘昱辰写的作文","label":"替潘昱辰写的作文","desc":"以「容忍度光谱」回应反抗与忍耐之辩","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":2,"r":7.7},{"id":"ob:游戏《BRAID》","label":"游戏《BRAID》","desc":"Jonathan Blow《时空幻境》游戏笔记","platform":"obsidian","cat":"note","status":null,"disc":["游戏"],"deg":3,"r":8.5},{"id":"ob:游戏《The Witness》","label":"游戏《The Witness》","desc":"Jonathan Blow《见证者》游戏笔记","platform":"obsidian","cat":"note","status":null,"disc":["游戏"],"deg":3,"r":8.5},{"id":"ob:游戏帝国","label":"游戏帝国","desc":"EA 创始人 Trip 创业史与理念：免费是毒药、从世界需要出发、制作人话事","platform":"obsidian","cat":"note","status":null,"disc":["游戏","商业"],"deg":4,"r":9.2},{"id":"ob:王琦的采访大纲","label":"王琦的采访大纲","desc":"采访大纲：「创新教育的老师可以是什么样」","platform":"obsidian","cat":"note","status":null,"disc":["教育"],"deg":2,"r":7.7},{"id":"ob:线下活动","label":"线下活动","desc":"有杏书店《北欧秘诀》新书分享会的海报要素、公告结构与复盘","platform":"obsidian","cat":"note","status":null,"disc":["教育"],"deg":2,"r":7.7},{"id":"ob:资源大合集","label":"资源大合集","desc":"资源收藏：F1 电影《霹雳神风》","platform":"obsidian","cat":"note","status":null,"disc":["电影"],"deg":2,"r":7.7},{"id":"ob:随想集","label":"随想集","desc":"关于世俗与抽象、理论崇拜、提问、做最好、死亡、亲情的多则随想","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":2,"r":7.7},{"id":"ob:canvas:922db2","label":"到底什么算是游戏？","desc":"Obsidian canvas · 2025秋 Jonathan Blow分享演示","platform":"obsidian","cat":"note","status":null,"disc":["游戏","设计"],"small":true,"deg":4,"r":4.5},{"id":"ob:canvas:f8d5a9","label":"作品","desc":"Obsidian canvas · 2025秋 Jonathan Blow分享演示","platform":"obsidian","cat":"note","status":null,"disc":["游戏","设计"],"small":true,"deg":6,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理","label":"大谷翔平 81 宫格目标管理","desc":"把目标拆成中心 + 8 区 × 8 行动的曼陀罗计划法","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":10,"r":12.2},{"id":"ob:大谷翔平 81 宫格目标管理:信用","label":"信用","desc":"大谷翔平 81 宫格目标管理 · 信用 区","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":5,"r":9.8},{"id":"ob:大谷翔平 81 宫格目标管理:信用:提前半小时到","label":"提前半小时到","desc":"大谷翔平 81 宫格目标管理 · 信用","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:信用:事事有回应件件有着落","label":"事事有回应件件有着落","desc":"大谷翔平 81 宫格目标管理 · 信用","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:信用:承诺要做到","label":"承诺要做到","desc":"大谷翔平 81 宫格目标管理 · 信用","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:待人","label":"待人","desc":"大谷翔平 81 宫格目标管理 · 待人 区","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":5,"r":9.8},{"id":"ob:大谷翔平 81 宫格目标管理:待人:鼓励夸奖同学","label":"鼓励夸奖同学","desc":"大谷翔平 81 宫格目标管理 · 待人","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:待人:表达感谢","label":"表达感谢","desc":"大谷翔平 81 宫格目标管理 · 待人","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:待人:帮助同学","label":"帮助同学","desc":"大谷翔平 81 宫格目标管理 · 待人","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:时间管理","label":"时间管理","desc":"大谷翔平 81 宫格目标管理 · 时间管理 区","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":5,"r":9.8},{"id":"ob:大谷翔平 81 宫格目标管理:时间管理:有清晰任务计划","label":"有清晰任务计划","desc":"大谷翔平 81 宫格目标管理 · 时间管理","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:时间管理:不刷短视频","label":"不刷短视频","desc":"大谷翔平 81 宫格目标管理 · 时间管理","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:时间管理:闲暇听播客","label":"闲暇听播客","desc":"大谷翔平 81 宫格目标管理 · 时间管理","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:做事","label":"做事","desc":"大谷翔平 81 宫格目标管理 · 做事 区","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":5,"r":9.8},{"id":"ob:大谷翔平 81 宫格目标管理:做事:眼里有活","label":"眼里有活","desc":"大谷翔平 81 宫格目标管理 · 做事","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:做事:主动承担责任","label":"主动承担责任","desc":"大谷翔平 81 宫格目标管理 · 做事","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:做事:挑战自己上限","label":"挑战自己上限","desc":"大谷翔平 81 宫格目标管理 · 做事","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:示范","label":"示范","desc":"大谷翔平 81 宫格目标管理 · 示范 区","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":4,"r":9.2},{"id":"ob:大谷翔平 81 宫格目标管理:示范:上课积极回答","label":"上课积极回答","desc":"大谷翔平 81 宫格目标管理 · 示范","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:示范:过好自己的生活","label":"过好自己的生活","desc":"大谷翔平 81 宫格目标管理 · 示范","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:学习","label":"学习","desc":"大谷翔平 81 宫格目标管理 · 学习 区","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":5,"r":9.8},{"id":"ob:大谷翔平 81 宫格目标管理:学习:保持阅读量","label":"保持阅读量","desc":"大谷翔平 81 宫格目标管理 · 学习","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:学习:做复盘并分享","label":"做复盘并分享","desc":"大谷翔平 81 宫格目标管理 · 学习","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:学习:保持输出","label":"保持输出","desc":"大谷翔平 81 宫格目标管理 · 学习","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:生活","label":"生活","desc":"大谷翔平 81 宫格目标管理 · 生活 区","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":5,"r":9.8},{"id":"ob:大谷翔平 81 宫格目标管理:生活:不熬夜早起","label":"不熬夜早起","desc":"大谷翔平 81 宫格目标管理 · 生活","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:生活:健康饮食","label":"健康饮食","desc":"大谷翔平 81 宫格目标管理 · 生活","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:生活:整理宿舍","label":"整理宿舍","desc":"大谷翔平 81 宫格目标管理 · 生活","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:保持奖学金","label":"保持奖学金","desc":"大谷翔平 81 宫格目标管理 · 保持奖学金 区","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"deg":4,"r":9.2},{"id":"ob:大谷翔平 81 宫格目标管理:保持奖学金:珍惜机会","label":"珍惜机会","desc":"大谷翔平 81 宫格目标管理 · 保持奖学金","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"ob:大谷翔平 81 宫格目标管理:保持奖学金:不违反社区公约","label":"不违反社区公约","desc":"大谷翔平 81 宫格目标管理 · 保持奖学金","platform":"obsidian","cat":"note","status":null,"disc":["成长"],"small":true,"deg":2,"r":4.5},{"id":"disc:Web动效","label":"Web动效","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":14,"r":13.7,"disc":[]},{"id":"disc:个人站","label":"个人站","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":9,"r":11.8,"disc":[]},{"id":"disc:ClaudeCode生态","label":"ClaudeCode生态","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":34,"r":19.2,"disc":[]},{"id":"disc:教育","label":"教育","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":13,"r":13.4,"disc":[]},{"id":"disc:游戏","label":"游戏","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":15,"r":14.1,"disc":[]},{"id":"disc:AI工作台","label":"AI工作台","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":11,"r":12.6,"disc":[]},{"id":"disc:工具脚本","label":"工具脚本","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":18,"r":15,"disc":[]},{"id":"disc:中文打字","label":"中文打字","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":3,"r":8.5,"disc":[]},{"id":"disc:成长","label":"成长","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":39,"r":20,"disc":[]},{"id":"disc:3D建模","label":"3D建模","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":6,"r":10.4,"disc":[]},{"id":"disc:硬件","label":"硬件","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":6,"r":10.4,"disc":[]},{"id":"disc:阅读","label":"阅读","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":5,"r":9.8,"disc":[]},{"id":"disc:商业","label":"商业","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":7,"r":10.9,"disc":[]},{"id":"disc:旅行","label":"旅行","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":3,"r":8.5,"disc":[]},{"id":"disc:设计","label":"设计","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":4,"r":9.2,"disc":[]},{"id":"disc:电影","label":"电影","desc":"学科 / 兴趣聚类","platform":"core","cat":"discipline","status":null,"isDisc":true,"deg":3,"r":8.5,"disc":[]}],"edges":[{"a":"root","b":"hub:github","type":"struct"},{"a":"root","b":"hub:claude","type":"struct"},{"a":"root","b":"hub:obsidian","type":"struct"},{"a":"hub:github","b":"gh:lixon","type":"struct"},{"a":"gh:lixon","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:chichu_habit","type":"struct"},{"a":"gh:chichu_habit","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:jingqi-share","type":"struct"},{"a":"gh:jingqi-share","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:chichu-visual-talk-notes","type":"struct"},{"a":"gh:chichu-visual-talk-notes","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:chichu-visual-talk","type":"struct"},{"a":"gh:chichu-visual-talk","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:chess-shogi","type":"struct"},{"a":"gh:chess-shogi","b":"lang:TypeScript","type":"lang"},{"a":"hub:github","b":"gh:xiaohongshu-preview","type":"struct"},{"a":"gh:xiaohongshu-preview","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:odysseus-zh-CN","type":"struct"},{"a":"gh:odysseus-zh-CN","b":"lang:Python","type":"lang"},{"a":"hub:github","b":"gh:warhol-factory","type":"struct"},{"a":"gh:warhol-factory","b":"lang:JavaScript","type":"lang"},{"a":"hub:github","b":"gh:zima-blue","type":"struct"},{"a":"gh:zima-blue","b":"lang:JavaScript","type":"lang"},{"a":"hub:github","b":"gh:mofazhusha","type":"struct"},{"a":"gh:mofazhusha","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:zima","type":"struct"},{"a":"gh:zima","b":"lang:Astro","type":"lang"},{"a":"hub:github","b":"gh:chichu-feishu-habits","type":"struct"},{"a":"gh:chichu-feishu-habits","b":"lang:TypeScript","type":"lang"},{"a":"hub:github","b":"gh:vibe-coding-class","type":"struct"},{"a":"gh:vibe-coding-class","b":"lang:JavaScript","type":"lang"},{"a":"hub:github","b":"gh:siemens-training","type":"struct"},{"a":"gh:siemens-training","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:qiantaici-decoder","type":"struct"},{"a":"gh:qiantaici-decoder","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:claude-account-switch-migration","type":"struct"},{"a":"hub:github","b":"gh:late-penalty","type":"struct"},{"a":"gh:late-penalty","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:dazi-juice","type":"struct"},{"a":"gh:dazi-juice","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:curi-online","type":"struct"},{"a":"hub:github","b":"gh:kiidschool","type":"struct"},{"a":"gh:kiidschool","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:china-truth-graph","type":"struct"},{"a":"gh:china-truth-graph","b":"lang:JavaScript","type":"lang"},{"a":"hub:github","b":"gh:sessionss","type":"struct"},{"a":"gh:sessionss","b":"lang:PowerShell","type":"lang"},{"a":"hub:github","b":"gh:credit-score","type":"struct"},{"a":"gh:credit-score","b":"lang:Python","type":"lang"},{"a":"hub:github","b":"gh:bypass-pet","type":"struct"},{"a":"gh:bypass-pet","b":"lang:Python","type":"lang"},{"a":"hub:github","b":"gh:claude-bypass-hook","type":"struct"},{"a":"gh:claude-bypass-hook","b":"lang:PowerShell","type":"lang"},{"a":"hub:github","b":"gh:web-anim-cookbook","type":"struct"},{"a":"gh:web-anim-cookbook","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:landonorris-teardown","type":"struct"},{"a":"gh:landonorris-teardown","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:allow-floating-ball","type":"struct"},{"a":"gh:allow-floating-ball","b":"lang:Python","type":"lang"},{"a":"hub:github","b":"gh:mom-2026","type":"struct"},{"a":"gh:mom-2026","b":"lang:HTML","type":"lang"},{"a":"hub:github","b":"gh:calling-suishoji","type":"struct"},{"a":"gh:calling-suishoji","b":"lang:TypeScript","type":"lang"},{"a":"hub:github","b":"gh:private-insight-officer","type":"struct"},{"a":"gh:chichu-visual-talk","b":"gh:chichu-visual-talk-notes","type":"intra"},{"a":"gh:zima","b":"gh:zima-blue","type":"intra"},{"a":"gh:zima-blue","b":"gh:chichu-feishu-habits","type":"intra"},{"a":"gh:landonorris-teardown","b":"gh:web-anim-cookbook","type":"intra"},{"a":"gh:landonorris-teardown","b":"gh:lixon","type":"intra"},{"a":"gh:web-anim-cookbook","b":"gh:lixon","type":"intra"},{"a":"gh:bypass-pet","b":"gh:claude-bypass-hook","type":"intra"},{"a":"gh:claude-bypass-hook","b":"gh:allow-floating-ball","type":"intra"},{"a":"gh:claude-account-switch-migration","b":"gh:bypass-pet","type":"intra"},{"a":"gh:sessionss","b":"gh:curi-online","type":"intra"},{"a":"gh:credit-score","b":"gh:curi-online","type":"intra"},{"a":"gh:mofazhusha","b":"gh:kiidschool","type":"intra"},{"a":"gh:calling-suishoji","b":"gh:private-insight-officer","type":"intra"},{"a":"gh:china-truth-graph","b":"gh:jingqi-share","type":"intra"},{"a":"gh:chichu_habit","b":"gh:chichu-feishu-habits","type":"intra"},{"a":"hub:claude","b":"cl:cai_deepseek_proxy_reset_fix","type":"struct"},{"a":"hub:claude","b":"cl:project_cai_harness","type":"struct"},{"a":"hub:claude","b":"cl:project_chess_shogi","type":"struct"},{"a":"cl:project_chess_shogi","b":"gh:chess-shogi","type":"bridge"},{"a":"cl:project_chess_shogi","b":"gh:mofazhusha","type":"bridge"},{"a":"hub:claude","b":"cl:project_dazi_juice","type":"struct"},{"a":"cl:project_dazi_juice","b":"gh:dazi-juice","type":"bridge"},{"a":"hub:claude","b":"cl:project_ditie_paoku","type":"struct"},{"a":"hub:claude","b":"cl:project_hermes_gateway","type":"struct"},{"a":"hub:claude","b":"cl:project_jingqi_share","type":"struct"},{"a":"cl:project_jingqi_share","b":"gh:jingqi-share","type":"bridge"},{"a":"hub:claude","b":"cl:project_kiidschool_detail_page_ux","type":"struct"},{"a":"cl:project_kiidschool_detail_page_ux","b":"gh:kiidschool","type":"bridge"},{"a":"hub:claude","b":"cl:project_kindle_station","type":"struct"},{"a":"hub:claude","b":"cl:project_lando_hero_replica","type":"struct"},{"a":"cl:project_lando_hero_replica","b":"gh:lixon","type":"bridge"},{"a":"cl:project_lando_hero_replica","b":"gh:zima","type":"bridge"},{"a":"hub:claude","b":"cl:project_liumang_xushi","type":"struct"},{"a":"hub:claude","b":"cl:project_m5stack_cardputer","type":"struct"},{"a":"hub:claude","b":"cl:project_mofazhusha","type":"struct"},{"a":"cl:project_mofazhusha","b":"gh:mofazhusha","type":"bridge"},{"a":"hub:claude","b":"cl:project_neranjara","type":"struct"},{"a":"hub:claude","b":"cl:project_odysseus","type":"struct"},{"a":"cl:project_odysseus","b":"gh:odysseus-zh-CN","type":"bridge"},{"a":"hub:claude","b":"cl:project_siemens_sitrain_demo","type":"struct"},{"a":"cl:project_siemens_sitrain_demo","b":"gh:siemens-training","type":"bridge"},{"a":"hub:claude","b":"cl:project_silver_jewelry","type":"struct"},{"a":"hub:claude","b":"cl:project_telemachus","type":"struct"},{"a":"hub:claude","b":"cl:project_vibe_pen","type":"struct"},{"a":"hub:claude","b":"cl:project_zima","type":"struct"},{"a":"cl:project_zima","b":"gh:zima-blue","type":"bridge"},{"a":"cl:project_zima","b":"gh:zima","type":"bridge"},{"a":"hub:claude","b":"cl:reference_camping_footage_backup","type":"struct"},{"a":"hub:claude","b":"cl:reference_claude_account_migration","type":"struct"},{"a":"cl:reference_claude_account_migration","b":"gh:claude-account-switch-migration","type":"bridge"},{"a":"hub:claude","b":"cl:reference_obsidian_vault","type":"struct"},{"a":"hub:claude","b":"cl:reference_python_env","type":"struct"},{"a":"hub:claude","b":"cl:reference_voice_input_capswriter","type":"struct"},{"a":"hub:claude","b":"cl:user_chichu_profile","type":"struct"},{"a":"cl:user_chichu_profile","b":"gh:zima","type":"bridge"},{"a":"hub:claude","b":"cl:user_hardware_profile","type":"struct"},{"a":"cl:cai_deepseek_proxy_reset_fix","b":"cl:project_cai_harness","type":"intra"},{"a":"cl:project_cai_harness","b":"cl:user_hardware_profile","type":"intra"},{"a":"cl:project_cai_harness","b":"cl:reference_python_env","type":"intra"},{"a":"cl:project_ditie_paoku","b":"cl:user_chichu_profile","type":"intra"},{"a":"cl:project_hermes_gateway","b":"cl:project_lando_hero_replica","type":"intra"},{"a":"cl:project_hermes_gateway","b":"cl:cai_deepseek_proxy_reset_fix","type":"intra"},{"a":"cl:project_jingqi_share","b":"cl:user_chichu_profile","type":"intra"},{"a":"cl:project_lando_hero_replica","b":"cl:project_zima","type":"intra"},{"a":"cl:project_neranjara","b":"cl:user_hardware_profile","type":"intra"},{"a":"cl:project_neranjara","b":"cl:project_lando_hero_replica","type":"intra"},{"a":"cl:project_odysseus","b":"cl:user_hardware_profile","type":"intra"},{"a":"cl:project_silver_jewelry","b":"cl:user_chichu_profile","type":"intra"},{"a":"cl:project_silver_jewelry","b":"cl:user_hardware_profile","type":"intra"},{"a":"cl:project_silver_jewelry","b":"cl:reference_python_env","type":"intra"},{"a":"cl:project_telemachus","b":"cl:project_odysseus","type":"intra"},{"a":"cl:reference_camping_footage_backup","b":"cl:user_chichu_profile","type":"intra"},{"a":"cl:reference_camping_footage_backup","b":"cl:user_hardware_profile","type":"intra"},{"a":"cl:reference_obsidian_vault","b":"cl:project_lando_hero_replica","type":"intra"},{"a":"cl:user_chichu_profile","b":"cl:project_lando_hero_replica","type":"intra"},{"a":"cl:user_chichu_profile","b":"cl:project_zima","type":"intra"},{"a":"hub:obsidian","b":"ob:2025秋 成人礼","type":"struct"},{"a":"hub:obsidian","b":"ob:2025秋 日本游学规划","type":"struct"},{"a":"hub:obsidian","b":"ob:2025秋 百万设计师","type":"struct"},{"a":"hub:obsidian","b":"ob:2025秋 给青少年的普世阅读指南","type":"struct"},{"a":"hub:obsidian","b":"ob:2025秋 课程反馈","type":"struct"},{"a":"hub:obsidian","b":"ob:2025秋 贩冰冰计划","type":"struct"},{"a":"hub:obsidian","b":"ob:2025秋 露营周规划","type":"struct"},{"a":"hub:obsidian","b":"ob:《7号房的故事》影评","type":"struct"},{"a":"hub:obsidian","b":"ob:《BRAID》游戏画面","type":"struct"},{"a":"hub:obsidian","b":"ob:《失败的逻辑》读书笔记","type":"struct"},{"a":"hub:obsidian","b":"ob:会议：如何构建品牌，如何制定战略","type":"struct"},{"a":"hub:obsidian","b":"ob:数列","type":"struct"},{"a":"hub:obsidian","b":"ob:数学学习","type":"struct"},{"a":"hub:obsidian","b":"ob:暑假突击计划","type":"struct"},{"a":"hub:obsidian","b":"ob:替潘昱辰写的作文","type":"struct"},{"a":"hub:obsidian","b":"ob:游戏《BRAID》","type":"struct"},{"a":"hub:obsidian","b":"ob:游戏《The Witness》","type":"struct"},{"a":"hub:obsidian","b":"ob:游戏帝国","type":"struct"},{"a":"hub:obsidian","b":"ob:王琦的采访大纲","type":"struct"},{"a":"hub:obsidian","b":"ob:线下活动","type":"struct"},{"a":"hub:obsidian","b":"ob:资源大合集","type":"struct"},{"a":"hub:obsidian","b":"ob:随想集","type":"struct"},{"a":"hub:obsidian","b":"ob:canvas:922db2","type":"struct"},{"a":"hub:obsidian","b":"ob:canvas:f8d5a9","type":"struct"},{"a":"ob:canvas:f8d5a9","b":"ob:游戏《BRAID》","type":"intra"},{"a":"ob:canvas:f8d5a9","b":"ob:游戏《The Witness》","type":"intra"},{"a":"ob:2025秋 百万设计师","b":"ob:canvas:f8d5a9","type":"intra"},{"a":"ob:canvas:922db2","b":"ob:2025秋 百万设计师","type":"intra"},{"a":"hub:obsidian","b":"ob:大谷翔平 81 宫格目标管理","type":"struct"},{"a":"ob:大谷翔平 81 宫格目标管理","b":"ob:大谷翔平 81 宫格目标管理:信用","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:信用","b":"ob:大谷翔平 81 宫格目标管理:信用:提前半小时到","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:信用","b":"ob:大谷翔平 81 宫格目标管理:信用:事事有回应件件有着落","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:信用","b":"ob:大谷翔平 81 宫格目标管理:信用:承诺要做到","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理","b":"ob:大谷翔平 81 宫格目标管理:待人","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:待人","b":"ob:大谷翔平 81 宫格目标管理:待人:鼓励夸奖同学","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:待人","b":"ob:大谷翔平 81 宫格目标管理:待人:表达感谢","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:待人","b":"ob:大谷翔平 81 宫格目标管理:待人:帮助同学","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理","b":"ob:大谷翔平 81 宫格目标管理:时间管理","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:时间管理","b":"ob:大谷翔平 81 宫格目标管理:时间管理:有清晰任务计划","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:时间管理","b":"ob:大谷翔平 81 宫格目标管理:时间管理:不刷短视频","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:时间管理","b":"ob:大谷翔平 81 宫格目标管理:时间管理:闲暇听播客","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理","b":"ob:大谷翔平 81 宫格目标管理:做事","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:做事","b":"ob:大谷翔平 81 宫格目标管理:做事:眼里有活","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:做事","b":"ob:大谷翔平 81 宫格目标管理:做事:主动承担责任","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:做事","b":"ob:大谷翔平 81 宫格目标管理:做事:挑战自己上限","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理","b":"ob:大谷翔平 81 宫格目标管理:示范","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:示范","b":"ob:大谷翔平 81 宫格目标管理:示范:上课积极回答","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:示范","b":"ob:大谷翔平 81 宫格目标管理:示范:过好自己的生活","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理","b":"ob:大谷翔平 81 宫格目标管理:学习","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:学习","b":"ob:大谷翔平 81 宫格目标管理:学习:保持阅读量","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:学习","b":"ob:大谷翔平 81 宫格目标管理:学习:做复盘并分享","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:学习","b":"ob:大谷翔平 81 宫格目标管理:学习:保持输出","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理","b":"ob:大谷翔平 81 宫格目标管理:生活","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:生活","b":"ob:大谷翔平 81 宫格目标管理:生活:不熬夜早起","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:生活","b":"ob:大谷翔平 81 宫格目标管理:生活:健康饮食","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:生活","b":"ob:大谷翔平 81 宫格目标管理:生活:整理宿舍","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理","b":"ob:大谷翔平 81 宫格目标管理:保持奖学金","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:保持奖学金","b":"ob:大谷翔平 81 宫格目标管理:保持奖学金:珍惜机会","type":"intra"},{"a":"ob:大谷翔平 81 宫格目标管理:保持奖学金","b":"ob:大谷翔平 81 宫格目标管理:保持奖学金:不违反社区公约","type":"intra"},{"a":"gh:lixon","b":"disc:Web动效","type":"disc"},{"a":"gh:lixon","b":"disc:个人站","type":"disc"},{"a":"gh:chichu_habit","b":"disc:ClaudeCode生态","type":"disc"},{"a":"gh:jingqi-share","b":"disc:教育","type":"disc"},{"a":"gh:chess-shogi","b":"disc:游戏","type":"disc"},{"a":"gh:odysseus-zh-CN","b":"disc:AI工作台","type":"disc"},{"a":"gh:odysseus-zh-CN","b":"disc:工具脚本","type":"disc"},{"a":"gh:zima-blue","b":"disc:Web动效","type":"disc"},{"a":"gh:zima-blue","b":"disc:个人站","type":"disc"},{"a":"gh:mofazhusha","b":"disc:游戏","type":"disc"},{"a":"gh:zima","b":"disc:Web动效","type":"disc"},{"a":"gh:zima","b":"disc:个人站","type":"disc"},{"a":"gh:chichu-feishu-habits","b":"disc:Web动效","type":"disc"},{"a":"gh:chichu-feishu-habits","b":"disc:个人站","type":"disc"},{"a":"gh:vibe-coding-class","b":"disc:教育","type":"disc"},{"a":"gh:siemens-training","b":"disc:教育","type":"disc"},{"a":"gh:claude-account-switch-migration","b":"disc:工具脚本","type":"disc"},{"a":"gh:claude-account-switch-migration","b":"disc:ClaudeCode生态","type":"disc"},{"a":"gh:late-penalty","b":"disc:游戏","type":"disc"},{"a":"gh:late-penalty","b":"disc:工具脚本","type":"disc"},{"a":"gh:dazi-juice","b":"disc:中文打字","type":"disc"},{"a":"gh:curi-online","b":"disc:教育","type":"disc"},{"a":"gh:kiidschool","b":"disc:教育","type":"disc"},{"a":"gh:sessionss","b":"disc:ClaudeCode生态","type":"disc"},{"a":"gh:credit-score","b":"disc:教育","type":"disc"},{"a":"gh:bypass-pet","b":"disc:ClaudeCode生态","type":"disc"},{"a":"gh:claude-bypass-hook","b":"disc:工具脚本","type":"disc"},{"a":"gh:claude-bypass-hook","b":"disc:ClaudeCode生态","type":"disc"},{"a":"gh:web-anim-cookbook","b":"disc:Web动效","type":"disc"},{"a":"gh:allow-floating-ball","b":"disc:ClaudeCode生态","type":"disc"},{"a":"gh:calling-suishoji","b":"disc:AI工作台","type":"disc"},{"a":"gh:private-insight-officer","b":"disc:AI工作台","type":"disc"},{"a":"gh:private-insight-officer","b":"disc:成长","type":"disc"},{"a":"cl:cai_deepseek_proxy_reset_fix","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_cai_harness","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_chess_shogi","b":"disc:游戏","type":"disc"},{"a":"cl:project_chess_shogi","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_dazi_juice","b":"disc:中文打字","type":"disc"},{"a":"cl:project_dazi_juice","b":"disc:工具脚本","type":"disc"},{"a":"cl:project_dazi_juice","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_ditie_paoku","b":"disc:游戏","type":"disc"},{"a":"cl:project_ditie_paoku","b":"disc:Web动效","type":"disc"},{"a":"cl:project_ditie_paoku","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_ditie_paoku","b":"disc:3D建模","type":"disc"},{"a":"cl:project_hermes_gateway","b":"disc:Web动效","type":"disc"},{"a":"cl:project_hermes_gateway","b":"disc:AI工作台","type":"disc"},{"a":"cl:project_hermes_gateway","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_jingqi_share","b":"disc:Web动效","type":"disc"},{"a":"cl:project_jingqi_share","b":"disc:个人站","type":"disc"},{"a":"cl:project_jingqi_share","b":"disc:硬件","type":"disc"},{"a":"cl:project_jingqi_share","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_kiidschool_detail_page_ux","b":"disc:阅读","type":"disc"},{"a":"cl:project_kiidschool_detail_page_ux","b":"disc:Web动效","type":"disc"},{"a":"cl:project_kiidschool_detail_page_ux","b":"disc:工具脚本","type":"disc"},{"a":"cl:project_kiidschool_detail_page_ux","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_kiidschool_detail_page_ux","b":"disc:商业","type":"disc"},{"a":"cl:project_kindle_station","b":"disc:阅读","type":"disc"},{"a":"cl:project_kindle_station","b":"disc:工具脚本","type":"disc"},{"a":"cl:project_kindle_station","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_lando_hero_replica","b":"disc:Web动效","type":"disc"},{"a":"cl:project_lando_hero_replica","b":"disc:个人站","type":"disc"},{"a":"cl:project_lando_hero_replica","b":"disc:工具脚本","type":"disc"},{"a":"cl:project_lando_hero_replica","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_lando_hero_replica","b":"disc:商业","type":"disc"},{"a":"cl:project_liumang_xushi","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_m5stack_cardputer","b":"disc:硬件","type":"disc"},{"a":"cl:project_m5stack_cardputer","b":"disc:工具脚本","type":"disc"},{"a":"cl:project_m5stack_cardputer","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_mofazhusha","b":"disc:游戏","type":"disc"},{"a":"cl:project_mofazhusha","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_neranjara","b":"disc:Web动效","type":"disc"},{"a":"cl:project_neranjara","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_neranjara","b":"disc:3D建模","type":"disc"},{"a":"cl:project_odysseus","b":"disc:AI工作台","type":"disc"},{"a":"cl:project_odysseus","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_siemens_sitrain_demo","b":"disc:教育","type":"disc"},{"a":"cl:project_siemens_sitrain_demo","b":"disc:Web动效","type":"disc"},{"a":"cl:project_siemens_sitrain_demo","b":"disc:工具脚本","type":"disc"},{"a":"cl:project_siemens_sitrain_demo","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_silver_jewelry","b":"disc:AI工作台","type":"disc"},{"a":"cl:project_silver_jewelry","b":"disc:硬件","type":"disc"},{"a":"cl:project_silver_jewelry","b":"disc:工具脚本","type":"disc"},{"a":"cl:project_silver_jewelry","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_silver_jewelry","b":"disc:3D建模","type":"disc"},{"a":"cl:project_silver_jewelry","b":"disc:商业","type":"disc"},{"a":"cl:project_telemachus","b":"disc:AI工作台","type":"disc"},{"a":"cl:project_telemachus","b":"disc:工具脚本","type":"disc"},{"a":"cl:project_telemachus","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_vibe_pen","b":"disc:硬件","type":"disc"},{"a":"cl:project_vibe_pen","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_zima","b":"disc:Web动效","type":"disc"},{"a":"cl:project_zima","b":"disc:个人站","type":"disc"},{"a":"cl:project_zima","b":"disc:AI工作台","type":"disc"},{"a":"cl:project_zima","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:project_zima","b":"disc:3D建模","type":"disc"},{"a":"cl:reference_camping_footage_backup","b":"disc:工具脚本","type":"disc"},{"a":"cl:reference_camping_footage_backup","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:reference_claude_account_migration","b":"disc:工具脚本","type":"disc"},{"a":"cl:reference_claude_account_migration","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:reference_claude_account_migration","b":"disc:3D建模","type":"disc"},{"a":"cl:reference_obsidian_vault","b":"disc:教育","type":"disc"},{"a":"cl:reference_obsidian_vault","b":"disc:AI工作台","type":"disc"},{"a":"cl:reference_obsidian_vault","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:reference_obsidian_vault","b":"disc:成长","type":"disc"},{"a":"cl:reference_python_env","b":"disc:AI工作台","type":"disc"},{"a":"cl:reference_python_env","b":"disc:工具脚本","type":"disc"},{"a":"cl:reference_python_env","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:reference_voice_input_capswriter","b":"disc:工具脚本","type":"disc"},{"a":"cl:reference_voice_input_capswriter","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:user_chichu_profile","b":"disc:游戏","type":"disc"},{"a":"cl:user_chichu_profile","b":"disc:个人站","type":"disc"},{"a":"cl:user_chichu_profile","b":"disc:工具脚本","type":"disc"},{"a":"cl:user_chichu_profile","b":"disc:ClaudeCode生态","type":"disc"},{"a":"cl:user_hardware_profile","b":"disc:硬件","type":"disc"},{"a":"cl:user_hardware_profile","b":"disc:ClaudeCode生态","type":"disc"},{"a":"ob:2025秋 成人礼","b":"disc:成长","type":"disc"},{"a":"ob:2025秋 日本游学规划","b":"disc:旅行","type":"disc"},{"a":"ob:2025秋 百万设计师","b":"disc:设计","type":"disc"},{"a":"ob:2025秋 百万设计师","b":"disc:游戏","type":"disc"},{"a":"ob:2025秋 给青少年的普世阅读指南","b":"disc:阅读","type":"disc"},{"a":"ob:2025秋 给青少年的普世阅读指南","b":"disc:教育","type":"disc"},{"a":"ob:2025秋 课程反馈","b":"disc:教育","type":"disc"},{"a":"ob:2025秋 贩冰冰计划","b":"disc:商业","type":"disc"},{"a":"ob:2025秋 露营周规划","b":"disc:旅行","type":"disc"},{"a":"ob:《7号房的故事》影评","b":"disc:电影","type":"disc"},{"a":"ob:《BRAID》游戏画面","b":"disc:游戏","type":"disc"},{"a":"ob:《失败的逻辑》读书笔记","b":"disc:阅读","type":"disc"},{"a":"ob:会议：如何构建品牌，如何制定战略","b":"disc:商业","type":"disc"},{"a":"ob:数学学习","b":"disc:成长","type":"disc"},{"a":"ob:暑假突击计划","b":"disc:成长","type":"disc"},{"a":"ob:替潘昱辰写的作文","b":"disc:成长","type":"disc"},{"a":"ob:游戏《BRAID》","b":"disc:游戏","type":"disc"},{"a":"ob:游戏《The Witness》","b":"disc:游戏","type":"disc"},{"a":"ob:游戏帝国","b":"disc:游戏","type":"disc"},{"a":"ob:游戏帝国","b":"disc:商业","type":"disc"},{"a":"ob:王琦的采访大纲","b":"disc:教育","type":"disc"},{"a":"ob:线下活动","b":"disc:教育","type":"disc"},{"a":"ob:资源大合集","b":"disc:电影","type":"disc"},{"a":"ob:随想集","b":"disc:成长","type":"disc"},{"a":"ob:canvas:922db2","b":"disc:游戏","type":"disc"},{"a":"ob:canvas:922db2","b":"disc:设计","type":"disc"},{"a":"ob:canvas:f8d5a9","b":"disc:游戏","type":"disc"},{"a":"ob:canvas:f8d5a9","b":"disc:设计","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:信用","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:信用:提前半小时到","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:信用:事事有回应件件有着落","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:信用:承诺要做到","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:待人","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:待人:鼓励夸奖同学","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:待人:表达感谢","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:待人:帮助同学","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:时间管理","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:时间管理:有清晰任务计划","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:时间管理:不刷短视频","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:时间管理:闲暇听播客","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:做事","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:做事:眼里有活","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:做事:主动承担责任","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:做事:挑战自己上限","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:示范","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:示范:上课积极回答","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:示范:过好自己的生活","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:学习","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:学习:保持阅读量","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:学习:做复盘并分享","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:学习:保持输出","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:生活","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:生活:不熬夜早起","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:生活:健康饮食","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:生活:整理宿舍","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:保持奖学金","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:保持奖学金:珍惜机会","b":"disc:成长","type":"disc"},{"a":"ob:大谷翔平 81 宫格目标管理:保持奖学金:不违反社区公约","b":"disc:成长","type":"disc"},{"a":"root","b":"disc:Web动效","type":"struct"},{"a":"root","b":"disc:个人站","type":"struct"},{"a":"root","b":"disc:ClaudeCode生态","type":"struct"},{"a":"root","b":"disc:教育","type":"struct"},{"a":"root","b":"disc:游戏","type":"struct"},{"a":"root","b":"disc:AI工作台","type":"struct"},{"a":"root","b":"disc:工具脚本","type":"struct"},{"a":"root","b":"disc:中文打字","type":"struct"},{"a":"root","b":"disc:成长","type":"struct"},{"a":"root","b":"disc:3D建模","type":"struct"},{"a":"root","b":"disc:硬件","type":"struct"},{"a":"root","b":"disc:阅读","type":"struct"},{"a":"root","b":"disc:商业","type":"struct"},{"a":"root","b":"disc:旅行","type":"struct"},{"a":"root","b":"disc:设计","type":"struct"},{"a":"root","b":"disc:电影","type":"struct"},{"a":"ob:2025秋 露营周规划","b":"cl:reference_camping_footage_backup","type":"bridge"},{"a":"ob:2025秋 贩冰冰计划","b":"cl:project_silver_jewelry","type":"bridge"},{"a":"ob:2025秋 给青少年的普世阅读指南","b":"cl:project_kindle_station","type":"bridge"},{"a":"ob:2025秋 课程反馈","b":"gh:kiidschool","type":"bridge"},{"a":"ob:2025秋 百万设计师","b":"cl:project_ditie_paoku","type":"bridge"},{"a":"ob:游戏帝国","b":"cl:project_chess_shogi","type":"bridge"}]};
+/*__GRAPH_DATA_END__*/
+(function(){
+  const cv=document.getElementById('graphCanvas'), sec=document.getElementById('graph'), pin=document.getElementById('graphPin');
+  if(!cv||!sec||!pin||!GRAPH.nodes.length) return;
+  const ctx=cv.getContext('2d'), $=id=>document.getElementById(id);
+  const intro=$('graphIntro'),hud=$('graphHud'),tools=$('graphTools'),actions=$('graphActions'),
+        legend=$('graphLegend'),info=$('graphInfo'),hint=$('graphHint'),growI=$('graphGrow').firstElementChild,
+        countEl=$('graphCount'),viewsEl=$('graphViews'),layersEl=$('graphLayers'),searchEl=$('graphSearch'),
+        lockBtn=$('graphLock'),fullBtn=$('graphFull');
+  const PCOL={github:'#d2ff00',claude:'#ff7a2f',obsidian:'#a78bfa',core:'#dfe3d6'};
+  const PNAME={github:'GitHub',claude:'Claude',obsidian:'Obsidian',core:'核心'};
+  const CATNAME={project:'项目',skill:'技能 / 工具',discipline:'学科 / 兴趣',note:'笔记',memory:'记忆',identity:'身份',reference:'参考 / 工作流',hub:'平台',root:'我'};
+  const clamp01=v=>v<0?0:v>1?1:v, lerp=(a,b,t)=>a+(b-a)*t;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hex2rgb=h=>{const n=parseInt(h.slice(1),16);return (n>>16&255)+','+(n>>8&255)+','+(n&255);};
+
+  const N=new Map(GRAPH.nodes.map(n=>[n.id,n]));
+  const adj=new Map(GRAPH.nodes.map(n=>[n.id,[]]));
+  for(const e of GRAPH.edges){ adj.get(e.a)&&adj.get(e.a).push({o:e.b,t:e.type}); adj.get(e.b)&&adj.get(e.b).push({o:e.a,t:e.type}); }
+  for(const n of GRAPH.nodes) Object.assign(n,{x:(Math.random()-.5)*40,y:(Math.random()-.5)*40,vx:0,vy:0,born:false,ap:0});
+
+  const VIEWS=[{id:'all',label:'总览',root:'root',plat:null},
+               {id:'github',label:'GitHub',root:'hub:github',plat:'github'},
+               {id:'claude',label:'Claude',root:'hub:claude',plat:'claude'},
+               {id:'obsidian',label:'Obsidian',root:'hub:obsidian',plat:'obsidian'}];
+  const LAYERS=[{id:'project',label:'项目',cats:['project'],col:'#cfe3a0'},
+                {id:'skill',label:'技能·工具',cats:['skill'],col:'#cdd3c2'},
+                {id:'discipline',label:'兴趣·学科',cats:['discipline'],col:'#a78bfa'},
+                {id:'note',label:'笔记·记忆',cats:['note','memory','identity','reference'],col:'#ff9a5f'}];
+  let view=VIEWS[0]; const layerOn=new Set(LAYERS.map(l=>l.id));
+  const catLayer=c=>{const l=LAYERS.find(l=>l.cats.includes(c));return l&&l.id;};
+
+  // ---- state ----
+  let W=0,H=0,dpr=1, order=[], parentOf=new Map(), visSet=new Set(),
+      alpha=1, bridgeAlpha=0, grown=false, locked=false, fs=false,
+      cam={x:0,y:0,scale:1}, camT={x:0,y:0,scale:1}, manual=false,
+      mouse={x:-1e4,y:-1e4,inside:false}, drag=null, dragMoved=false, panning=false, last={x:0,y:0}, downXY={x:0,y:0},
+      hovered=null, selected=null, now=0, running=false,
+      bornCache=[], bornDirty=true, nbCache=null, nbFor=null;
+  const reheat=()=>{ alpha=Math.max(alpha,0.9); };
+  // cache the born-node list + hovered neighbours so the hot loops never allocate (kills GC stutter)
+  const bornNodes=()=>{ if(bornDirty){ bornCache=order.map(id=>N.get(id)).filter(n=>n.born); bornDirty=false; } return bornCache; };
+  const neighbours=n=>{ if(!n) return null; if(nbFor!==n){ nbFor=n; nbCache=new Set(adj.get(n.id).map(a=>a.o)); } return nbCache; };
+  const sx=n=>({x:W/2+(n.x-cam.x)*cam.scale,y:H/2+(n.y-cam.y)*cam.scale});
+  const toWorld=(x,y)=>({x:cam.x+(x-W/2)/cam.scale,y:cam.y+(y-H/2)/cam.scale});
+
+  function resize(){ const r=pin.getBoundingClientRect(); dpr=Math.min(devicePixelRatio||1,1.5); W=r.width; H=r.height;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); ctx.setTransform(dpr,0,0,dpr,0,0); }
+
+  // ---- visible set + BFS birth order ----
+  function rawVisible(n){
+    if(n.cat==='root') return view.id==='all';
+    if(n.cat==='hub') return view.id==='all'?true:n.id===view.root;
+    if(view.plat && !(n.platform===view.plat||n.platform==='core')) return false;
+    const lay=catLayer(n.cat); if(lay&&!layerOn.has(lay)) return false;
+    return true;
   }
-  gSize(); addEventListener('resize', gSize);
-  new IntersectionObserver(es => { gVisible = es[0].isIntersecting; }).observe(gCanvas);
-  gCanvas.addEventListener('pointermove', e => {
-    const r = gCanvas.getBoundingClientRect();
-    gMouse.x = e.clientX - r.left; gMouse.y = e.clientY - r.top;
-  });
-  gCanvas.addEventListener('pointerleave', () => { gMouse.x = gMouse.y = -1e4; });
-  function nodePos(nd, t){
-    let x = nd.x * gw + Math.sin(t * 0.5 + nd.x * 9) * 7;
-    let y = nd.y * gh + Math.cos(t * 0.4 + nd.y * 7) * 6;
-    const dx = x - gMouse.x, dy = y - gMouse.y, d2 = dx * dx + dy * dy;
-    if (d2 < 16000){ const f = (16000 - d2) / 16000 * 14; const d = Math.sqrt(d2) || 1; x += dx / d * f; y += dy / d * f; }
-    return [x, y];
+  function recompute(){
+    visSet=new Set(GRAPH.nodes.filter(rawVisible).map(n=>n.id));
+    for(const id of [...visSet]){ const n=N.get(id);
+      if(n.cat==='discipline'||n.isLang){ if(!adj.get(id).some(a=>visSet.has(a.o)&&N.get(a.o).platform!=='core')) visSet.delete(id); } }
+    order=[]; parentOf=new Map(); const seen=new Set();
+    const start=visSet.has(view.root)?view.root:[...visSet][0]; const q=[];
+    if(start){ q.push(start); seen.add(start); }
+    while(q.length){ const id=q.shift(); order.push(id);
+      const nb=adj.get(id).filter(a=>a.t!=='bridge'&&visSet.has(a.o)&&!seen.has(a.o)).map(a=>a.o)
+        .sort((a,b)=>(N.get(b).r||5)-(N.get(a).r||5));
+      for(const o of nb){ if(!seen.has(o)){ seen.add(o); parentOf.set(o,id); q.push(o); } } }
+    for(const id of visSet) if(!seen.has(id)) order.push(id);
+    order.forEach((id,i)=>N.get(id).bi=i);
+    for(const n of GRAPH.nodes) if(!visSet.has(n.id)){ n.born=false; n.ap=0; }
+    bornDirty=true; selected=null; hovered=null; nbFor=null; updateCount(); reheat();
   }
-  function gDraw(now){
-    requestAnimationFrame(gDraw);
-    if (!gVisible) return;
-    const t = now / 1000;
-    gtx.clearRect(0, 0, gw, gh);
-    const pos = {};
-    NODES.forEach(nd => pos[nd.id] = nodePos(nd, t));
-    // edges
-    gtx.lineWidth = 1;
-    for (const [a, b] of EDGES){
-      const pa = pos[a], pb = pos[b];
-      gtx.strokeStyle = 'rgba(244,244,237,0.13)';
-      gtx.beginPath(); gtx.moveTo(pa[0], pa[1]); gtx.lineTo(pb[0], pb[1]); gtx.stroke();
-    }
-    // satellites
-    for (const s of sats){
-      const p = pos[s.p.id];
-      const x = p[0] + Math.cos(t * s.sp * 2 + s.a) * s.dist;
-      const y = p[1] + Math.sin(t * s.sp * 2 + s.a) * s.dist * 0.7;
-      gtx.fillStyle = 'rgba(244,244,237,0.35)';
-      gtx.beginPath(); gtx.arc(x, y, 1.6, 0, 6.29); gtx.fill();
-      gtx.strokeStyle = 'rgba(244,244,237,0.05)';
-      gtx.beginPath(); gtx.moveTo(p[0], p[1]); gtx.lineTo(x, y); gtx.stroke();
-    }
-    // nodes
-    hovered = null;
-    for (const nd of NODES){
-      const [x, y] = pos[nd.id];
-      const dx = gMouse.x - x, dy = gMouse.y - y;
-      const isHover = dx * dx + dy * dy < (nd.r + 12) * (nd.r + 12);
-      if (isHover) hovered = nd;
-      gtx.fillStyle = GCOL[nd.s];
-      gtx.beginPath(); gtx.arc(x, y, nd.r * (isHover ? 1.18 : 1), 0, 6.29); gtx.fill();
-      if (nd.s === 'updating'){
-        gtx.strokeStyle = 'rgba(210,255,0,' + (0.35 + 0.3 * Math.sin(t * 2 + nd.x * 10)) + ')';
-        gtx.lineWidth = 1.4;
-        gtx.beginPath(); gtx.arc(x, y, nd.r + 6 + Math.sin(t * 2 + nd.x * 10) * 2, 0, 6.29); gtx.stroke();
-        gtx.lineWidth = 1;
-      }
-      gtx.fillStyle = 'rgba(244,244,237,' + (isHover ? 1 : 0.62) + ')';
-      gtx.font = (isHover ? '600 ' : '') + '11px Georgia, serif';
-      gtx.textAlign = 'center';
-      gtx.fillText(nd.n, x, y + nd.r + 16);
-    }
-    gCanvas.style.cursor = hovered ? 'pointer' : 'crosshair';
-    if (hovered){
-      gInfo.querySelector('.t').textContent = hovered.n;
-      gInfo.querySelector('.d').textContent = hovered.d;
-      gInfo.querySelector('.s').textContent = { updating:'● 正在更新', live:'● 已上线', dormant:'● 蛰伏中 · 可蹲' }[hovered.s];
-      gInfo.classList.add('show');
-    } else gInfo.classList.remove('show');
+
+  // ---- growth ----
+  function applyGrowth(p){
+    const nodeP=grown?1:clamp01(p/0.82); bridgeAlpha=grown?1:clamp01((p-0.7)/0.3);
+    const bornN=Math.round(nodeP*order.length);
+    for(let i=0;i<order.length;i++){ const n=N.get(order[i]), should=i<bornN;
+      if(should&&!n.born){ n.born=true; bornDirty=true; const par=N.get(parentOf.get(n.id)||view.root);
+        if(par&&par!==n){ const ang=i*2.39996, rad=par.r+n.r+48; n.x=par.x+Math.cos(ang)*rad; n.y=par.y+Math.sin(ang)*rad; } n.vx=n.vy=0; n.ap=0; reheat(); }
+      else if(!should&&n.born&&!grown){ n.born=false; n.ap=0; bornDirty=true; } }
   }
-  requestAnimationFrame(gDraw);
-}
+
+  // ---- force sim: repulsion + hard collision + springs + light gravity ----
+  function sim(){
+    const born=bornNodes(); const n=born.length; if(!n) return;
+    for(let i=0;i<n;i++){ const a=born[i];
+      for(let j=i+1;j<n;j++){ const b=born[j]; let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy+0.01; const d=Math.sqrt(d2);
+        const f=24000/d2*alpha, ux=dx/d, uy=dy/d;
+        a.vx+=ux*f; a.vy+=uy*f; b.vx-=ux*f; b.vy-=uy*f;
+        const min=a.r+b.r+14; if(d<min){ const push=(min-d)*0.5; a.x+=ux*push; a.y+=uy*push; b.x-=ux*push; b.y-=uy*push; } } }
+    for(const e of GRAPH.edges){ if(e.type==='bridge'&&!grown&&bridgeAlpha<0.05) continue;
+      const a=N.get(e.a),b=N.get(e.b); if(!a.born||!b.born) continue;
+      let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1;
+      const rest=e.type==='disc'?165:e.type==='struct'?135:e.type==='bridge'?230:e.type==='lang'?64:96;
+      const k=e.type==='bridge'?0.004:e.type==='disc'?0.012:0.02;
+      const f=(d-rest)*k*alpha; dx/=d; dy/=d; a.vx+=dx*f; a.vy+=dy*f; b.vx-=dx*f; b.vy-=dy*f; }
+    for(const a of born){ if(a===drag) continue;
+      a.vx-=a.x*0.0007*alpha; a.vy-=a.y*0.0007*alpha; a.vx*=0.9; a.vy*=0.9;
+      const sp=Math.hypot(a.vx,a.vy); if(sp>18){ a.vx*=18/sp; a.vy*=18/sp; }
+      a.x+=a.vx; a.y+=a.vy; if(a.cat==='root'){ a.x*=0.92; a.y*=0.92; } a.ap=Math.min(1,a.ap+0.05); }
+    alpha*=0.99;
+  }
+  function autoCam(){ const born=bornNodes(); if(!born.length) return;
+    let a=1e9,b=1e9,c=-1e9,d=-1e9; for(const n of born){ a=Math.min(a,n.x-n.r);c=Math.max(c,n.x+n.r);b=Math.min(b,n.y-n.r);d=Math.max(d,n.y+n.r); }
+    const bw=c-a||1,bh=d-b||1,pad=120; camT.scale=Math.max(0.2,Math.min(W/(bw+pad),H/(bh+pad),2.2)); camT.x=(a+c)/2; camT.y=(b+d)/2; }
+
+  // ---- picking + info ----
+  function pick(mx,my){ let best=null,bd=1e9; for(const id of order){ const n=N.get(id); if(!n.born) continue;
+    const p=sx(n),dx=mx-p.x,dy=my-p.y,dd=dx*dx+dy*dy,rr=Math.max(n.r*cam.scale+9,14); if(dd<rr*rr&&dd<bd){ bd=dd; best=n; } } return best; }
+  let infoLink=null, giClose=null;
+  function updateInfo(n){ if(!n){ info.classList.remove('show'); return; }
+    info.querySelector('.gi-tag').textContent=(PNAME[n.platform]||'核心')+' · '+(CATNAME[n.cat]||n.cat);
+    info.querySelector('.gi-t').textContent=n.label; info.querySelector('.gi-d').textContent=n.desc||'';
+    if(n.url){ if(!infoLink){ infoLink=document.createElement('a'); infoLink.className='gi-link'; infoLink.target='_blank'; infoLink.rel='noopener'; info.appendChild(infoLink); }
+      infoLink.href=n.url; infoLink.textContent=/github\.com/.test(n.url)?'看仓库 ↗':'打开 ↗'; infoLink.style.display=''; }
+    else if(infoLink) infoLink.style.display='none';
+    if(giClose) giClose.style.display=(selected===n)?'':'none';
+    info.classList.add('show'); }
+  giClose=document.createElement('button'); giClose.className='gi-close'; giClose.type='button'; giClose.textContent='✕'; giClose.title='取消选中 (Esc)';
+  giClose.onclick=()=>{ selected=null; nbFor=null; }; info.appendChild(giClose);
+
+  // ---- draw ----
+  function draw(){ ctx.clearRect(0,0,W,H);
+    if(mouse.inside&&!drag&&!panning) hovered=pick(mouse.x,mouse.y);
+    const focus=selected||hovered, nb=neighbours(focus);
+    for(const e of GRAPH.edges){ const a=N.get(e.a),b=N.get(e.b); if(!a.born||!b.born) continue;
+      let al,col,lw=1;
+      if(e.type==='bridge'){ al=0.5*bridgeAlpha; col='210,255,0'; lw=1.5; }
+      else if(e.type==='disc'){ al=0.045; col='200,205,190'; }
+      else if(e.type==='struct'){ al=0.035; col='200,205,190'; }
+      else if(e.type==='lang'){ al=0.03; col='200,205,190'; }
+      else { al=0.10; col=hex2rgb(PCOL[a.platform]||PCOL.core); }
+      if(focus){ if(e.a===focus.id||e.b===focus.id){ al=Math.max(al,0.6); lw=Math.max(lw,1.4); } else al*=0.16; }
+      if(al<0.01) continue; const A=sx(a),B=sx(b);
+      ctx.strokeStyle='rgba('+col+','+al+')'; ctx.lineWidth=lw;
+      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke(); }
+    for(const nn of bornNodes()){ const p=sx(nn), col=PCOL[nn.platform]||PCOL.core;
+      const r=Math.max(2,nn.r*cam.scale)*(0.55+0.45*nn.ap), dim=focus&&nn!==focus&&!(nb&&nb.has(nn.id));
+      ctx.globalAlpha=(dim?0.2:1)*Math.min(1,nn.ap+0.12);
+      if(nn.status==='updating'){ ctx.strokeStyle='rgba(210,255,0,'+(0.28+0.22*Math.sin(now*0.004+nn.bi))+')'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(p.x,p.y,r+5,0,6.29); ctx.stroke(); }
+      ctx.fillStyle='rgba(18,21,14,.82)'; ctx.beginPath(); ctx.arc(p.x,p.y,r+2.4,0,6.29); ctx.fill();   // dark halo lifts nodes off the edge mesh
+      if(nn.cat==='discipline'){ ctx.fillStyle='rgba(167,139,250,.16)'; ctx.beginPath(); ctx.arc(p.x,p.y,r,0,6.29); ctx.fill(); ctx.strokeStyle=col; ctx.lineWidth=1.8; ctx.stroke(); }
+      else { ctx.fillStyle=col; ctx.beginPath(); ctx.arc(p.x,p.y,r,0,6.29); ctx.fill(); }
+      if(nn.cat==='root'){ ctx.strokeStyle='#d2ff00'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(p.x,p.y,r+5,0,6.29); ctx.stroke(); }
+      if(nn===selected){ ctx.globalAlpha=1; ctx.strokeStyle='#fff'; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(p.x,p.y,r+7,0,6.29); ctx.stroke(); ctx.strokeStyle='rgba('+hex2rgb(col)+',.5)'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(p.x,p.y,r+10,0,6.29); ctx.stroke(); }
+      const showL=nn===focus||nn.cat==='root'||nn.cat==='hub'||(nn.r>=10&&cam.scale>0.55)||cam.scale>1.6;
+      if(showL){ ctx.globalAlpha=dim?0.3:1; ctx.fillStyle='rgba(244,244,237,.92)';
+        ctx.font=((nn===focus||nn.cat==='hub'||nn.cat==='root')?'700 ':'500 ')+Math.round(Math.max(11,Math.min(15,9+cam.scale*2.4)))+'px Mona Sans Variable, Arial, sans-serif';
+        ctx.textAlign='center'; ctx.fillText(nn.label,p.x,p.y+r+13); }
+      ctx.globalAlpha=1; }
+    updateInfo(focus);
+    cv.style.cursor=hovered?'pointer':(panning?'grabbing':((locked||fs)?'grab':'default')); }
+
+  // ---- main loop ----
+  function scrollProgress(){ const r=sec.getBoundingClientRect(); return clamp01(-r.top/(r.height-innerHeight)); }
+  function loop(t){ if(!running) return; now=t;
+    const p=fs||locked?1:scrollProgress();
+    const fade=clamp01((p-0.02)/0.1);
+    intro.style.opacity=1-fade; intro.style.transform='translateY('+(-fade*24)+'px)';
+    const ui=(grown||fs||locked)?1:clamp01((p-0.05)/0.08);
+    hud.style.opacity=ui; tools.style.opacity=ui; actions.style.opacity=ui; legend.style.opacity=ui; hint.style.opacity=ui*0.7;
+    growI.style.width=((grown?1:clamp01(p/0.82))*100)+'%';
+    applyGrowth(p);
+    if(!manual){ autoCam(); cam.x=lerp(cam.x,camT.x,0.07); cam.y=lerp(cam.y,camT.y,0.07); cam.scale=lerp(cam.scale,camT.scale,0.07); }
+    else { cam.x=lerp(cam.x,camT.x,0.18); cam.y=lerp(cam.y,camT.y,0.18); cam.scale=lerp(cam.scale,camT.scale,0.18); }
+    if(!reduce && (alpha>0.02||drag)) sim();   // panning/idle never wakes the O(n²) sim → smooth
+    draw(); requestAnimationFrame(loop); }
+  new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!running){ running=true; requestAnimationFrame(loop); } else if(!v){ running=false; } },{threshold:0}).observe(pin);
+
+  // ---- interaction ----
+  cv.addEventListener('pointermove',e=>{ const r=cv.getBoundingClientRect(); mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top; mouse.inside=true;
+    if((drag||panning)&&Math.abs(e.clientX-downXY.x)+Math.abs(e.clientY-downXY.y)>4) dragMoved=true;
+    if(drag){ const w=toWorld(mouse.x,mouse.y); drag.x=w.x; drag.y=w.y; drag.vx=drag.vy=0; reheat(); }
+    else if(panning){ cam.x-=(e.clientX-last.x)/cam.scale; cam.y-=(e.clientY-last.y)/cam.scale; camT.x=cam.x; camT.y=cam.y; last={x:e.clientX,y:e.clientY}; manual=true; } });
+  cv.addEventListener('pointerleave',()=>{ mouse.inside=false; mouse.x=mouse.y=-1e4; });
+  cv.addEventListener('pointerdown',e=>{ try{cv.setPointerCapture(e.pointerId);}catch(_){}; const r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,hit=pick(mx,my);
+    downXY={x:e.clientX,y:e.clientY}; last={x:e.clientX,y:e.clientY}; dragMoved=false;
+    if(hit){ drag=hit; manual=true; } else { panning=true; } });
+  addEventListener('pointerup',()=>{ if(!dragMoved){ if(drag) selected=(selected===drag)?null:drag; else if(panning) selected=null; nbFor=null; } drag=null; panning=false; });
+  addEventListener('keydown',e=>{ if(e.key==='Escape'&&running){ selected=null; nbFor=null; } });
+  pin.addEventListener('wheel',e=>{ if(!(locked||fs)) return; e.preventDefault();
+    const r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,before=toWorld(mx,my);
+    cam.scale=Math.max(0.15,Math.min(6,cam.scale*Math.exp(-e.deltaY*0.0014)));
+    const after=toWorld(mx,my); cam.x+=before.x-after.x; cam.y+=before.y-after.y; camT.x=cam.x; camT.y=cam.y; camT.scale=cam.scale; manual=true; },{passive:false});
+
+  // ---- controls ----
+  VIEWS.forEach(v=>{ const btn=document.createElement('button'); btn.textContent=v.label; if(v===view) btn.classList.add('on');
+    btn.onclick=()=>{ view=v; manual=false; grown=locked||fs; [...viewsEl.children].forEach(c=>c.classList.toggle('on',c===btn)); searchEl.value=''; recompute(); }; viewsEl.appendChild(btn); });
+  LAYERS.forEach(l=>{ const btn=document.createElement('button'); btn.innerHTML='<i style="color:'+l.col+'"></i>'+l.label; btn.classList.add('on');
+    btn.onclick=()=>{ layerOn.has(l.id)?layerOn.delete(l.id):layerOn.add(l.id); btn.classList.toggle('on',layerOn.has(l.id)); recompute(); }; layersEl.appendChild(btn); });
+  legend.innerHTML=['github','obsidian','claude'].map(k=>'<span><i style="background:'+PCOL[k]+'"></i>'+PNAME[k]+'</span>').join('')+'<span><i style="background:#d2ff00;border-radius:1px"></i>跨平台连线</span>';
+  function updateCount(){ const c=GRAPH.meta.counts||{}; countEl.innerHTML=view.id==='all'
+    ? '<b>'+(c.nodes||GRAPH.nodes.length)+'</b> 节点 · 跨 3 平台 · <b>'+(c.bridges||0)+'</b> 条跨平台连线'
+    : PNAME[view.plat]+' · <b>'+[...visSet].filter(id=>N.get(id).platform===view.plat).length+'</b> 节点'; }
+
+  lockBtn.onclick=()=>{ locked=!locked; lockBtn.classList.toggle('on',locked); lockBtn.textContent=locked?'🔓 解锁':'🔒 锁定探索';
+    if(locked){ grown=true; applyGrowth(1); } else { grown=fs; manual=false; } reheat(); };
+  fullBtn.onclick=()=>{ if(!fs){ if(pin.requestFullscreen) pin.requestFullscreen(); } else if(document.exitFullscreen) document.exitFullscreen(); };
+  document.addEventListener('fullscreenchange',()=>{ fs=document.fullscreenElement===pin; fullBtn.classList.toggle('on',fs); fullBtn.textContent=fs?'⛶ 退出全屏':'⛶ 全屏';
+    grown=fs||locked; if(fs) applyGrowth(1); setTimeout(resize,80); reheat(); });
+  searchEl.addEventListener('input',()=>{ const q=searchEl.value.trim().toLowerCase(); if(!q){ return; }
+    const m=GRAPH.nodes.find(n=>visSet.has(n.id)&&(n.label.toLowerCase().includes(q)||(n.desc||'').toLowerCase().includes(q)));
+    if(m){ grown=true; applyGrowth(1); manual=true; camT.x=m.x; camT.y=m.y; camT.scale=1.7; hovered=m; reheat(); } });
+
+  const ro=new ResizeObserver(resize); ro.observe(pin); addEventListener('resize',resize);
+  resize(); recompute();
+})();
 
 /* --- 8h. updating list + 蹲蹲 (localStorage; Hermes will feed real data) --- */
 const UPDATES = [
@@ -3414,17 +3938,16 @@ const scrollCue = document.getElementById('scrollCue');
 const plxEls = [...document.querySelectorAll('[data-plx]')].map(el => ({ el, f: +el.dataset.plx }));
 let plxX = 0, plxY = 0;
 
-// hero-stage marquee: clone the phrase into a long track so it loops
-// seamlessly; we translate within one segment width and modulo
-const hbRow = document.getElementById('hbRow');
-let hbX = 0, hbSegW = 0;
-if (hbRow){
-  const seg = hbRow.firstElementChild;
-  for (let i = 0; i < 7; i++) hbRow.appendChild(seg.cloneNode(true));
-  hbRow.style.display = 'inline-flex';
-  const measure = () => { hbSegW = seg.getBoundingClientRect().width || 1; };
-  measure(); addEventListener('resize', measure);
-}
+// hero-stage marquee: TWO bright rows. clone each phrase into a long track so it
+// loops seamlessly; row 0 drifts left, row 1 drifts right, both ride up on exit
+const hbMarquee = document.getElementById('hbMarquee');
+const hbRows = [...document.querySelectorAll('.hb-row')].map((row, i) => {
+  const seg = row.firstElementChild;
+  for (let k = 0; k < 7; k++) row.appendChild(seg.cloneNode(true));
+  return { row, seg, x: 0, w: 1, dir: i === 0 ? -1 : 1 };
+});
+const measureHb = () => hbRows.forEach(r => { r.w = r.seg.getBoundingClientRect().width || 1; });
+measureHb(); addEventListener('resize', measureHb);
 
 const rtxOverlay = document.getElementById('rtx');
 let booted = false;

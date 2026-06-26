@@ -343,38 +343,152 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
 .ov-host{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:clamp(14px,2vw,28px);}
 .ov-host .stage{height:100%!important;max-width:min(640px,100%)!important;width:auto;aspect-ratio:1!important;margin:0!important;}
 .ov-host .stage#stageCalling,.ov-host .stage#stageSubway,.ov-host .stage#stageType{aspect-ratio:auto!important;width:min(820px,100%);max-width:min(820px,100%)!important;}
-/* rotating ring */
-.ringstage{display:flex;align-items:center;justify-content:center;height:100%;width:100%;background:radial-gradient(60% 60% at 50% 42%,#1c1e26,#0a0b0d);}
-.ringspin{width:min(52vh,460px);height:min(52vh,460px);perspective:1300px;}
-.ringspin img{width:100%;height:100%;object-fit:contain;transform-style:preserve-3d;animation:ringTurn 5.5s ease-in-out infinite;filter:drop-shadow(0 26px 44px rgba(0,0,0,.6));}
-@keyframes ringTurn{0%{transform:rotateX(9deg) rotateY(-54deg);}50%{transform:rotateX(11deg) rotateY(54deg);}100%{transform:rotateX(9deg) rotateY(-54deg);}}
-/* overlay scatter photo wall */
-.ov-scatter{position:relative;width:100%;height:100%;overflow:hidden;background:#15150f;}
-.ov-scatter .pw{position:absolute;border-radius:10px;overflow:hidden;border:1.5px solid #3a3e30;box-shadow:0 18px 36px -22px rgba(0,0,0,.85);}
-.ov-scatter .pw img{width:100%;height:100%;object-fit:cover;display:block;}
-.ov-scatter .pw cap{position:absolute;left:8px;bottom:6px;right:8px;font-family:var(--fdisp);font-weight:700;font-size:14px;color:#fff;text-shadow:0 1px 6px #000;}
-/* haoqi preview */
-#haoqiApp{height:100%;display:flex;flex-direction:column;background:#0e1014;color:#e8eaed;overflow:hidden;}
-.hq-top{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #23272f;flex:none;}
-.hq-logo{font-family:var(--fdisp);font-weight:700;font-size:15px;color:#fff;}.hq-logo b{color:var(--lime);}
-.hq-tabs{display:flex;gap:4px;margin-left:auto;}
-.hq-tabs .tb{font-size:12px;padding:5px 11px;border-radius:7px;color:#9aa0ab;transition:.3s;}
-.hq-tabs .tb.on{background:var(--lime);color:#23271d;font-weight:700;}
+/* rotating ring (real 3D STL) */
+.ringstage{display:flex;align-items:center;justify-content:center;height:100%;width:100%;background:radial-gradient(62% 62% at 50% 42%,#20222c,#0a0b0d);}
+.ringstage canvas{width:100%;height:100%;display:block;}
+/* media editorial spread (图文穿插) */
+.ov-mag{position:relative;width:100%;height:100%;display:grid;gap:12px;padding:18px;background:#16160f;grid-template-columns:1.3fr 1fr 1fr;grid-template-rows:1.25fr 1fr;grid-template-areas:"a b c" "a d e";}
+.ov-mag .mg-img{position:relative;border-radius:12px;overflow:hidden;border:1.5px solid #3a3e30;}
+.ov-mag .mg-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.ov-mag .mg-img cap{position:absolute;left:8px;bottom:6px;right:8px;font-family:var(--fdisp);font-weight:700;font-size:13px;color:#fff;text-shadow:0 1px 6px #000;}
+.ov-mag .mg-txt{background:#fffefa;border-radius:12px;padding:16px 18px;color:#23271d;display:flex;flex-direction:column;justify-content:center;}
+.ov-mag .mg-txt h{font-family:var(--fdisp);font-weight:700;font-size:clamp(18px,1.8vw,26px);margin-bottom:8px;display:block;}
+.ov-mag .mg-txt p{font-size:14px;line-height:1.55;color:#5c6150;}
+.ov-mag .mg-quote{background:var(--lime);border-radius:12px;padding:14px 16px;font-family:var(--fdisp);font-weight:700;font-size:clamp(16px,1.6vw,22px);color:#2a3300;line-height:1.25;display:flex;align-items:center;}
+.ov-mag .mg-quote b{color:var(--orange);}
+.ov-pane.ov-pass{background:transparent;pointer-events:none;}
+#ovXhs{position:absolute;inset:0;width:100%;height:100%;border:0;background:#ebe7df;opacity:0;pointer-events:none;transition:opacity .4s var(--ease);z-index:1;}
+#ovXhs.show{opacity:1;pointer-events:auto;}
+/* ===== haoqi preview (好奇 online 纸感) ===== */
+#haoqiApp{height:100%;display:flex;flex-direction:column;background:#f6f5f0;color:#18243b;overflow:hidden;font-family:"PingFang SC","Microsoft YaHei UI",var(--fbody);}
+.hq-top{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid #e8e6de;flex:none;background:#fffefa;}
+.hq-logo{font-family:var(--fdisp);font-weight:700;font-size:15px;color:#18243b;}.hq-logo b{color:#ee725c;}
+.hq-tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;}
+.hq-tabs .tb{font-size:11.5px;padding:5px 10px;border-radius:8px;color:#5d6a7e;transition:.3s;}
+.hq-tabs .tb.on{background:#18243b;color:#fff;font-weight:700;}
 .hq-body{flex:1;min-height:0;position:relative;}
-.hq-view{position:absolute;inset:0;padding:14px;opacity:0;transition:opacity .5s var(--ease);overflow:hidden;}
+.hq-view{position:absolute;inset:0;padding:14px 16px;opacity:0;transition:opacity .5s var(--ease);overflow:hidden;display:flex;flex-direction:column;}
 .hq-view.on{opacity:1;}
-.hq-cal{display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:1fr;gap:6px;height:100%;}
-.hq-cal .d{border:1px solid #23272f;border-radius:7px;padding:5px;font-size:11px;color:#5b6270;display:flex;flex-direction:column;gap:3px;overflow:hidden;}
-.hq-cal .d .ev{font-size:10px;border-radius:4px;padding:2px 5px;color:#fff;opacity:0;transform:translateY(4px);transition:.45s var(--ease);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.hq-cal .d .ev.show{opacity:1;transform:none;}
-.hq-list{display:flex;flex-direction:column;gap:9px;}
-.hq-list .it{display:flex;align-items:center;gap:10px;background:#151922;border:1px solid #23272f;border-left-width:3px;border-radius:8px;padding:10px 12px;opacity:0;transform:translateX(-8px);transition:.45s var(--ease);}
-.hq-list .it.show{opacity:1;transform:none;}
-.hq-list .it .t{font-weight:600;color:#e8eaed;font-size:13px;}
-.hq-list .it .m{margin-left:auto;font-size:11px;color:#6b7280;font-family:var(--fmono);}
+.hqh{flex:none;margin-bottom:10px;}
+.hqh .eb{font-size:10px;letter-spacing:1.4px;font-weight:800;color:#8490a2;text-transform:uppercase;}
+.hqh .ht{display:block;font-family:var(--fdisp);font-weight:700;font-size:clamp(18px,2vw,28px);line-height:1.05;color:#18243b;margin-top:3px;}
+.hqh .ht i{font-family:Georgia,"Noto Serif SC",serif;font-style:italic;color:#ee725c;}
+.hqw-cal{flex:1;min-height:0;display:grid;grid-template-columns:44px repeat(5,1fr);grid-auto-rows:1fr;gap:4px;background:#e5e4de;border-radius:12px;padding:4px;}
+.wc-h{background:#fffefa;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#5d6a7e;}
+.wc-h.today{color:#ee725c;}
+.wc-t{background:#fffefa;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9.5px;color:#8490a2;font-family:var(--fmono);}
+.wc-c{background:#fffefa;border-radius:6px;padding:3px;}
+.we{height:100%;border-radius:6px;font-size:10px;font-weight:600;color:#32405a;padding:4px 5px;opacity:0;transform:scale(.85);transition:.4s var(--ease);display:flex;align-items:center;line-height:1.15;}
+.we.show{opacity:1;transform:none;}
+.we.blue{background:#c9defd;}.we.mint{background:#c7f0d6;}.we.lemon{background:#fff4a9;}.we.coral{background:#ffc6b5;}
+.we.personal{background:#f9fcf9;border:1px dashed #d3dad5;color:#5a8470;}
+.rd-grid{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1.1fr;grid-template-rows:auto 1fr;gap:10px;}
+.rd-blob{background:#fff4a9;border-radius:46% 54% 50% 50%/48% 47% 53% 52%;transform:rotate(-4deg);padding:12px 16px;display:flex;flex-direction:column;justify-content:center;opacity:0;transition:.5s var(--ease);}
+.rd-blob.show{opacity:1;}
+.rd-blob b{font-family:var(--fdisp);font-size:28px;line-height:1;color:#18243b;}
+.rd-blob span{font-size:11px;color:#7a6a2a;margin-top:3px;}
+.rd-book{background:#dbe8fa;border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;opacity:0;transition:.5s var(--ease);}
+.rd-book.show{opacity:1;}
+.bk-cover{width:62px;height:88px;flex:none;background:#4e84b4;color:#fff7db;border:1.5px solid #fff7db;border-radius:4px 8px 8px 4px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:Georgia,serif;font-size:10px;font-weight:700;transform:rotate(-5deg);box-shadow:6px 8px 0 rgba(43,87,124,.18);}
+.bk-info h{font-size:13px;font-weight:700;color:#23405c;display:block;margin-bottom:8px;}
+.bk-bar{height:7px;background:rgba(53,99,140,.16);border-radius:4px;overflow:hidden;}
+.bk-bar i{display:block;height:100%;background:#3f83b6;}
+.bk-info span{font-size:10.5px;color:#5d6a7e;margin-top:5px;display:block;}
+.rd-rank{grid-column:span 2;background:#fffefa;border-radius:14px;padding:6px 12px;margin:0;list-style:none;display:flex;flex-direction:column;justify-content:center;}
+.rd-rank li{display:flex;align-items:center;gap:9px;padding:5px 0;border-bottom:1px solid #f0eee6;font-size:12px;opacity:0;transform:translateX(-6px);transition:.4s var(--ease);}
+.rd-rank li.show{opacity:1;transform:none;}.rd-rank li:last-child{border-bottom:0;}
+.rd-rank n{font-family:var(--fmono);color:#a0a9b3;width:14px;}
+.rd-rank av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#3a2f10;}
+.rd-rank av.pink{background:#ffa9b7;}.rd-rank av.lemon{background:#ffe55b;}.rd-rank av.mint{background:#c7f0d6;}
+.rd-rank nm{font-weight:600;color:#18243b;}.rd-rank tm{margin-left:auto;color:#5d6a7e;font-family:var(--fmono);font-size:11px;}
+.gt{flex:1;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:6px 4px;}
+.gt-today{position:absolute;top:0;bottom:0;left:46%;width:2px;background:#ee725c;z-index:2;}
+.gt-row{display:grid;grid-template-columns:104px 1fr;gap:10px;align-items:center;}
+.gt-name{font-size:12px;font-weight:600;color:#18243b;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gt-track{height:18px;background:#eceae2;border-radius:6px;position:relative;}
+.gt-bar{position:absolute;top:0;height:100%;border-radius:6px;border-left:3px solid;transform-origin:left;transform:scaleX(0);transition:transform .6s var(--ease);}
+.gt-bar.show{transform:scaleX(1);}
+.gt-bar.coral{background:#ffe6df;border-color:#ef785e;}.gt-bar.blue{background:#e4f0fe;border-color:#5b9be0;}
+.gt-bar.lemon{background:#fff6c9;border-color:#e6c000;}.gt-bar.mint{background:#dcf3e6;border-color:#4cb88a;}.gt-bar.coralx{background:#ffe1e7;border-color:#ef8aa0;}
+.cs-av{flex:none;display:flex;gap:10px;padding-bottom:10px;border-bottom:1px solid #e8e6de;margin-bottom:10px;}
+.cs-disc{width:44px;height:44px;border-radius:18px 18px 6px 18px;transform:rotate(-4deg);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#2a3550;position:relative;opacity:0;transition:.4s var(--ease);flex:none;}
+.cs-disc.show{opacity:1;}
+.cs-disc.blue{background:#c9defd;}.cs-disc.coral{background:#ffc6b5;}.cs-disc.lemon{background:#ffe55b;}.cs-disc.mint{background:#c7f0d6;}.cs-disc.pink{background:#ffa9b7;}
+.cs-disc dot{position:absolute;top:-4px;right:-4px;min-width:15px;height:15px;border-radius:50%;background:#f06e59;color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;border:2px solid #f6f5f0;font-weight:700;}
+.cs-feed{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start;overflow:hidden;}
+.cs-card{background:#fffefa;border:1px solid #e8e6de;border-radius:14px;padding:11px 13px;opacity:0;transform:translateY(8px);transition:.45s var(--ease);}
+.cs-card.show{opacity:1;transform:none;}
+.cs-meta{display:flex;align-items:center;gap:6px;font-size:11px;color:#7a8797;margin-bottom:6px;}
+.cs-meta .ta{width:18px;height:18px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#2a3550;}
+.cs-meta .ta.blue{background:#c9defd;}.cs-meta .ta.coral{background:#ffc6b5;}.cs-meta .ta.lemon{background:#ffe55b;}.cs-meta .ta.mint{background:#c7f0d6;}
+.cs-card h{font-size:13px;font-weight:700;color:#18243b;line-height:1.3;display:block;}
+.cs-foot{margin-top:8px;}
+.cs-tag{font-size:10.5px;background:#f3ece0;color:#8a7a5a;padding:2px 8px;border-radius:6px;}
 
+/* 师说 preview */
+.ss-app{height:100%;display:flex;flex-direction:column;gap:12px;padding:clamp(14px,1.8vw,22px);background:linear-gradient(160deg,#fffefa,#f4f1e8);}
+.ss-top{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;}
+.ss-col{display:flex;flex-direction:column;gap:8px;}
+.ss-chip{font-size:12px;font-weight:600;padding:9px 11px;border-radius:10px;text-align:center;border:1.5px solid;}
+.ss-chip.teal{background:#e4f3f0;border-color:#9fd0c6;color:#1f6a5e;}
+.ss-chip.coral{background:#ffeee6;border-color:#f3c3b0;color:#b5532f;}
+.ss-match{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.ss-pulse{font-size:26px;color:#e0742f;animation:ssPulse 1.6s ease-in-out infinite;}
+.ss-match small{font-size:10px;color:#8a7e66;font-family:var(--fmono);letter-spacing:.08em;}
+@keyframes ssPulse{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.28);opacity:1;}}
+.ss-bot{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1.15fr;gap:12px;}
+.ss-geo{background:#fff;border:1px solid #e8e6de;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;perspective:500px;}
+.ss-geo small{font-size:10.5px;color:#8a7e66;}
+.ss-cube{width:52px;height:52px;position:relative;transform-style:preserve-3d;animation:ssSpin 7s linear infinite;}
+.ss-cube i{position:absolute;width:52px;height:52px;border:1.5px solid #5b9be0;background:rgba(91,155,224,.1);}
+.ss-cube i:nth-child(1){transform:translateZ(26px);}.ss-cube i:nth-child(2){transform:rotateY(180deg) translateZ(26px);}
+.ss-cube i:nth-child(3){transform:rotateY(90deg) translateZ(26px);}.ss-cube i:nth-child(4){transform:rotateY(-90deg) translateZ(26px);}
+.ss-cube i:nth-child(5){transform:rotateX(90deg) translateZ(26px);}.ss-cube i:nth-child(6){transform:rotateX(-90deg) translateZ(26px);}
+@keyframes ssSpin{to{transform:rotateX(360deg) rotateY(360deg);}}
+.ss-push{background:#18243b;border-radius:12px;padding:14px;display:flex;align-items:center;}
+.ss-noti{color:#fff;font-size:12.5px;line-height:1.5;}
+.ss-noti b{display:block;color:#ffe55b;font-family:var(--fmono);font-size:12.5px;margin-top:6px;}
+/* mini projects (师说+更多 右列) */
+.miniproj{display:grid;grid-template-columns:1.05fr 1fr;gap:12px;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:10px;overflow:hidden;min-height:0;}
+.mini-frame{height:100%;min-height:84px;border-radius:9px;overflow:hidden;border:1px solid var(--line);background:#ebe7df;}
+.mini-frame iframe{width:250%;height:250%;border:0;transform:scale(.4);transform-origin:top left;pointer-events:none;}
+.mini-cap h{font-family:var(--fdisp);font-weight:700;font-size:16px;color:var(--ink);display:block;margin-bottom:4px;}
+.mini-cap p{font-size:12px;color:var(--ink-soft);line-height:1.45;}
+.mini-viz{height:100%;min-height:84px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
+.mini-viz.graham{background:radial-gradient(circle at 50% 85%,#1a1230,#0a0814);position:relative;}
+.gh-tower{display:flex;flex-direction:column-reverse;align-items:center;}
+.gh-tower span{font-family:var(--fdisp);font-weight:700;color:#c9a0ff;line-height:.74;font-size:calc(10px + var(--i)*3px);opacity:.25;text-shadow:0 0 12px #a86bff;animation:ghGlow 2.4s ease-in-out infinite;animation-delay:calc(var(--i)*0.18s);}
+@keyframes ghGlow{0%,100%{opacity:.25;}50%{opacity:1;}}
+.gh-arrows{font-family:var(--fmono);font-size:12px;color:#ddc6ff;margin-top:6px;letter-spacing:.12em;}
+/* xhs notes feed (build in public) */
+.xhs-feed{columns:4;column-gap:14px;}
+.xhs-note{break-inside:avoid;margin:0 0 14px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 8px 20px -14px rgba(40,44,32,.4);transition:.35s var(--ease);}
+.xhs-note:hover{transform:translateY(-4px);box-shadow:0 16px 32px -18px rgba(40,44,32,.5);}
+.xhs-note>img{width:100%;display:block;}
+.xhs-note .nt{padding:11px 12px 12px;}
+.xhs-note .nt h{font-size:14px;font-weight:600;color:var(--ink);line-height:1.4;display:block;margin-bottom:10px;}
+.xhs-note .meta{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-soft);}
+.xhs-note .meta .av{width:20px;height:20px;border-radius:50%;background:var(--lime-deep);color:#2a3300;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;flex:none;}
+.xhs-note .meta .lk{margin-left:auto;color:#ff2442;font-weight:600;white-space:nowrap;}
+@media(max-width:1200px){.xhs-feed{columns:3;}}
+@media(max-width:760px){.xhs-feed{columns:2;}}
+/* motif visuals (变化 / 双向) */
+.motif-card{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:clamp(22px,2.6vw,38px);box-shadow:0 18px 40px -28px rgba(40,44,32,.4);display:flex;flex-direction:column;}
+.motif-tag{font-family:var(--fmono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:20px;}
+.evo-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.evo-end{font-family:var(--fdisp);font-weight:700;font-size:clamp(17px,1.8vw,26px);}
+.evo-track{position:relative;height:10px;border-radius:6px;background:linear-gradient(90deg,#cfcfc2,var(--lime-deep) 72%,var(--lime));margin:54px 8% 38px;}
+.evo-node{position:absolute;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column-reverse;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--ink);white-space:nowrap;}
+.evo-node b{width:15px;height:15px;border-radius:50%;background:#fff;border:3px solid var(--orange);box-shadow:0 0 0 4px #fff;}
+.cyc-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0 4px;}
+.cyc-pill{font-family:var(--fdisp);font-weight:700;font-size:clamp(15px,1.5vw,22px);padding:11px 18px;border-radius:100px;border:2px solid var(--ink);white-space:nowrap;}
+.cyc-pill.c{background:var(--orange);color:#fff;border-color:var(--orange);}
+.cyc-arr{font-family:var(--fdisp);color:var(--lime-deep);font-size:22px;}
+.cyc-loop{display:block;width:100%;height:52px;}
+.cyc-cap{text-align:center;font-size:14px;color:var(--ink-soft);margin-top:8px;}
 @media (max-width:900px){.cols.c2,.cols.c25,.cols.c5{grid-template-columns:1fr;}.posters,.concepts,.imgrow3{grid-template-columns:1fr;}.tools{grid-template-columns:repeat(3,1fr);}.methods{grid-template-columns:1fr;}}
 </style>
+<script type="importmap">{ "imports": { "three": "./assets/three/three.module.js" } }</script>
 </head>
 <body>
 <div class="topbar"><i id="prog"></i></div>
@@ -557,8 +671,8 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
     </div>
     <div class="cols c25 mt2">
       <div class="reveal" style="--d:2">
-        <div class="stage" style="height:clamp(320px,56vh,540px);background:#0e1014;border-color:#23272f">
-          <div class="stagecap"><b></b>好奇 online · 核心功能预览</div>
+        <div class="stage" style="height:clamp(320px,56vh,540px);background:#fffefa;border-color:#e8e6de">
+          <div class="stagecap" style="color:#5d6a7e"><b style="background:#ee725c;box-shadow:0 0 10px #ee725c"></b>好奇 online · 核心功能预览</div>
           <div id="haoqiApp"></div>
         </div>
       </div>
@@ -587,21 +701,33 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
   </div>
 </section>
 
-<!-- 09c 师说 + 备选项目 -->
+<!-- 09c 师说 + 三个备选项目（都做成真预览） -->
 <section class="slide" data-bg="paper">
-  <div class="wrap">
-    <div class="eyebrow reveal" style="--d:0">More · 师说，与备选作品</div>
-    <h2 class="big reveal" style="--d:1">师说<span style="color:var(--ink-soft)"> · 与更多</span></h2>
+  <div class="wrap" style="max-width:1520px">
+    <div class="eyebrow reveal" style="--d:0">More Products · 4 个都给你看</div>
+    <h2 class="big reveal" style="--d:1">师说<span style="color:var(--ink-soft)"> · 与更多作品</span></h2>
     <div class="cols c25 mt2">
-      <div class="card reveal" style="--d:2">
-        <div class="idx">主打 · 三端配对平台</div>
-        <h3 class="mid" style="margin:10px 0 8px">师说</h3>
-        <p class="lead" style="font-size:15.5px">高三毕业生 · 补课学生 · 家长的<b style="color:var(--ink)">三端配对平台</b>。<br>找老「师」、来「说」，把需求接上供给；所有学习资料与进度，<b style="color:var(--ink)">全程线上可视化</b>。</p>
+      <div class="reveal" style="--d:2">
+        <div class="stage" style="height:clamp(300px,50vh,470px);background:#fbfaf6;border-color:#e8e6de">
+          <div class="stagecap" style="color:#8a7e66"><b style="background:#e0742f;box-shadow:0 0 10px #e0742f"></b>师说 · 师生配对 + 进度可视化</div>
+          <div class="ss-app">
+            <div class="ss-top">
+              <div class="ss-col"><span class="ss-chip teal">王老师 · 数学</span><span class="ss-chip teal">李老师 · 物理</span></div>
+              <div class="ss-match"><span class="ss-pulse">⇄</span><small>智能配对</small></div>
+              <div class="ss-col"><span class="ss-chip coral">高三 · 想补数学</span><span class="ss-chip coral">家长 · 看进度</span></div>
+            </div>
+            <div class="ss-bot">
+              <div class="ss-geo"><div class="ss-cube"><i></i><i></i><i></i><i></i><i></i><i></i></div><small>立体几何题 · 3D 可视化</small></div>
+              <div class="ss-push"><div class="ss-noti">📈 今日学习进度已推送给家长<b>正确率 84% · 用时 1h20m</b></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap mt">师说 · 三端配对：<b style="color:var(--ink)">师生匹配 · 立体几何题可视化 · 进度每日推送 · 全程线上可视化</b></div>
       </div>
-      <div class="concepts" style="grid-template-columns:1fr 1fr;align-content:start">
-        <div class="card reveal" style="--d:3"><span class="ic">∞</span><h>葛立恒数 · 大数塔</h><p>把宇宙都装不下的大数，做成可攀爬的塔。</p></div>
-        <div class="card reveal" style="--d:4"><span class="ic">♡</span><h>母亲节项目</h><p>给妈妈的一份小小的交互礼物。</p></div>
-        <div class="card reveal" style="--d:5" style="grid-column:span 2"><span class="ic">▣</span><h>小红书图文工作台</h><p>项目 → 小红书图文：HTML 配图，一键排版导出。</p></div>
+      <div class="reveal" style="--d:3;display:grid;grid-template-rows:repeat(3,1fr);gap:13px;min-height:0">
+        <div class="miniproj"><div class="mini-viz graham"><div class="gh-tower"><span style="--i:5">3</span><span style="--i:4">3</span><span style="--i:3">3</span><span style="--i:2">3</span><span style="--i:1">3</span><span style="--i:0">3</span></div><div class="gh-arrows">3 ↑↑↑↑ 3</div></div><div class="mini-cap"><h>葛立恒数 · 大数塔</h><p>把宇宙都写不下的大数，做成可攀爬的塔。</p></div></div>
+        <div class="miniproj"><div class="mini-frame"><iframe data-src="embed/mom/index.html" title="母亲节" loading="lazy"></iframe></div><div class="mini-cap"><h>母亲节项目</h><p>给妈妈的交互礼物 · 实时嵌入</p></div></div>
+        <div class="miniproj"><div class="mini-frame"><iframe data-src="embed/xhs/index.html" title="小红书工作台" loading="lazy"></iframe></div><div class="mini-cap"><h>小红书图文工作台</h><p>项目 → 图文一键排版 · 实时嵌入</p></div></div>
       </div>
     </div>
   </div>
@@ -700,23 +826,40 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
   </div>
 </section>
 
-<!-- 10d 两个母题 -->
+<!-- 10d 两个母题（可视化） -->
 <section class="slide" data-bg="paper">
   <div class="wrap">
     <div class="eyebrow reveal" style="--d:0">Two through-lines · 贯穿全场的两条线</div>
-    <div class="reveal" style="--d:1;margin-bottom:6vh">
-      <div class="flx ac gap" style="gap:24px;flex-wrap:wrap">
-        <span class="idx" style="font-size:20px">母题 A</span>
-        <h2 class="big">变化 · <span class="kai" style="color:var(--ink-soft)">小白 / 粗糙</span> <span class="arrow-big">⟶</span> <span class="u-line">熟练 / 精良</span></h2>
+    <h2 class="big reveal" style="--d:1">两个<span class="u-line">母题</span></h2>
+    <div class="cols c5 mt2">
+      <div class="motif-card reveal" style="--d:2">
+        <div class="motif-tag">母题 A · 变化</div>
+        <div class="evo">
+          <div class="evo-row"><span class="evo-end kai" style="color:var(--ink-soft)">小白 / 粗糙</span><span class="arrow-big" style="font-size:30px">⟶</span><span class="evo-end" style="color:var(--orange)">熟练 / 精良</span></div>
+          <div class="evo-track">
+            <span class="evo-node" style="left:9%"><b></b>海报</span>
+            <span class="evo-node" style="left:37%"><b></b>游戏</span>
+            <span class="evo-node" style="left:64%"><b></b>工具</span>
+            <span class="evo-node" style="left:91%"><b></b>硬件</span>
+          </div>
+        </div>
+        <p class="lead" style="font-size:15px;margin-top:8px">每一样东西，都能看见从粗糙到精良的<b style="color:var(--ink)">进化轨迹</b>。</p>
       </div>
-      <p class="lead mt">每一样东西都能看见进化的轨迹：海报、游戏、工具、硬件。</p>
-    </div>
-    <div class="reveal" style="--d:3">
-      <div class="flx ac gap" style="gap:24px;flex-wrap:wrap">
-        <span class="idx" style="font-size:20px">母题 B</span>
-        <h2 class="big">双向 · <span class="u-line">欣赏 · 向往</span> <span class="arrow-big">⇌</span> 模仿 · 逼近 · <span style="color:var(--orange)">创作</span></h2>
+      <div class="motif-card reveal" style="--d:3">
+        <div class="motif-tag">母题 B · 双向</div>
+        <div class="cycle">
+          <div class="cyc-row">
+            <span class="cyc-pill">欣赏 · 向往</span><span class="cyc-arr">→</span>
+            <span class="cyc-pill">模仿 · 逼近</span><span class="cyc-arr">→</span>
+            <span class="cyc-pill c">创作</span>
+          </div>
+          <svg class="cyc-loop" viewBox="0 0 400 56" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M392 4 C 392 52, 8 52, 8 12" fill="none" stroke="#aec23a" stroke-width="2.5" stroke-dasharray="5 6"/>
+            <polygon points="8,3 1,16 16,15" fill="#aec23a"/>
+          </svg>
+          <div class="cyc-cap">长成自己的东西后，又去欣赏下一个 —— 一个<b style="color:var(--orange)">会上瘾的循环</b></div>
+        </div>
       </div>
-      <p class="lead mt">发现好的交互 → 亲身体验 → 心生向往 → 模仿逼近 → 长成自己的东西。这是一个会上瘾的循环。</p>
     </div>
   </div>
 </section>
@@ -800,22 +943,21 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
 
 <!-- 14 自媒体 -->
 <section class="slide" data-bg="paper">
-  <div class="wrap">
-    <div class="cols c2">
-      <div>
-        <div class="eyebrow reveal" style="--d:0">Build in Public · 让更多人看见你</div>
-        <h2 class="big reveal" style="--d:1">你得先<br>被<span class="orange">看见</span>。</h2>
-        <p class="lead mt reveal" style="--d:2">奥斯卡做「<b style="color:var(--ink)">vibe coding 换饭吃</b>」的短视频，立马拿到流量——商单、私信、合作纷至沓来。连去 FCC 的实习，也是因为他的流量。</p>
-        <p class="lead mt reveal" style="--d:3"><b style="color:var(--ink)">只有让更多人看到你，你才能获得机会。</b><br>所以我把每个项目、每件银饰、每次反馈，都 build in public。<br><span class="cap">—— 数字病人 Lixon</span></p>
-      </div>
-      <div class="reveal" style="--d:3">
-        <div class="imgrow3" style="grid-template-columns:1fr 1fr">
-          <div class="frame"><img src="assets/img/jewelry1.jpg" alt="银饰"></div>
-          <div class="frame"><img src="assets/img/jewelry2.png" alt="银饰"></div>
-          <div class="frame"><img src="assets/img/card_xhs.jpg" alt="小红书名片" style="object-fit:contain;background:#fff"></div>
-          <div class="frame"><img src="assets/img/hackathon.png" alt="黑客松"></div>
-        </div>
-      </div>
+  <div class="wrap" style="max-width:1520px">
+    <div class="flx ac" style="justify-content:space-between;flex-wrap:wrap;gap:20px;align-items:flex-end">
+      <div><div class="eyebrow reveal" style="--d:0">Build in Public · 让更多人看见你</div>
+      <h2 class="big reveal" style="--d:1">你得先被<span class="orange">看见</span>。</h2></div>
+      <p class="lead reveal" style="--d:2;max-width:42ch;margin-bottom:6px">奥斯卡做「<b style="color:var(--ink)">vibe coding 换饭吃</b>」短视频立马拿到流量——商单、私信、合作纷至沓来。<b style="color:var(--ink)">只有让更多人看到你，才能获得机会。</b>所以我把每个项目、每件银饰，都 build in public。</p>
+    </div>
+    <div class="xhs-feed mt2 reveal" style="--d:3">
+      <article class="xhs-note"><img src="assets/img/jewelry1.jpg" alt=""><div class="nt"><h>我用 AI 设计了一枚银戒指，居然真的铸出来了 💍</h><div class="meta"><span class="av">迟</span>数字病人Lixon<span class="lk">♥ 1.2k</span></div></div></article>
+      <article class="xhs-note"><img src="assets/img/hackathon.png" alt=""><div class="nt"><h>18 岁，我自己办了一场黑客松 🔥 还给零基础同学写了教程</h><div class="meta"><span class="av">迟</span>数字病人Lixon<span class="lk">♥ 893</span></div></div></article>
+      <article class="xhs-note"><img src="assets/aigen/g03.jpg" alt=""><div class="nt"><h>玩转 AI 生图：我的风格，我自己说了算 🎨</h><div class="meta"><span class="av">迟</span>数字病人Lixon<span class="lk">♥ 2.4k</span></div></div></article>
+      <article class="xhs-note"><img src="assets/img/hw_cardputer.jpg" alt=""><div class="nt"><h>伦敦 Claude 开发者大会的礼物，掌上小电脑太可爱了 🎁</h><div class="meta"><span class="av">迟</span>数字病人Lixon<span class="lk">♥ 1.5k</span></div></div></article>
+      <article class="xhs-note"><img src="assets/aigen/g08.jpg" alt=""><div class="nt"><h>把脑子里的脑洞，用 AI 一键变成图 ✨</h><div class="meta"><span class="av">迟</span>数字病人Lixon<span class="lk">♥ 671</span></div></div></article>
+      <article class="xhs-note"><img src="assets/img/hw_cardputer_zelda.jpg" alt=""><div class="nt"><h>在拇指大的小电脑上玩塞尔达，刷了个黑客固件 🗡️</h><div class="meta"><span class="av">迟</span>数字病人Lixon<span class="lk">♥ 1.1k</span></div></div></article>
+      <article class="xhs-note"><img src="assets/img/jewelry2.png" alt=""><div class="nt"><h>失蜡直铸，单件成型 —— 每一枚都独一无二</h><div class="meta"><span class="av">迟</span>数字病人Lixon<span class="lk">♥ 988</span></div></div></article>
+      <article class="xhs-note"><img src="assets/aigen/g11.jpg" alt=""><div class="nt"><h>两个月，我一个人写了 41 个项目，全程 build in public</h><div class="meta"><span class="av">迟</span>数字病人Lixon<span class="lk">♥ 3.0k</span></div></div></article>
     </div>
   </div>
 </section>
@@ -865,7 +1007,7 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
     <div><span class="ov-kicker" id="ovKicker"></span><span class="ov-title" id="ovTitle"></span></div>
     <button class="ov-close" id="ovClose">✕ 关闭</button>
   </div>
-  <div class="ov-frame" id="ovFrame"></div>
+  <div class="ov-frame" id="ovFrame"><iframe id="ovXhs" title="小红书图文预览工作台"></iframe></div>
   <div class="ov-foot"><span class="ov-cap" id="ovCap"></span><div class="ov-dots" id="ovDots"></div></div>
 </div>
 
@@ -1205,23 +1347,38 @@ ANIM.subway=(function(){
 /* ================= 好奇 ONLINE 预览 ================= */
 ANIM.haoqi=(function(){
   const root=$('#haoqiApp'); let built=false,running=false,timers=[],ti=0;
-  const TABS=['日','周','月','清单','时间轴'], VIEW=['list','list','cal','list','timeline'];
-  const EV=[['Three.js 工作坊','#7C3AED'],['共读《设计中的设计》','#10B981'],['黑客松筹备','#F59E0B'],['好奇分享会','#3b82f6'],['银饰开摊','#ec4899'],['复盘 · 周记','#06b6d4']];
+  const TABS=['课程表','阅读联赛','甘特图','课程空间'];
   const T=(f,m)=>{const id=setTimeout(f,m);timers.push(id);return id;}, clearT=()=>{timers.forEach(clearTimeout);timers=[];};
   function build(){ root.innerHTML='<div class="hq-top"><span class="hq-logo">好奇 <b>online</b></span><div class="hq-tabs">'+TABS.map((t,i)=>'<span class="tb'+(i===0?' on':'')+'">'+t+'</span>').join('')+'</div></div><div class="hq-body" id="hqBody"></div>'; built=true; }
   function anim(sel,base,step){ [...root.querySelectorAll(sel)].forEach((e,k)=>T(()=>e.classList.add('show'),base+k*step)); }
-  function cal(b){ let h='<div class="hq-view cal on"><div class="hq-cal">'; for(let d=0;d<21;d++){ const day=d+8; const e=(d%4===0||d%6===5)?EV[d%EV.length]:null; h+='<div class="d">'+day+(e?'<div class="ev" style="background:'+e[1]+'">'+e[0]+'</div>':'')+'</div>'; } h+='</div></div>'; b.innerHTML=h; anim('.ev',200,150); }
-  function list(b){ let h='<div class="hq-view list on">'; EV.forEach(e=>h+='<div class="it" style="border-left-color:'+e[1]+'"><span class="t">'+e[0]+'</span><span class="m">本周</span></div>'); h+='</div>'; b.innerHTML=h; anim('.it',150,140); }
-  function timeline(b){ let h='<div class="hq-view list on">'; ['09:00 晨间共读','13:00 Three.js 工作坊','16:00 项目协作','20:00 好奇分享会','22:30 复盘周记'].forEach((s,k)=>{const c=EV[k%EV.length][1];h+='<div class="it" style="border-left-color:'+c+'"><span class="m" style="margin-left:0;min-width:50px;color:'+c+'">'+s.slice(0,5)+'</span><span class="t">'+s.slice(6)+'</span></div>';}); h+='</div>'; b.innerHTML=h; anim('.it',150,140); }
-  function cycle(){ if(!running)return; const b=root.querySelector('#hqBody'), tabs=root.querySelectorAll('.hq-tabs .tb'); tabs.forEach((t,k)=>t.classList.toggle('on',k===ti)); const v=VIEW[ti]; (v==='cal'?cal:v==='timeline'?timeline:list)(b); ti=(ti+1)%TABS.length; T(cycle,2600); }
+  const head=(eb,t,i)=>'<div class="hqh"><span class="eb">'+eb+'</span><h class="ht">'+t+' <i>'+i+'</i></h></div>';
+  function cal(b){ const E=[['三渲二·地铁','coral','2,c'],['共读·聊聊','blue','1,a'],['银饰开摊','lemon','3,b'],['Three.js','mint','2,e'],['黑客松筹备','coral','3,d'],['留给自己','personal','1,e']];
+    let g=''; const days=['周一','周二','周三','周四','周五'];
+    g+='<div class="wc-h"></div>'+days.map((d,i)=>'<div class="wc-h'+(i===2?' today':'')+'">'+d+'</div>').join('');
+    ['09:00','14:00','19:30'].forEach((t,r)=>{ g+='<div class="wc-t">'+t+'</div>'; for(let c=0;c<5;c++){ const e=E.find(x=>x[2]===(r+1)+','+String.fromCharCode(97+c)); g+='<div class="wc-c">'+(e?'<div class="we '+e[1]+'">'+e[0]+'</div>':'')+'</div>'; } });
+    b.innerHTML=head('MY WEEK · 第 8 周','把时间切成','舒服的样子')+'<div class="hqw-cal">'+g+'</div>'; anim('.we',180,120); }
+  function read(b){ b.innerHTML=head('READING LEAGUE · 春季第 8 周','读到世界','有了回声')
+    +'<div class="rd-grid"><div class="rd-blob">本周共读<b>184h</b><span>36 位玩家在翻页</span></div>'
+    +'<div class="rd-book"><div class="bk-cover">THE<br>ART OF<br>LIVING</div><div class="bk-info"><h>也许你该找个人聊聊</h><div class="bk-bar"><i style="width:62%"></i></div><span>内置阅读器 · 进度 62%</span></div></div>'
+    +'<ol class="rd-rank"><li><n>1</n><av class="pink">迟</av><nm>David</nm><tm>4h10m</tm></li><li><n>2</n><av class="lemon">齐</av><nm>思齐</nm><tm>3h28m</tm></li><li><n>3</n><av class="mint">岳</av><nm>岳岳</nm><tm>2h55m</tm></li></ol></div>'; anim('.rd-blob,.rd-book,.rd-rank li',150,140); }
+  function gantt(b){ const R=[['三渲二·地铁','coral',6,40],['好奇 online 切片','blue',2,58],['银饰直铸','lemon',24,30],['师说·配对','mint',40,46],['期末展海报','coralx',12,22]];
+    let h=R.map(r=>'<div class="gt-row"><span class="gt-name">'+r[0]+'</span><div class="gt-track"><i class="gt-bar '+r[1]+'" style="left:'+r[2]+'%;width:'+r[3]+'%"></i></div></div>').join('');
+    b.innerHTML=head('GANTT · 做事空间','把想法','放到桌面上')+'<div class="gt"><div class="gt-today"></div>'+h+'</div>'; anim('.gt-bar',150,130); }
+  function courses(b){ const AV=[['三','blue',2],['聊','coral',0],['银','lemon',5],['棋','mint',0],['码','pink',1]];
+    const C=[['三渲二','地铁跑酷的三渲二管线','blue','2h'],['共读','《设计中的设计》第 3 章','coral','图文笔记'],['银饰','失蜡直铸第一次成功','lemon','5h'],['代码建模','戒指参数化生成','mint','图文笔记']];
+    let av=AV.map(a=>'<div class="cs-disc '+a[1]+'">'+a[0]+(a[2]?'<dot>'+a[2]+'</dot>':'')+'</div>').join('');
+    let feed=C.map(c=>'<div class="cs-card"><div class="cs-meta"><i class="ta '+c[2]+'">'+c[0][0]+'</i>'+c[0]+' · 刚刚</div><h>'+c[1]+'</h><div class="cs-foot"><span class="cs-tag">'+c[3]+'</span></div></div>').join('');
+    b.innerHTML=head('COURSE FEED · 课程空间','每门课，','都在长出宇宙')+'<div class="cs-av">'+av+'</div><div class="cs-feed">'+feed+'</div>'; anim('.cs-disc',120,90); anim('.cs-card',300,130); }
+  function cycle(){ if(!running)return; const b=root.querySelector('#hqBody'), tabs=root.querySelectorAll('.hq-tabs .tb'); tabs.forEach((t,k)=>t.classList.toggle('on',k===ti)); [cal,read,gantt,courses][ti](b); ti=(ti+1)%TABS.length; T(cycle,2900); }
   return { start(){ if(!built)build(); if(running)return; running=true; ti=0; cycle(); }, stop(){ running=false; clearT(); } };
 })();
 
 /* ================= IDENTITY OVERLAY (悬停全屏轮播) ================= */
 OV=(function(){
-  const ov=$('#idOverlay'),frame=$('#ovFrame'),kicker=$('#ovKicker'),title=$('#ovTitle'),cap=$('#ovCap'),dots=$('#ovDots');
-  let open=false, idx=0, advT=null, curId=null, borrowed=null;
-  const META={vibe:{k:'Vibe Coder · 作品',t:'我写的项目'},design:{k:'设计师 · 作品',t:'平面 · UIUX · 建模'},media:{k:'自媒体 · 数字病人 Lixon',t:'照片墙 · 工作台'}};
+  const ov=$('#idOverlay'),frame=$('#ovFrame'),kicker=$('#ovKicker'),title=$('#ovTitle'),cap=$('#ovCap'),dots=$('#ovDots'),xhs=$('#ovXhs');
+  let open=false, idx=0, advT=null, curId=null, borrowed=null, coreRects=[];
+  if(xhs) xhs.src='embed/xhs/index.html';   // 预加载小红书工作台
+  const META={vibe:{k:'Vibe Coder · 作品',t:'我写的项目'},design:{k:'设计师 · 作品',t:'平面 · UIUX · 建模'},media:{k:'自媒体 · 数字病人 Lixon',t:'图文 · 工作台'}};
   const STAGE=[
     {sel:'#stageChess',anim:'chess',cap:'国象 × 将棋 · 9×9 融合棋盘自动对弈'},
     {sel:'#stageCalling',anim:'calling',cap:'calling · 草稿纸 → AI 提取日程 / 安排 / 待学'},
@@ -1229,54 +1386,93 @@ OV=(function(){
     {sel:'#stageSubway',anim:'subway',cap:'地铁跑酷《没有目的地》· 切轨碾人'}
   ];
   const DESIGN=[
-    {img:'assets/img/poster_final.jpg',title:'平面 · 本次期末展终版海报',cap:'熟练驾驭生图 + 个人风格'},
+    {img:'assets/img/poster_final.jpg',title:'平面 · 期末展终版海报',cap:'熟练驾驭生图 + 个人风格'},
     {img:'assets/img/poster_improv.png',title:'平面 · 即兴喜剧海报',cap:'HTML 编写 · 结构清晰'},
+    {img:'assets/img/poster_rough.jpg',title:'平面 · 去年成果展海报',cap:'还得手动排版，略粗糙'},
     {img:'assets/img/ui_excalidraw1.jpg',title:'UI/UX · 画板上画的界面',cap:'画 UI，而不是写文字描述'},
+    {img:'assets/img/ui_excalidraw2.jpg',title:'UI/UX · 画板草图',cap:'手绘交互稿'},
+    {img:'assets/img/ui_excalidraw3.jpg',title:'UI/UX · 画板草图',cap:'流程与界面'},
+    {img:'assets/img/ui_excalidraw4.jpg',title:'UI/UX · 画板草图',cap:'结构与布局'},
     {img:'assets/img/ui_modeling.png',title:'UI/UX · 建模示意图',cap:'代码建模的草图'},
-    {ring:true,title:'首饰 · 银戒指建模',cap:'代码建模 → 3D 打印 → 失蜡直铸 · 转动预览'}
+    {ring:true,title:'首饰 · 银戒指（真 3D 模型）',cap:'代码建模 → 3D 打印 → 失蜡直铸 · 实时旋转'}
   ];
-  const MEDIA=[
-    {scatter:[['assets/img/jewelry1.jpg','AI 银饰'],['assets/img/hackathon.png','我办的黑客松'],['assets/img/card_xhs.jpg','小红书名片'],['assets/img/hw_cardputer.jpg','Cardputer'],['assets/img/photo_wangzi.jpg','与王子伯洋'],['assets/img/jewelry2.png','银戒指']],title:'照片墙 · build in public'},
-    {iframe:'embed/xhs/index.html',title:'小红书图文预览工作台',cap:'项目 → 小红书图文，一键排版导出'}
-  ];
+  const MEDIA=[{editorial:1,title:'build in public · 让更多人看见你'},{editorial:2,title:'银饰 · 把每次反馈都晒出来'},{xhs:true,title:'小红书图文预览工作台'}];
   const framesFor=id=>id==='vibe'?STAGE:id==='design'?DESIGN:MEDIA;
   function restoreBorrow(){ if(borrowed){ ANIM[borrowed.anim]&&ANIM[borrowed.anim].stop(); const el=borrowed.el; if(el._hp) el._hp.insertBefore(el,el._hn); borrowed=null; } }
   function titleHTML(t){ return '<div class="pane-title"><small>'+((META[curId]||{}).k||'')+'</small>'+t+'</div>'; }
-  function buildScatter(items){ const wrap=document.createElement('div'); wrap.className='ov-scatter';
-    const L=[[3,7,30,44],[35,3,27,37],[64,9,33,40],[5,55,28,40],[36,44,28,52],[67,53,30,42]];
-    items.forEach((it,k)=>{ const p=L[k%L.length], d=document.createElement('div'); d.className='pw';
-      d.style.cssText='left:'+p[0]+'%;top:'+p[1]+'%;width:'+p[2]+'%;height:'+p[3]+'%;';
-      d.innerHTML='<img src="'+it[0]+'" alt=""><cap>'+it[1]+'</cap>'; wrap.appendChild(d); });
-    return wrap; }
+  function xhsShow(on){ if(xhs) xhs.classList.toggle('show',!!on); }
+  function clearPanes(){ [...frame.querySelectorAll('.ov-pane')].forEach(p=>p.remove()); if(window.RING)window.RING.stop(); xhsShow(false); restoreBorrow(); }
+  function buildEditorial(n){ const w=document.createElement('div'); w.className='ov-mag';
+    if(n===1){ w.innerHTML='<div class="mg-img big" style="grid-area:a"><img src="assets/img/hackathon.png"><cap>我办的黑客松</cap></div>'
+      +'<div class="mg-txt" style="grid-area:b"><h>流量 = 机会</h><p>奥斯卡做「vibe coding 换饭吃」短视频，立马拿到商单、私信、合作。连去 FCC 实习，也是流量带来的。</p></div>'
+      +'<div class="mg-img" style="grid-area:c"><img src="assets/img/card_xhs.jpg"><cap>数字病人 Lixon</cap></div>'
+      +'<div class="mg-quote" style="grid-area:d">只有让更多人看到你，<b>你才能获得机会。</b></div>'
+      +'<div class="mg-img" style="grid-area:e"><img src="assets/img/hw_cardputer.jpg"><cap>每个项目都 build in public</cap></div>'; }
+    else { w.innerHTML='<div class="mg-img big" style="grid-area:a"><img src="assets/img/jewelry1.jpg"><cap>AI 设计的银饰</cap></div>'
+      +'<div class="mg-txt" style="grid-area:b"><h>银饰 & 反馈</h><p>代码建模 → 3D 打印可铸树脂 → 失蜡单件直铸。把过程、成品、每一次反馈都发出来，让喜欢的人能找到我。</p></div>'
+      +'<div class="mg-img" style="grid-area:c"><img src="assets/img/jewelry2.png"><cap>单件直铸</cap></div>'
+      +'<div class="mg-quote" style="grid-area:d">把每个项目、每件银饰、<b>每次反馈，都晒出来。</b></div>'
+      +'<div class="mg-img" style="grid-area:e"><img src="assets/img/photo_wangzi.jpg"><cap>与王子伯洋</cap></div>'; }
+    return w; }
   function showFrame(i){ const frames=framesFor(curId); idx=(i+frames.length)%frames.length;
     [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===idx));
-    restoreBorrow(); frame.innerHTML='';
+    clearPanes();
     const f=frames[idx], pane=document.createElement('div'); pane.className='ov-pane on';
     if(f.anim){ const host=document.createElement('div'); host.className='ov-host'; pane.appendChild(host);
       const el=$(f.sel); el._hp=el.parentNode; el._hn=el.nextSibling; host.appendChild(el); borrowed={anim:f.anim,el};
-      ANIM[f.anim].start(); pane.insertAdjacentHTML('beforeend',titleHTML('Vibe Coder · '+f.cap.split(' · ')[0])); cap.textContent=f.cap; }
-    else if(f.ring){ pane.innerHTML='<div class="ringstage"><div class="ringspin"><img src="assets/img/ring_spin.png" alt="银戒指"></div></div>'+titleHTML(f.title); cap.textContent=f.cap; }
-    else if(f.iframe){ const ifr=document.createElement('iframe'); ifr.src=f.iframe; ifr.title=f.title; pane.appendChild(ifr); pane.insertAdjacentHTML('beforeend',titleHTML(f.title)); cap.textContent=f.cap||''; }
-    else if(f.scatter){ pane.appendChild(buildScatter(f.scatter)); pane.insertAdjacentHTML('beforeend',titleHTML(f.title)); cap.textContent='图文错落 · 标题突出'; }
-    else if(f.img){ pane.innerHTML='<img class="full" src="'+f.img+'" alt="">'+titleHTML(f.title); cap.textContent=f.cap||''; }
-    frame.appendChild(pane); }
-  function schedule(){ clearTimeout(advT); advT=setTimeout(()=>{ if(open){ showFrame(idx+1); schedule(); } },4000); }
-  function start(id){ curId=id; idx=0; const frames=framesFor(id), m=META[id]||{};
-    kicker.textContent=m.k||''; title.textContent=m.t||'';
+      ANIM[f.anim].start(); pane.insertAdjacentHTML('beforeend',titleHTML(f.cap.split(' · ')[0])); cap.textContent=f.cap; frame.appendChild(pane); }
+    else if(f.ring){ pane.innerHTML='<div class="ringstage"><canvas id="ringGL"></canvas></div>'+titleHTML(f.title); cap.textContent=f.cap; frame.appendChild(pane); const cv=pane.querySelector('#ringGL'); if(window.RING)window.RING.mount(cv); }
+    else if(f.xhs){ xhsShow(true); pane.className='ov-pane on ov-pass'; pane.innerHTML=titleHTML(f.title); cap.textContent='项目 → 小红书图文，一键排版导出'; frame.appendChild(pane); }
+    else if(f.editorial){ pane.appendChild(buildEditorial(f.editorial)); pane.insertAdjacentHTML('beforeend',titleHTML(f.title)); cap.textContent='图文穿插 · 标题突出'; frame.appendChild(pane); }
+    else if(f.img){ pane.innerHTML='<img class="full" src="'+f.img+'" alt="">'+titleHTML(f.title); cap.textContent=f.cap||''; frame.appendChild(pane); } }
+  function schedule(){ clearTimeout(advT); advT=setTimeout(()=>{ if(open){ showFrame(idx+1); schedule(); } },2000); }
+  function refreshRects(){ coreRects=$$('.idlist .row.core').map(r=>({id:r.dataset.id,rect:r.getBoundingClientRect()})); }
+  function start(id){ if(id===curId&&open)return; curId=id; idx=0; const frames=framesFor(id), m=META[id]||{};
+    refreshRects(); kicker.textContent=m.k||''; title.textContent=m.t||'';
     dots.innerHTML=frames.map((_,k)=>'<b'+(k===0?' class="on"':'')+'></b>').join('');
     [...dots.children].forEach((b,k)=>b.addEventListener('click',()=>{showFrame(k);schedule();}));
     ov.classList.add('on'); ov.setAttribute('aria-hidden','false'); open=true; overlayOpen=true;
     showFrame(0); schedule(); }
-  function close(){ if(!open)return; clearTimeout(advT); restoreBorrow(); frame.innerHTML=''; ov.classList.remove('on'); ov.setAttribute('aria-hidden','true'); open=false; overlayOpen=false; curId=null; }
+  function close(){ if(!open)return; clearTimeout(advT); clearPanes(); ov.classList.remove('on'); ov.setAttribute('aria-hidden','true'); open=false; overlayOpen=false; curId=null; }
   $$('.idlist .row.core').forEach(row=>{ row.addEventListener('mouseenter',()=>start(row.dataset.id)); row.addEventListener('click',()=>start(row.dataset.id)); });
   $('#ovClose').addEventListener('click',close);
-  ov.addEventListener('click',e=>{ if(e.target===ov||e.target===frame) close(); });
+  document.addEventListener('mousemove',e=>{ if(!open)return; const x=e.clientX,y=e.clientY;
+    const hit=coreRects.find(c=>x>=c.rect.left-14&&x<=c.rect.right+64&&y>=c.rect.top-10&&y<=c.rect.bottom+10);
+    if(!hit) close(); else if(hit.id!==curId) start(hit.id); });
   return { start, close, next:()=>{showFrame(idx+1);schedule();}, prev:()=>{showFrame(idx-1);schedule();}, isOpen:()=>open };
 })();
 
 /* init */
 go(0);
 })();
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader } from './assets/three/STLLoader.js';
+let geom=null, loading=false; const q=[]; const loader=new STLLoader();
+function getGeom(cb){ if(geom){cb(geom);return;} q.push(cb); if(loading)return; loading=true;
+  loader.load('assets/ring.stl', g=>{ g.center(); geom=g; q.splice(0).forEach(f=>f(g)); }, undefined, e=>{ console.warn('ring stl fail',e); }); }
+let cur=null;
+window.RING={
+  mount(canvas){ this.stop();
+    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+    renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+    const scene=new THREE.Scene(), cam=new THREE.PerspectiveCamera(38,1,0.1,3000);
+    scene.add(new THREE.HemisphereLight(0xffffff,0x3a3a44,1.15));
+    const a=new THREE.DirectionalLight(0xffffff,1.5); a.position.set(5,7,6); scene.add(a);
+    const b=new THREE.DirectionalLight(0xbcd0ff,0.8); b.position.set(-7,2,-5); scene.add(b);
+    const cc=new THREE.DirectionalLight(0xffd089,0.55); cc.position.set(0,-5,4); scene.add(cc);
+    const mat=new THREE.MeshStandardMaterial({color:0xcfd2d8,metalness:0.92,roughness:0.33});
+    let mesh=null, raf=null, stopped=false;
+    getGeom(g=>{ if(stopped)return; mesh=new THREE.Mesh(g,mat); g.computeBoundingSphere();
+      const r=(g.boundingSphere&&g.boundingSphere.radius)||40; mesh.rotation.x=-1.15; scene.add(mesh);
+      cam.position.set(0,r*0.5,r*2.7); cam.lookAt(0,0,0); });
+    function resize(){ const w=canvas.clientWidth||canvas.parentNode.clientWidth, h=canvas.clientHeight||canvas.parentNode.clientHeight; if(!w||!h)return; renderer.setSize(w,h,false); cam.aspect=w/h; cam.updateProjectionMatrix(); }
+    function loop(){ if(stopped)return; resize(); if(mesh)mesh.rotation.y+=0.013; renderer.render(scene,cam); raf=requestAnimationFrame(loop); }
+    loop(); cur={stop(){ stopped=true; if(raf)cancelAnimationFrame(raf); try{renderer.dispose();}catch(e){} }};
+  },
+  stop(){ if(cur){cur.stop();cur=null;} }
+};
 </script>
 </body>
 </html>
