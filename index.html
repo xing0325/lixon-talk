@@ -492,6 +492,19 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
 .cyc-arr{font-family:var(--fdisp);color:var(--lime-deep);font-size:22px;}
 .cyc-loop{display:block;width:100%;height:52px;}
 .cyc-cap{text-align:center;font-size:14px;color:var(--ink-soft);margin-top:8px;}
+/* 银饰 · 3 个 3D 旋转戒指 */
+.ring-row{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.5vw,40px);}
+.ring-cell{margin:0;display:flex;flex-direction:column;align-items:center;}
+.ring-cell canvas{width:100%;height:clamp(200px,34vh,360px);display:block;background:radial-gradient(60% 60% at 50% 45%,#22242e,#0c0d11);border-radius:16px;border:1.5px solid var(--line);box-shadow:0 24px 50px -30px rgba(0,0,0,.5);}
+.ring-cell figcaption{margin-top:14px;text-align:center;}
+.ring-cell figcaption b{font-family:var(--fdisp);font-weight:700;font-size:clamp(16px,1.6vw,22px);color:var(--ink);display:block;}
+.ring-cell figcaption span{font-size:13px;color:var(--ink-soft);}
+/* 现在·项目 额外嵌入窗 */
+.now-extra{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+.now-win{display:flex;flex-direction:column;}
+.now-frame{height:clamp(120px,18vh,200px);border-radius:12px;overflow:hidden;border:1.5px solid #3f4534;background:#0c0d11;position:relative;}
+.now-frame iframe{width:100%;height:100%;border:0;display:block;}
+.now-win .cap{margin-top:7px;}
 /* 师说 四功能视图（复用 .hq-* 纸感容器 + .ss-cube） */
 .ssm{flex:1;min-height:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;position:relative;}
 .ssm-col{display:flex;flex-direction:column;gap:12px;z-index:2;}
@@ -699,7 +712,7 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
     </div>
     <div class="cols c5 mt2">
       <div class="reveal" style="--d:2">
-        <div class="stage" id="stageType" style="height:clamp(260px,40vh,420px)">
+        <div class="stage" id="stageType" style="height:clamp(190px,30vh,330px)">
           <div class="stagecap"><b></b>打字爽 · 自动连击</div>
           <div id="typeScreen">
             <div id="typeText"></div>
@@ -707,15 +720,19 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
             <div class="tgrade" id="tgrade">S</div>
           </div>
         </div>
-        <div class="cap mt">打字爽 · Monkeytype 风 + osu! 级强反馈：连击 / 粒子 / 屏抖 / 评级</div>
+        <div class="cap mt" style="font-size:13px">打字爽 · 强反馈中文打字：连击 / 粒子 / 屏抖 / 评级</div>
       </div>
       <div class="reveal" style="--d:3">
-        <div class="stage" id="stageSubway" style="height:clamp(260px,40vh,420px)">
+        <div class="stage" id="stageSubway" style="height:clamp(190px,30vh,330px)">
           <div class="stagecap"><b></b>地铁跑酷《没有目的地》· 切轨</div>
           <canvas id="subwayCanvas"></canvas>
         </div>
-        <div class="cap mt">「地铁」跑酷 · 倒反天罡：<b style="color:var(--orange-soft)">你即地铁，碾过人群</b>，电车难题倒着玩</div>
+        <div class="cap mt" style="font-size:13px">「地铁」跑酷 · 倒反天罡：<b style="color:var(--orange-soft)">你即地铁，碾过人群</b></div>
       </div>
+    </div>
+    <div class="now-extra reveal" style="--d:4">
+      <div class="now-win"><div class="now-frame"><iframe data-src="https://mofazhusha-production.up.railway.app/" title="嬷法大逃杀" loading="lazy"></iframe></div><div class="cap" style="font-size:13px">🎮 嬷法大逃杀 · 线上多人大逃杀（原站实时嵌入）</div></div>
+      <div class="now-win"><div class="now-frame"><iframe data-src="embed/kiidschool/index.html" title="钥匙玩校" loading="lazy"></iframe></div><div class="cap" style="font-size:13px">🔑 钥匙玩校 · 2026 夏令营 H5（原站实时嵌入）</div></div>
     </div>
   </div>
 </section>
@@ -987,6 +1004,51 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
   </div>
 </section>
 
+<!-- 10b 银饰 · 代码生形（3 个旋转建模） -->
+<section class="slide" data-bg="paper" data-anim="rings">
+  <div class="wrap" style="max-width:1500px">
+    <div class="flx ac" style="justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div><div class="eyebrow reveal" style="--d:0">Jewelry · 不画草图，写代码</div>
+      <h2 class="big reveal" style="--d:1">银饰 · <span class="u-line">代码生形</span></h2></div>
+      <div class="tag reveal" style="--d:1">参数化建模 · 失蜡单件直铸</div>
+    </div>
+    <div class="ring-row mt2 reveal" style="--d:2">
+      <figure class="ring-cell"><canvas class="ring-gl" data-stl="assets/ring.stl"></canvas><figcaption><b>AI 系列</b><span>把品牌符号长进戒圈</span></figcaption></figure>
+      <figure class="ring-cell"><canvas class="ring-gl" data-stl="assets/ring2.stl"></canvas><figcaption><b>阿尼玛 · 索菲亚</b><span>荣格四阶段 · 智慧</span></figcaption></figure>
+      <figure class="ring-cell"><canvas class="ring-gl" data-stl="assets/ring3.stl"></canvas><figcaption><b>阿尼玛 · 夏娃</b><span>荣格四阶段 · 本能</span></figcaption></figure>
+    </div>
+    <div class="flx ac mt reveal" style="--d:3;justify-content:center;flex-wrap:wrap;gap:10px">
+      <span class="chip"><i class="dot"></i>纯 Python 参数化建模</span>
+      <span class="chip"><i class="dot"></i>导出水密 STL</span>
+      <span class="chip"><i class="dot"></i>3D 打印可铸树脂</span>
+      <span class="chip"><i class="dot"></i>失蜡单件直铸 · 无开模</span>
+    </div>
+    <div class="cap reveal" style="--d:4;text-align:center;margin-top:14px;font-size:14px">一行参数换尺寸换款，把名字 / 生日 / 坐标哈希成独一无二的戒圈起伏 —— <b style="color:var(--ink)">生成式定制，就是护城河</b>。</div>
+  </div>
+</section>
+
+<!-- 10c 支持同龄人的探索 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap" style="max-width:1500px">
+    <div class="eyebrow reveal" style="--d:0">Bring Others Along · 不只是自己做</div>
+    <h2 class="big reveal" style="--d:1">支持<span class="u-line">同龄人的探索</span></h2>
+    <div class="cols c25 mt2">
+      <div class="reveal" style="--d:2">
+        <div class="card">
+          <div class="idx">组织 · 好奇黑客松</div>
+          <p class="lead mt" style="font-size:15px">给同学<b style="color:var(--ink)">发放 Manus 账号</b>、办起「好奇黑客松」、给详细指导，还<b style="color:var(--ink)">写了一份带配图的入门教程</b>。</p>
+          <div class="imgrow3 mt"><div class="frame"><img src="assets/img/peer_hackathon.png" alt="黑客松"></div><div class="frame"><img src="assets/img/peer_tut1.png" alt="教程1"></div><div class="frame"><img src="assets/img/peer_tut2.png" alt="教程2"></div></div>
+          <div class="strip mt"><img src="assets/img/peer_work1.png" style="width:150px;height:92px;object-fit:cover" alt="同学作品1"><img src="assets/img/peer_work2.png" style="width:150px;height:92px;object-fit:cover" alt="同学作品2"><span class="cap" style="align-self:center;margin-left:6px">同学们真的做出东西了</span></div>
+        </div>
+      </div>
+      <div class="reveal" style="--d:3;display:grid;gap:16px;align-content:start">
+        <div class="card"><div class="idx">点子 · 把我的点子给同学继续做</div><h3 class="mid" style="margin:8px 0 4px">好奇杀戮尖塔 · 国象对战将棋</h3><p style="color:var(--ink-soft);font-size:14px">我做不完的好点子，交给同学接着做、一起长。</p></div>
+        <div class="card"><div class="flx gap ac" style="gap:16px"><div class="frame" style="width:150px;flex:none"><img src="assets/img/peer_git.jpg" style="height:96px" alt="git教学"></div><div><div class="idx">教学 · Git 与 GitHub</div><h3 class="mid" style="margin-top:6px;font-size:22px">看两三小时视频备课</h3><p style="color:var(--ink-soft);font-size:14px;margin-top:4px">备课文档：<span class="mono" style="color:var(--orange)">github协作.md</span></p></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- 11 工作方法 -->
 <section class="slide" data-bg="paper">
   <div class="wrap">
@@ -1140,12 +1202,14 @@ function go(i){
   // anim lifecycle
   if(OV) OV.close();
   ANIM.chess.stop(); ANIM.calling.stop(); ANIM.type.stop(); ANIM.subway.stop(); ANIM.haoqi.stop(); ANIM.shishuo.stop(); ANIM.xhsboard.stop();
+  if(window.RING) window.RING.stopAll();
   const a=slides[i].dataset.anim;
   if(a==='start'){ ANIM.chess.start(); ANIM.calling.start(); }
   if(a==='now'){ ANIM.type.start(); ANIM.subway.start(); }
   if(a==='haoqi') ANIM.haoqi.start();
   if(a==='shishuo') ANIM.shishuo.start();
   if(a==='xhsboard') ANIM.xhsboard.start();
+  if(a==='rings') slides[i].querySelectorAll('canvas.ring-gl').forEach(cv=>{ if(window.RING) window.RING.mount(cv, cv.dataset.stl); });
   slides[i].querySelectorAll('iframe[data-src]').forEach(fr=>{ if(!fr.getAttribute('src')) fr.src=fr.dataset.src; });
   if(i===2) runStats();
   cur=i;
@@ -1585,29 +1649,30 @@ go(0);
 <script type="module">
 import * as THREE from 'three';
 import { STLLoader } from './assets/three/STLLoader.js';
-let geom=null, loading=false; const q=[]; const loader=new STLLoader();
-function getGeom(cb){ if(geom){cb(geom);return;} q.push(cb); if(loading)return; loading=true;
-  loader.load('assets/ring.stl', g=>{ g.center(); geom=g; q.splice(0).forEach(f=>f(g)); }, undefined, e=>{ console.warn('ring stl fail',e); }); }
-let cur=null;
+const loader=new STLLoader(); const cache={}, loadingU={}, queues={};
+function getGeom(url,cb){ if(cache[url]){cb(cache[url]);return;} (queues[url]=queues[url]||[]).push(cb); if(loadingU[url])return; loadingU[url]=true;
+  loader.load(url, g=>{ g.center(); cache[url]=g; (queues[url]||[]).splice(0).forEach(f=>f(g)); }, undefined, e=>{ console.warn('ring stl fail',url,e); }); }
 window.RING={
-  mount(canvas){ this.stop();
+  _list:new Set(),
+  mount(canvas,url){ url=url||'assets/ring.stl';
     const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
     renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
-    const scene=new THREE.Scene(), cam=new THREE.PerspectiveCamera(38,1,0.1,3000);
+    const scene=new THREE.Scene(), cam=new THREE.PerspectiveCamera(38,1,0.1,4000);
     scene.add(new THREE.HemisphereLight(0xffffff,0x3a3a44,1.15));
     const a=new THREE.DirectionalLight(0xffffff,1.5); a.position.set(5,7,6); scene.add(a);
-    const b=new THREE.DirectionalLight(0xbcd0ff,0.8); b.position.set(-7,2,-5); scene.add(b);
+    const b=new THREE.DirectionalLight(0xbcd0ff,0.85); b.position.set(-7,2,-5); scene.add(b);
     const cc=new THREE.DirectionalLight(0xffd089,0.55); cc.position.set(0,-5,4); scene.add(cc);
-    const mat=new THREE.MeshStandardMaterial({color:0xcfd2d8,metalness:0.92,roughness:0.33});
+    const mat=new THREE.MeshStandardMaterial({color:0xcfd2d8,metalness:0.92,roughness:0.32});
     let mesh=null, raf=null, stopped=false;
-    getGeom(g=>{ if(stopped)return; mesh=new THREE.Mesh(g,mat); g.computeBoundingSphere();
+    getGeom(url,g=>{ if(stopped)return; mesh=new THREE.Mesh(g,mat); g.computeBoundingSphere();
       const r=(g.boundingSphere&&g.boundingSphere.radius)||40; mesh.rotation.x=-1.15; scene.add(mesh);
       cam.position.set(0,r*0.5,r*2.7); cam.lookAt(0,0,0); });
     function resize(){ const w=canvas.clientWidth||canvas.parentNode.clientWidth, h=canvas.clientHeight||canvas.parentNode.clientHeight; if(!w||!h)return; renderer.setSize(w,h,false); cam.aspect=w/h; cam.updateProjectionMatrix(); }
     function loop(){ if(stopped)return; resize(); if(mesh)mesh.rotation.y+=0.013; renderer.render(scene,cam); raf=requestAnimationFrame(loop); }
-    loop(); cur={stop(){ stopped=true; if(raf)cancelAnimationFrame(raf); try{renderer.dispose();}catch(e){} }};
-  },
-  stop(){ if(cur){cur.stop();cur=null;} }
+    loop(); const ctrl={stop(){ stopped=true; if(raf)cancelAnimationFrame(raf); try{renderer.dispose();}catch(e){} }};
+    this._list.add(ctrl); return ctrl; },
+  stop(){ this.stopAll(); },
+  stopAll(){ this._list.forEach(c=>c.stop()); this._list.clear(); }
 };
 </script>
 </body>
