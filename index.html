@@ -492,6 +492,59 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
 .cyc-arr{font-family:var(--fdisp);color:var(--lime-deep);font-size:22px;}
 .cyc-loop{display:block;width:100%;height:52px;}
 .cyc-cap{text-align:center;font-size:14px;color:var(--ink-soft);margin-top:8px;}
+/* 师说 四功能视图（复用 .hq-* 纸感容器 + .ss-cube） */
+.ssm{flex:1;min-height:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;position:relative;}
+.ssm-col{display:flex;flex-direction:column;gap:12px;z-index:2;}
+.ssm-p{padding:11px 12px;border-radius:10px;font-size:13px;font-weight:600;text-align:center;border:1.5px solid;opacity:0;transform:translateY(8px);transition:.45s var(--ease);background:#fff;}
+.ssm-p.show{opacity:1;transform:none;}
+.ssm-p.s{background:#ffeee6;border-color:#f3c3b0;color:#b5532f;}
+.ssm-p.t{background:#e4f3f0;border-color:#9fd0c6;color:#1f6a5e;}
+.ssm-link{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+.ssm-link path{fill:none;stroke:#e0742f;stroke-width:1;stroke-dasharray:200;stroke-dashoffset:200;opacity:.5;}
+.ssm-link path.show{animation:ssDraw 1s var(--ease) forwards;}
+@keyframes ssDraw{to{stroke-dashoffset:0;}}
+.ssg{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1.2fr;gap:14px;align-items:center;}
+.ssg-shape{display:flex;align-items:center;justify-content:center;perspective:520px;}
+.ssg-prob{display:flex;flex-direction:column;gap:14px;}
+.ssg-prob p{font-size:14px;color:#18243b;line-height:1.6;}
+.ssg-ans{font-size:15px;color:#1f6a5e;font-weight:600;opacity:0;transform:translateY(6px);transition:.5s var(--ease);}
+.ssg-ans.show{opacity:1;transform:none;}
+.ssg-ans b{color:#e0742f;font-family:var(--fmono);font-size:18px;}
+.ssp{flex:1;min-height:0;display:flex;flex-direction:column;gap:16px;justify-content:center;}
+.ssp-noti{background:#18243b;color:#fff;border-radius:12px;padding:13px 16px;font-size:13.5px;opacity:0;transform:translateX(-8px);transition:.5s var(--ease);}
+.ssp-noti.show{opacity:1;transform:none;}
+.ssp-chart{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:44%;}
+.ssp-bar{display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end;}
+.ssp-bar i{width:62%;max-width:26px;background:linear-gradient(#e0742f,#ffb060);border-radius:4px 4px 0 0;height:0;transition:height .6s var(--ease);}
+.ssp-bar i.show{height:var(--h);}
+.ssp-bar span{font-size:10px;color:#8490a2;}
+.ssd{flex:1;min-height:0;display:flex;flex-direction:column;gap:15px;justify-content:center;}
+.ssd-row{display:grid;grid-template-columns:74px 1fr 48px;gap:10px;align-items:center;}
+.ssd-n{font-size:13px;font-weight:600;color:#18243b;}
+.ssd-t{height:14px;background:#eceae2;border-radius:7px;overflow:hidden;}
+.ssd-t i{display:block;height:100%;width:0;border-radius:7px;transition:width .7s var(--ease);}
+.ssd-t i.show{width:var(--w);}
+.ssd-row b{font-family:var(--fmono);font-size:13px;color:#18243b;text-align:right;}
+/* 小红书图文工作台（自动翻卡） */
+#xhsBoard{height:100%;display:flex;flex-direction:column;background:#ebe7df;overflow:hidden;font-family:"PingFang SC","Microsoft YaHei UI",var(--fbody);}
+.xb-top{display:flex;align-items:center;gap:10px;padding:11px 14px;background:#f5f1e8;border-bottom:1px solid #ddd6c8;flex:none;}
+.xb-logo{font-weight:700;font-size:14px;color:#1a1a1a;}
+.xb-chips{display:flex;gap:5px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end;}
+.xb-chip{font-size:11px;padding:4px 9px;border-radius:7px;background:#f0ece2;color:#6b6b6b;white-space:nowrap;transition:.3s;}
+.xb-chip.on{background:#ff2442;color:#fff;}
+.xb-main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:11px;padding:14px;}
+.xb-phone{height:min(74%,360px);aspect-ratio:3/4;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 18px 40px -20px rgba(0,0,0,.35);position:relative;}
+.xb-card{position:absolute;inset:0;}
+.xb-card.in{animation:xbIn .5s var(--ease);}
+@keyframes xbIn{from{opacity:0;transform:translateX(26px);}to{opacity:1;transform:none;}}
+.xb-card.cover img{width:100%;height:100%;object-fit:cover;display:block;}
+.xb-card .xb-title{position:absolute;left:0;right:0;bottom:0;padding:18px 14px 14px;background:linear-gradient(transparent,rgba(0,0,0,.74));color:#fff;font-weight:700;font-size:15px;line-height:1.35;}
+.xb-card.text{background:#fff;display:flex;align-items:center;justify-content:center;padding:20px;}
+.xb-card .xb-text{font-size:15px;font-weight:600;color:#1a1a1a;line-height:1.7;text-align:center;}
+.xb-dots{display:flex;gap:5px;justify-content:center;}
+.xb-dots b{width:6px;height:6px;border-radius:50%;background:#d8d3c7;}
+.xb-dots b.on{background:#ff2442;}
+.xb-export{font-size:12px;font-weight:700;color:#fff;background:#ff2442;border:0;border-radius:100px;padding:8px 18px;cursor:default;}
 @media (max-width:900px){.cols.c2,.cols.c25,.cols.c5{grid-template-columns:1fr;}.posters,.concepts,.imgrow3{grid-template-columns:1fr;}.tools{grid-template-columns:repeat(3,1fr);}.methods{grid-template-columns:1fr;}}
 </style>
 <script type="importmap">{ "imports": { "three": "./assets/three/three.module.js" } }</script>
@@ -707,33 +760,65 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
   </div>
 </section>
 
-<!-- 09c 师说 + 三个备选项目（都做成真预览） -->
-<section class="slide" data-bg="paper">
-  <div class="wrap" style="max-width:1520px">
-    <div class="eyebrow reveal" style="--d:0">More Products · 4 个都给你看</div>
-    <h2 class="big reveal" style="--d:1">师说<span style="color:var(--ink-soft)"> · 与更多作品</span></h2>
+<!-- 09c 师说（单独一页 · 循环动画） -->
+<section class="slide" data-bg="paper" data-anim="shishuo">
+  <div class="wrap">
+    <div class="flx ac" style="justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div><div class="eyebrow reveal" style="--d:0">Product · 三端配对平台</div>
+      <h2 class="big reveal" style="--d:1">师说</h2></div>
+      <div class="tag reveal" style="--d:1">找老「师」· 来「说」</div>
+    </div>
     <div class="cols c25 mt2">
       <div class="reveal" style="--d:2">
-        <div class="stage" style="height:clamp(300px,50vh,470px);background:#fbfaf6;border-color:#e8e6de">
-          <div class="stagecap" style="color:#8a7e66"><b style="background:#e0742f;box-shadow:0 0 10px #e0742f"></b>师说 · 师生配对 + 进度可视化</div>
-          <div class="ss-app">
-            <div class="ss-top">
-              <div class="ss-col"><span class="ss-chip teal">王老师 · 数学</span><span class="ss-chip teal">李老师 · 物理</span></div>
-              <div class="ss-match"><span class="ss-pulse">⇄</span><small>智能配对</small></div>
-              <div class="ss-col"><span class="ss-chip coral">高三 · 想补数学</span><span class="ss-chip coral">家长 · 看进度</span></div>
-            </div>
-            <div class="ss-bot">
-              <div class="ss-geo"><div class="ss-cube"><i></i><i></i><i></i><i></i><i></i><i></i></div><small>立体几何题 · 3D 可视化</small></div>
-              <div class="ss-push"><div class="ss-noti">📈 今日学习进度已推送给家长<b>正确率 84% · 用时 1h20m</b></div></div>
-            </div>
-          </div>
+        <div class="stage" style="height:clamp(320px,56vh,540px);background:#fffefa;border-color:#e8e6de">
+          <div class="stagecap" style="color:#5d6a7e"><b style="background:#e0742f;box-shadow:0 0 10px #e0742f"></b>师说 · 核心功能预览</div>
+          <div id="shishuoApp"></div>
         </div>
-        <div class="cap mt">师说 · 三端配对：<b style="color:var(--ink)">师生匹配 · 立体几何题可视化 · 进度每日推送 · 全程线上可视化</b></div>
       </div>
-      <div class="reveal" style="--d:3;display:grid;grid-template-rows:repeat(3,1fr);gap:13px;min-height:0">
-        <div class="miniproj"><div class="mini-viz graham"><div class="gh-tower"><span style="--i:5">3</span><span style="--i:4">3</span><span style="--i:3">3</span><span style="--i:2">3</span><span style="--i:1">3</span><span style="--i:0">3</span></div><div class="gh-arrows">3 ↑↑↑↑ 3</div></div><div class="mini-cap"><h>葛立恒数 · 大数塔</h><p>把宇宙都写不下的大数，做成可攀爬的塔。</p></div></div>
-        <div class="miniproj"><div class="mini-frame"><iframe data-src="embed/mom/index.html" title="母亲节" loading="lazy"></iframe></div><div class="mini-cap"><h>母亲节项目</h><p>给妈妈的交互礼物 · 实时嵌入</p></div></div>
-        <div class="miniproj"><div class="mini-frame"><iframe data-src="embed/xhs/index.html" title="小红书工作台" loading="lazy"></iframe></div><div class="mini-cap"><h>小红书图文工作台</h><p>项目 → 图文一键排版 · 实时嵌入</p></div></div>
+      <div class="reveal" style="--d:3">
+        <p class="lead">高三毕业生 · 补课学生 · 家长的<b style="color:var(--ink)">三端配对平台</b>——找老「师」、来「说」，把需求接上供给。</p>
+        <ul class="elist lo mt"><li><b>师生智能匹配</b>：按科目 / 风格 / 时间配对</li><li><b>立体几何题 3D 可视化</b>：看得见的数学</li><li><b>学习进度每日推送</b>给家长</li><li>所有学习数据，<b>全程线上可视化</b></li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09d 小红书图文工作台（单独一页 · 循环动画） -->
+<section class="slide" data-bg="paper" data-anim="xhsboard">
+  <div class="wrap">
+    <div class="flx ac" style="justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div><div class="eyebrow reveal" style="--d:0">Tool · 把项目变成流量</div>
+      <h2 class="big reveal" style="--d:1">小红书 <span class="u-line">图文工作台</span></h2></div>
+      <div class="tag reveal" style="--d:1">项目 → 图文笔记 · 一键排版导出</div>
+    </div>
+    <div class="cols c25 mt2">
+      <div class="reveal" style="--d:2">
+        <div class="stage" style="height:clamp(320px,56vh,540px);background:#ebe7df;border-color:#ddd6c8">
+          <div class="stagecap" style="color:#8a7e66"><b style="background:#ff2442;box-shadow:0 0 10px #ff2442"></b>小红书图文预览工作台</div>
+          <div id="xhsBoard"></div>
+        </div>
+      </div>
+      <div class="reveal" style="--d:3">
+        <p class="lead">把任何一个项目（无论成功失败），<b style="color:var(--ink)">自动排成一篇小红书图文笔记</b>——HTML 配图、自动套模板、html2canvas 导出，再用小红书 CLI 自动发出去。</p>
+        <ul class="elist lo mt"><li>多套图文卡模板，自动套版</li><li>一键导出整篇笔记的配图</li><li>封装成可复用流程：<b>项目 → 笔记</b></li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09e 备选项目 -->
+<section class="slide" data-bg="paper">
+  <div class="wrap" style="max-width:1400px">
+    <div class="eyebrow reveal" style="--d:0">More · 备选作品</div>
+    <h2 class="big reveal" style="--d:1">还有<span class="u-line">这些</span></h2>
+    <div class="cols c5 mt2">
+      <div class="reveal" style="--d:2">
+        <div class="mini-viz graham" style="height:clamp(220px,36vh,340px);border-radius:16px"><div class="gh-tower"><span style="--i:5">3</span><span style="--i:4">3</span><span style="--i:3">3</span><span style="--i:2">3</span><span style="--i:1">3</span><span style="--i:0">3</span></div><div class="gh-arrows">3 ↑↑↑↑ 3 …</div></div>
+        <div class="cap mt"><b style="color:var(--ink);font-size:17px">葛立恒数 · 大数塔</b> · 把宇宙都写不下的大数，做成可攀爬、会发光的塔。</div>
+      </div>
+      <div class="reveal" style="--d:3">
+        <div class="mini-frame" style="height:clamp(220px,36vh,340px);border-radius:16px"><iframe data-src="embed/mom/index.html" title="母亲节" loading="lazy"></iframe></div>
+        <div class="cap mt"><b style="color:var(--ink);font-size:17px">母亲节项目</b> · 给妈妈的一份交互礼物，按原版实时嵌入。</div>
       </div>
     </div>
   </div>
@@ -1054,11 +1139,13 @@ function go(i){
   fit(slides[i]);
   // anim lifecycle
   if(OV) OV.close();
-  ANIM.chess.stop(); ANIM.calling.stop(); ANIM.type.stop(); ANIM.subway.stop(); ANIM.haoqi.stop();
+  ANIM.chess.stop(); ANIM.calling.stop(); ANIM.type.stop(); ANIM.subway.stop(); ANIM.haoqi.stop(); ANIM.shishuo.stop(); ANIM.xhsboard.stop();
   const a=slides[i].dataset.anim;
   if(a==='start'){ ANIM.chess.start(); ANIM.calling.start(); }
   if(a==='now'){ ANIM.type.start(); ANIM.subway.start(); }
   if(a==='haoqi') ANIM.haoqi.start();
+  if(a==='shishuo') ANIM.shishuo.start();
+  if(a==='xhsboard') ANIM.xhsboard.start();
   slides[i].querySelectorAll('iframe[data-src]').forEach(fr=>{ if(!fr.getAttribute('src')) fr.src=fr.dataset.src; });
   if(i===2) runStats();
   cur=i;
@@ -1375,6 +1462,51 @@ ANIM.haoqi=(function(){
     b.innerHTML=head('COURSE FEED · 课程空间','每门课，','都在长出宇宙')+'<div class="cs-av">'+av+'</div><div class="cs-feed">'+feed+'</div>'; anim('.cs-disc',120,90); anim('.cs-card',300,130); }
   function cycle(){ if(!running)return; const b=root.querySelector('#hqBody'), tabs=root.querySelectorAll('.hq-tabs .tb'); tabs.forEach((t,k)=>t.classList.toggle('on',k===ti)); [cal,read,gantt,courses][ti](b); ti=(ti+1)%TABS.length; T(cycle,2900); }
   return { start(){ if(!built)build(); if(running)return; running=true; ti=0; cycle(); }, stop(){ running=false; clearT(); } };
+})();
+
+/* ================= 师说 预览（四功能循环） ================= */
+ANIM.shishuo=(function(){
+  const root=$('#shishuoApp'); let built=false,running=false,timers=[],ti=0;
+  const TABS=['师生匹配','立体几何','进度推送','学习看板'];
+  const T=(f,m)=>{const id=setTimeout(f,m);timers.push(id);return id;}, clearT=()=>{timers.forEach(clearTimeout);timers=[];};
+  const head=(eb,t,i)=>'<div class="hqh"><span class="eb">'+eb+'</span><h class="ht">'+t+' <i>'+i+'</i></h></div>';
+  function build(){ root.innerHTML='<div class="hq-top"><span class="hq-logo">师说 <b>· 找老师说</b></span><div class="hq-tabs">'+TABS.map((t,k)=>'<span class="tb'+(k===0?' on':'')+'">'+t+'</span>').join('')+'</div></div><div class="hq-body" id="ssBody"></div>'; built=true; }
+  function anim(sel,base,step){ [...root.querySelectorAll(sel)].forEach((e,k)=>T(()=>e.classList.add('show'),base+k*step)); }
+  function match(b){ b.innerHTML=head('SMART MATCH','找老师，','智能配对')
+    +'<div class="ssm"><div class="ssm-col">'+['高三 · 想补数学','高二 · 物理','家长 · 看进度'].map(s=>'<div class="ssm-p s">'+s+'</div>').join('')+'</div>'
+    +'<svg class="ssm-link" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M3 17 C50 17 50 50 97 50"/><path d="M3 50 C50 50 50 17 97 17"/><path d="M3 83 C50 83 50 50 97 50"/></svg>'
+    +'<div class="ssm-col">'+['王老师 · 数学','李老师 · 物理'].map(s=>'<div class="ssm-p t">'+s+'</div>').join('')+'</div></div>'; anim('.ssm-p',140,120); anim('.ssm-link path',260,180); }
+  function geo(b){ b.innerHTML=head('3D GEOMETRY','看得见的','数学')
+    +'<div class="ssg"><div class="ssg-shape"><div class="ss-cube"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>'
+    +'<div class="ssg-prob"><p>求正方体 ABCD-A₁B₁C₁D₁ 中，<br>对角线 BD₁ 与底面所成角。</p><div class="ssg-ans">∠ = arctan(√2⁄2) ≈ <b>35.26°</b></div></div></div>'; anim('.ssg-ans',900,0); }
+  function push(b){ const d=['一','二','三','四','五','六','日'],h=[58,74,52,86,68,94,82];
+    b.innerHTML=head('DAILY PUSH','每天，家长都','收到推送')
+    +'<div class="ssp"><div class="ssp-noti">📈 师说 · 今日学习进度已推送给家长 ✓</div><div class="ssp-chart">'+h.map((v,k)=>'<div class="ssp-bar"><i style="--h:'+v+'%"></i><span>周'+d[k]+'</span></div>').join('')+'</div></div>'; anim('.ssp-noti',140,0); anim('.ssp-bar i',320,85); }
+  function dash(b){ const s=[['数学',88,'#5b9be0'],['物理',76,'#4cb88a'],['英语',92,'#e0742f'],['总完成率',85,'#18243b']];
+    b.innerHTML=head('ALL ONLINE','所有学习，','线上可视化')+'<div class="ssd">'+s.map(x=>'<div class="ssd-row"><span class="ssd-n">'+x[0]+'</span><div class="ssd-t"><i style="--w:'+x[1]+'%;background:'+x[2]+'"></i></div><b>'+x[1]+'%</b></div>').join('')+'</div>'; anim('.ssd-t i',250,120); }
+  function cycle(){ if(!running)return; const b=root.querySelector('#ssBody'),tb=root.querySelectorAll('.hq-tabs .tb'); tb.forEach((t,k)=>t.classList.toggle('on',k===ti)); [match,geo,push,dash][ti](b); ti=(ti+1)%TABS.length; T(cycle,2900); }
+  return { start(){ if(!built)build(); if(running)return; running=true; ti=0; cycle(); }, stop(){ running=false; clearT(); } };
+})();
+
+/* ================= 小红书图文工作台（自动翻卡） ================= */
+ANIM.xhsboard=(function(){
+  const root=$('#xhsBoard'); let built=false,running=false,timers=[],ci=0,ni=0;
+  const T=(f,m)=>{const id=setTimeout(f,m);timers.push(id);return id;}, clearT=()=>{timers.forEach(clearTimeout);timers=[];};
+  const NOTES=[
+    {chip:'我用 AI 做了枚银戒指',cards:[{cover:'assets/img/jewelry1.jpg',title:'我用 AI 设计了一枚银戒指 💍'},{text:'① 写代码建模\n参数一改，戒指就变样'},{text:'② 3D 打印可铸树脂\n③ 失蜡单件直铸'},{cover:'assets/img/jewelry2.png',title:'成品！每一枚都独一无二 ✨'}]},
+    {chip:'18 岁办了场黑客松',cards:[{cover:'assets/img/hackathon.png',title:'18 岁，我办了场黑客松 🔥'},{text:'给零基础同学\n写了手把手新手教程'},{cover:'assets/img/hackathon_tut.jpg',title:'同学们真的做出东西了！'}]},
+    {chip:'玩转 AI 生图',cards:[{cover:'assets/aigen/g03.jpg',title:'玩转 AI 生图：风格我做主 🎨'},{text:'把脑子里的脑洞\n用 AI 一键变成图'},{cover:'assets/aigen/g08.jpg',title:'融入自己喜欢的元素'}]}
+  ];
+  function build(){ root.innerHTML='<div class="xb-top"><span class="xb-logo">小红书图文预览工作台</span><div class="xb-chips" id="xbChips">'+NOTES.map((n,k)=>'<span class="xb-chip'+(k===0?' on':'')+'">'+n.chip+'</span>').join('')+'</div></div>'
+    +'<div class="xb-main"><div class="xb-phone"><div class="xb-card" id="xbCard"></div></div><div class="xb-dots" id="xbDots"></div><button class="xb-export">导出图片 ↓</button></div>'; built=true; }
+  function render(){ const note=NOTES[ni], c=note.cards[ci], el=root.querySelector('#xbCard');
+    if(c.cover){ el.className='xb-card cover'; el.innerHTML='<img src="'+c.cover+'" alt=""><div class="xb-title">'+c.title+'</div>'; }
+    else { el.className='xb-card text'; el.innerHTML='<div class="xb-text">'+c.text.replace(/\n/g,'<br>')+'</div>'; }
+    void el.offsetWidth; el.classList.add('in');
+    root.querySelector('#xbDots').innerHTML=note.cards.map((_,k)=>'<b'+(k===ci?' class="on"':'')+'></b>').join('');
+    root.querySelectorAll('.xb-chip').forEach((x,k)=>x.classList.toggle('on',k===ni)); }
+  function step(){ if(!running)return; render(); const note=NOTES[ni]; ci++; let d=1900; if(ci>=note.cards.length){ ci=0; ni=(ni+1)%NOTES.length; d=2200; } T(step,d); }
+  return { start(){ if(!built)build(); if(running)return; running=true; ci=0; ni=0; step(); }, stop(){ running=false; clearT(); } };
 })();
 
 /* ================= IDENTITY OVERLAY (悬停全屏轮播) ================= */
