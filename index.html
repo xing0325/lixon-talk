@@ -472,6 +472,12 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
 .xhs-note .meta .lk{margin-left:auto;color:#ff2442;font-weight:600;white-space:nowrap;}
 @media(max-width:1200px){.xhs-feed{columns:3;}}
 @media(max-width:760px){.xhs-feed{columns:2;}}
+/* end QR codes (放到最大) */
+.qr-row{display:flex;align-items:flex-start;justify-content:center;gap:clamp(36px,7vw,120px);}
+.qr-card{margin:0;display:flex;flex-direction:column;align-items:center;gap:clamp(12px,1.8vh,22px);}
+.qr-card img{width:clamp(290px,48vh,580px);height:auto;aspect-ratio:1;object-fit:contain;background:#fff;border-radius:22px;padding:clamp(16px,2.2vw,34px);box-shadow:0 36px 70px -30px rgba(40,44,32,.5);border:1.5px solid var(--line);}
+.qr-card figcaption{font-family:var(--fdisp);font-weight:700;font-size:clamp(18px,2vw,30px);color:var(--ink);}
+.qr-card figcaption b{color:var(--orange);}
 /* motif visuals (变化 / 双向) */
 .motif-card{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:clamp(22px,2.6vw,38px);box-shadow:0 18px 40px -28px rgba(40,44,32,.4);display:flex;flex-direction:column;}
 .motif-tag{font-family:var(--fmono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:20px;}
@@ -981,21 +987,19 @@ h3.mid{font-family:var(--fdisp);font-weight:700;font-size:clamp(26px,2.6vw,46px)
 <!-- 16 结尾 -->
 <section class="slide" data-bg="paper">
   <div class="speed"><i></i><i></i><i></i></div>
-  <div class="wrap" style="text-align:center">
-    <div class="eyebrow reveal" style="--d:0;justify-content:center">The Loop · 回到母题</div>
-    <h1 class="mega reveal" style="--d:1">欣赏 <span class="orange">→</span> 模仿<br><span class="u-line">→ 创作</span></h1>
-    <p class="lead mt reveal" style="--d:3;margin-left:auto;margin-right:auto;text-align:center">把自己这个 agent 训练好，持续 build in public，让好奇心一直转下去。<br><b style="color:var(--ink)">来找我玩 —— 数字病人 Lixon / chichu</b></p>
-    <div class="flx ac reveal" style="--d:4;justify-content:center;gap:clamp(30px,5vw,72px);align-items:flex-end;margin-top:clamp(20px,3vh,40px)">
-      <figure style="margin:0;text-align:center">
-        <img src="assets/img/card_xhs.jpg" alt="小红书名片" style="height:clamp(230px,42vh,400px);width:auto;border-radius:16px;box-shadow:0 30px 60px -30px rgba(40,44,32,.55);border:1.5px solid var(--line)">
-        <figcaption class="mono" style="margin-top:14px;font-size:14px;letter-spacing:.1em;color:var(--ink-soft)">小红书 · 数字病人 Lixon</figcaption>
+  <div class="wrap" style="text-align:center;max-width:1500px">
+    <div class="eyebrow reveal" style="--d:0;justify-content:center">谢谢观看 · build in public · 来找我玩 ◢</div>
+    <h2 class="big reveal" style="--d:1;margin-bottom:clamp(14px,2.4vh,30px)">扫码 · 找到<span class="orange">我</span></h2>
+    <div class="qr-row reveal" style="--d:2">
+      <figure class="qr-card">
+        <img src="assets/img/qr_xhs.png" alt="小红书二维码">
+        <figcaption><b>小红书</b> · 数字病人 Lixon</figcaption>
       </figure>
-      <figure style="margin:0;text-align:center">
-        <img src="assets/img/card_wx.jpg" alt="微信名片" style="height:clamp(230px,42vh,400px);width:auto;border-radius:16px;box-shadow:0 30px 60px -30px rgba(40,44,32,.55);border:1.5px solid var(--line)">
-        <figcaption class="mono" style="margin-top:14px;font-size:14px;letter-spacing:.1em;color:var(--ink-soft)">微信 · 加我聊聊</figcaption>
+      <figure class="qr-card">
+        <img src="assets/img/qr_wx.png" alt="微信二维码">
+        <figcaption><b>微信</b> · 加我聊聊</figcaption>
       </figure>
     </div>
-    <h2 class="big reveal" style="--d:5;margin-top:clamp(20px,3vh,38px)">谢谢观看 ◢</h2>
   </div>
 </section>
 
